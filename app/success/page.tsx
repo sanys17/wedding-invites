@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function SuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const [inviteUrl, setInviteUrl] = useState<string | null>(null);
@@ -14,7 +14,6 @@ export default function SuccessPage() {
   useEffect(() => {
     if (!sessionId) return;
 
-    // Poll for the invite URL — the webhook may take a second or two
     let attempts = 0;
     const maxAttempts = 15;
 
@@ -52,7 +51,6 @@ export default function SuccessPage() {
   return (
     <main className="min-h-screen bg-cream flex flex-col items-center justify-center px-6 text-center">
       <div className="max-w-lg w-full">
-        {/* Icon */}
         <div className="text-5xl mb-8 fade-in">✦</div>
 
         <div className="flex items-center gap-4 justify-center mb-6 fade-in">
@@ -87,22 +85,17 @@ export default function SuccessPage() {
           </div>
         ) : inviteUrl ? (
           <div className="fade-in-delay-2 space-y-4">
-            {/* URL display */}
             <div className="border border-gold bg-white p-4 text-left flex items-center gap-3">
               <span className="flex-1 text-sm text-charcoal font-sans truncate">
                 {inviteUrl}
               </span>
             </div>
-
-            {/* Copy button */}
             <button
               onClick={copyLink}
               className="w-full bg-gold text-white py-4 text-sm tracking-widest uppercase hover:bg-gold-dark transition-all duration-300"
             >
               {copied ? "✓ Copied to Clipboard!" : "Copy Your Invitation Link"}
             </button>
-
-            {/* Preview link */}
             <a
               href={inviteUrl}
               target="_blank"
@@ -130,5 +123,13 @@ export default function SuccessPage() {
         </Link>
       </div>
     </main>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense>
+      <SuccessContent />
+    </Suspense>
   );
 }

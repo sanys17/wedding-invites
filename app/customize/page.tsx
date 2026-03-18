@@ -29,6 +29,10 @@ export default function CustomizePage() {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
+  function isValidEmail(email: string) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
   function isComplete() {
     return (
       form.partner1.trim() &&
@@ -36,7 +40,8 @@ export default function CustomizePage() {
       form.date.trim() &&
       form.venue.trim() &&
       form.location.trim() &&
-      form.rsvp_email.trim()
+      form.rsvp_email.trim() &&
+      isValidEmail(form.rsvp_email)
     );
   }
 
@@ -225,6 +230,11 @@ export default function CustomizePage() {
                         value={form.rsvp_email}
                         onChange={(e) => update("rsvp_email", e.target.value)}
                       />
+                      {form.rsvp_email && !isValidEmail(form.rsvp_email) && (
+                        <p className="text-red-400 text-xs mt-1">
+                          Please enter a valid email address (e.g. emma@example.com)
+                        </p>
+                      )}
                     </label>
                   </fieldset>
                 </div>

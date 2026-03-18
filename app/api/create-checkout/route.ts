@@ -38,7 +38,8 @@ export async function POST(req: NextRequest) {
         rsvp_email: invite.rsvp_email,
         template: invite.template,
       },
-      customer_email: invite.rsvp_email, // pre-fill checkout email
+      // only prefill email if it looks valid
+      ...(invite.rsvp_email?.includes("@") ? { customer_email: invite.rsvp_email } : {}),
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/customize`,
     });

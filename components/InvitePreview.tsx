@@ -1,6 +1,7 @@
 "use client";
 
 import type { InviteData } from "@/lib/types";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Props {
   data: InviteData;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export default function InvitePreview({ data, animate = false }: Props) {
+  const { t } = useLanguage();
   const cls = animate ? "fade-in" : "";
 
   return (
@@ -23,23 +25,23 @@ export default function InvitePreview({ data, animate = false }: Props) {
         <div className="flex items-center gap-3 mb-8 w-full">
           <div className="flex-1 h-px bg-gold-light" />
           <span className="text-xs tracking-ultra-wide uppercase text-gold font-sans font-light">
-            Wedding Invitation
+            {t.weddingInvitation}
           </span>
           <div className="flex-1 h-px bg-gold-light" />
         </div>
 
         {/* Together forever label */}
         <p className="text-xs tracking-ultra-wide uppercase text-muted font-sans font-light mb-4">
-          Together Forever
+          {t.togetherForever}
         </p>
 
         {/* Names */}
         <h1 className="text-4xl font-light italic text-charcoal leading-tight mb-1">
-          {data.partner1 || "Partner One"}
+          {data.partner1 || t.partnerOnePlaceholder}
         </h1>
         <p className="text-lg text-gold font-light tracking-widest mb-1">&amp;</p>
         <h1 className="text-4xl font-light italic text-charcoal leading-tight mb-8">
-          {data.partner2 || "Partner Two"}
+          {data.partner2 || t.partnerTwoPlaceholder}
         </h1>
 
         {/* Divider */}
@@ -51,7 +53,7 @@ export default function InvitePreview({ data, animate = false }: Props) {
 
         {/* Date & time */}
         <p className="text-sm tracking-widest uppercase text-charcoal font-sans font-light mb-1">
-          {data.date || "Day, Month Date, Year"}
+          {data.date || t.datePlaceholder}
         </p>
         {data.time && (
           <p className="text-sm tracking-widest text-muted font-sans font-light mb-6">
@@ -61,10 +63,10 @@ export default function InvitePreview({ data, animate = false }: Props) {
 
         {/* Venue */}
         <p className="text-base italic text-charcoal mb-1">
-          {data.venue || "The Venue Name"}
+          {data.venue || t.venuePlaceholder}
         </p>
         <p className="text-xs tracking-wider text-muted font-sans font-light mb-8">
-          {data.location || "City, Country"}
+          {data.location || t.locationPlaceholder}
         </p>
 
         {/* Message */}

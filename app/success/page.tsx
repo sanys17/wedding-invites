@@ -3,8 +3,11 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 function SuccessContent() {
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const [inviteUrl, setInviteUrl] = useState<string | null>(null);
@@ -50,37 +53,49 @@ function SuccessContent() {
 
   return (
     <main className="min-h-screen bg-cream flex flex-col items-center justify-center px-6 text-center">
+      <div className="absolute top-6 right-8">
+        <LanguageSwitcher />
+      </div>
+
       <div className="max-w-lg w-full">
         <div className="text-5xl mb-8 fade-in">✦</div>
 
         <div className="flex items-center gap-4 justify-center mb-6 fade-in">
           <div className="h-px w-12 bg-gold-light" />
           <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">
-            Payment Confirmed
+            {t.paymentConfirmed}
           </span>
           <div className="h-px w-12 bg-gold-light" />
         </div>
 
         <h1 className="font-serif text-5xl font-light text-charcoal mb-4 fade-in-delay-1">
-          Your invitation
+          {t.invitationReady1}
           <br />
-          <span className="italic text-gold">is ready.</span>
+          <span className="italic text-gold">{t.invitationReady2}</span>
         </h1>
 
         <p className="text-muted font-light leading-relaxed mb-12 fade-in-delay-2">
-          Share the link below with your guests. It&apos;s permanent — they can
-          open it on any device, any time.
+          {t.shareLink}
         </p>
 
         {loading ? (
           <div className="border border-gold-light p-8 fade-in-delay-2">
             <div className="flex items-center justify-center gap-3">
-              <div className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-              <div className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-              <div className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+              <div
+                className="w-2 h-2 bg-gold rounded-full animate-bounce"
+                style={{ animationDelay: "0ms" }}
+              />
+              <div
+                className="w-2 h-2 bg-gold rounded-full animate-bounce"
+                style={{ animationDelay: "150ms" }}
+              />
+              <div
+                className="w-2 h-2 bg-gold rounded-full animate-bounce"
+                style={{ animationDelay: "300ms" }}
+              />
             </div>
             <p className="text-muted text-sm mt-4 font-light">
-              Generating your link…
+              {t.generatingLink}
             </p>
           </div>
         ) : inviteUrl ? (
@@ -94,7 +109,7 @@ function SuccessContent() {
               onClick={copyLink}
               className="w-full bg-gold text-white py-4 text-sm tracking-widest uppercase hover:bg-gold-dark transition-all duration-300"
             >
-              {copied ? "✓ Copied to Clipboard!" : "Copy Your Invitation Link"}
+              {copied ? t.copiedToClipboard : t.copyYourLink}
             </button>
             <a
               href={inviteUrl}
@@ -102,16 +117,12 @@ function SuccessContent() {
               rel="noopener noreferrer"
               className="block w-full border border-gold-light text-charcoal py-3 text-xs tracking-widest uppercase hover:border-gold transition-all duration-300"
             >
-              Preview Your Invitation →
+              {t.previewInvitation}
             </a>
           </div>
         ) : (
           <div className="border border-red-100 p-6 fade-in-delay-2">
-            <p className="text-muted text-sm font-light">
-              Your link is being generated — it will arrive at your email
-              shortly. If you don&apos;t receive it in 5 minutes, please contact
-              us.
-            </p>
+            <p className="text-muted text-sm font-light">{t.linkComingSoon}</p>
           </div>
         )}
 
@@ -119,7 +130,7 @@ function SuccessContent() {
           href="/"
           className="inline-block mt-12 text-xs tracking-widest text-muted uppercase hover:text-gold transition-colors border-b border-gold-light pb-px font-sans font-light"
         >
-          ← Back to Forevermore
+          {t.backToForevermore}
         </Link>
       </div>
     </main>

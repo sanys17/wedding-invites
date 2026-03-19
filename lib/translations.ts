@@ -1,0 +1,350 @@
+export type Lang = "en" | "cs" | "sk";
+
+export const translations = {
+  en: {
+    // Nav
+    howItWorks: "How It Works",
+    designs: "Designs",
+    getStarted: "Get Started",
+
+    // Hero
+    tagline: "Digital Wedding Invitations",
+    heroTitle1: "Your love story,",
+    heroTitle2: "beautifully told.",
+    heroSub:
+      "Elegant digital invitations your guests will remember. Customize in minutes. Share a link. No printing, no postage, no stress.",
+    designYourInvitation: "Design Your Invitation",
+    viewDesigns: "View Designs",
+    heroQuote: "The beginning of forever.",
+
+    // How it works
+    howItWorksLabel: "How It Works",
+    step1Title: "Choose a Design",
+    step1Desc: "Browse our curated collection of elegant invitation templates.",
+    step2Title: "Personalize It",
+    step2Desc:
+      "Add your names, date, venue and a personal message — and watch a live preview update in real time.",
+    step3Title: "Checkout",
+    step3Desc: "Pay once. No subscriptions, no hidden fees.",
+    step4Title: "Share Your Link",
+    step4Desc:
+      "Receive a unique URL instantly. Copy, paste, send — your guests experience a stunning invitation online.",
+
+    // Designs
+    ourDesigns: "Our Designs",
+    chooseYourStyle: "Choose Your Style",
+    sampleInvitation: "Sample Invitation",
+    comingSoon: "Coming Soon",
+    customize: "Customize →",
+
+    // CTA
+    readyToBegin: "Ready to begin?",
+    createInMinutes: "Create your invitation in minutes.",
+    startDesigning: "Start Designing",
+
+    // Footer
+    footerText: "Forevermore — Digital Wedding Invitations",
+    allRightsReserved: "All rights reserved.",
+
+    // Customize page
+    customizeStep: "Customize",
+    reviewStep: "Review & Purchase",
+    yourDetails: "Your Details",
+    looksGood: "Looks good?",
+    makeItYours: "Make it yours.",
+    fillInDetails:
+      "Fill in your details and watch the invitation update live on the right.",
+    theCouple: "The Couple",
+    firstPartner: "First Partner *",
+    secondPartner: "Second Partner *",
+    dateAndTime: "Date & Time",
+    date: "Date *",
+    time: "Time",
+    venue: "Venue",
+    venueName: "Venue Name *",
+    cityAndCountry: "City & Country *",
+    personalMessage: "Personal Message",
+    noteForGuests: "A note for your guests (optional)",
+    rsvpEmail: "RSVP Email",
+    guestsWillRsvp: "Guests will RSVP to this email *",
+    invalidEmail:
+      "Please enter a valid email address (e.g. emma@example.com)",
+    reviewInvitation: "Review My Invitation →",
+    requiredFields: "* Required fields",
+    lookingBeautiful: "Looking beautiful.",
+    readyAfterPayment:
+      "Your invitation is ready. After payment you'll receive a permanent shareable link instantly.",
+    design: "Design",
+    couple: "Couple",
+    total: "Total",
+    redirecting: "Redirecting to payment…",
+    payAndGetLink: (price: number) => `Pay $${price} & Get My Link`,
+    goBackEdit: "← Go Back & Edit",
+    securePayment:
+      "Secure payment via Stripe. Your link is permanent — share it forever.",
+    livePreview: "Live Preview",
+    exactlyWhatGuests: "This is exactly what your guests will see.",
+    somethingWentWrong: "Something went wrong. Please try again.",
+    networkError: "Network error. Please try again.",
+
+    // Success page
+    paymentConfirmed: "Payment Confirmed",
+    invitationReady1: "Your invitation",
+    invitationReady2: "is ready.",
+    shareLink:
+      "Share the link below with your guests. It's permanent — they can open it on any device, any time.",
+    generatingLink: "Generating your link…",
+    copiedToClipboard: "✓ Copied to Clipboard!",
+    copyYourLink: "Copy Your Invitation Link",
+    previewInvitation: "Preview Your Invitation →",
+    linkComingSoon:
+      "Your link is being generated — it will arrive at your email shortly. If you don't receive it in 5 minutes, please contact us.",
+    backToForevermore: "← Back to Forevermore",
+
+    // Invite page (guest view)
+    weddingInvitation: "Wedding Invitation",
+    togetherForever: "Together Forever",
+    requestPresence: "Request the honour of your presence",
+    kindlyRsvp: "Kindly RSVP",
+    createdWith: "Created with",
+
+    // InvitePreview placeholders
+    partnerOnePlaceholder: "Partner One",
+    partnerTwoPlaceholder: "Partner Two",
+    datePlaceholder: "Day, Month Date, Year",
+    venuePlaceholder: "The Venue Name",
+    locationPlaceholder: "City, Country",
+  },
+
+  cs: {
+    // Nav
+    howItWorks: "Jak to funguje",
+    designs: "Vzory",
+    getStarted: "Začít",
+
+    // Hero
+    tagline: "Digitální svatební oznámení",
+    heroTitle1: "Váš příběh lásky,",
+    heroTitle2: "krásně vyprávěný.",
+    heroSub:
+      "Elegantní digitální oznámení, na která vaši hosté nezapomenou. Přizpůsobte za pár minut. Sdílejte odkaz. Žádný tisk, žádné poštovné, žádný stres.",
+    designYourInvitation: "Vytvořit oznámení",
+    viewDesigns: "Zobrazit vzory",
+    heroQuote: "Začátek navždy.",
+
+    // How it works
+    howItWorksLabel: "Jak to funguje",
+    step1Title: "Vyberte vzor",
+    step1Desc: "Prohlédněte si naši kolekci elegantních šablon oznámení.",
+    step2Title: "Přizpůsobte si",
+    step2Desc:
+      "Přidejte jména, datum, místo a osobní vzkaz — a sledujte živý náhled v reálném čase.",
+    step3Title: "Zaplaťte",
+    step3Desc: "Zaplaťte jednou. Žádné předplatné, žádné skryté poplatky.",
+    step4Title: "Sdílejte odkaz",
+    step4Desc:
+      "Okamžitě obdržíte jedinečný odkaz. Zkopírujte, vložte, odešlete — hosté uvidí krásné oznámení online.",
+
+    // Designs
+    ourDesigns: "Naše vzory",
+    chooseYourStyle: "Vyberte svůj styl",
+    sampleInvitation: "Ukázkové oznámení",
+    comingSoon: "Připravujeme",
+    customize: "Přizpůsobit →",
+
+    // CTA
+    readyToBegin: "Připraveni začít?",
+    createInMinutes: "Vytvořte oznámení za pár minut.",
+    startDesigning: "Začít navrhovat",
+
+    // Footer
+    footerText: "Forevermore — Digitální svatební oznámení",
+    allRightsReserved: "Všechna práva vyhrazena.",
+
+    // Customize page
+    customizeStep: "Přizpůsobit",
+    reviewStep: "Kontrola a platba",
+    yourDetails: "Vaše údaje",
+    looksGood: "Vypadá dobře?",
+    makeItYours: "Udělejte ho svým.",
+    fillInDetails:
+      "Vyplňte údaje a sledujte, jak se oznámení aktualizuje živě napravo.",
+    theCouple: "Pár",
+    firstPartner: "První partner *",
+    secondPartner: "Druhý partner *",
+    dateAndTime: "Datum a čas",
+    date: "Datum *",
+    time: "Čas",
+    venue: "Místo",
+    venueName: "Název místa *",
+    cityAndCountry: "Město a země *",
+    personalMessage: "Osobní vzkaz",
+    noteForGuests: "Vzkaz pro hosty (volitelné)",
+    rsvpEmail: "RSVP e-mail",
+    guestsWillRsvp: "Hosté odpoví na tento e-mail *",
+    invalidEmail:
+      "Zadejte prosím platnou e-mailovou adresu (např. emma@example.com)",
+    reviewInvitation: "Zkontrolovat oznámení →",
+    requiredFields: "* Povinná pole",
+    lookingBeautiful: "Vypadá krásně.",
+    readyAfterPayment:
+      "Vaše oznámení je připraveno. Po platbě okamžitě obdržíte trvalý sdílený odkaz.",
+    design: "Vzor",
+    couple: "Pár",
+    total: "Celkem",
+    redirecting: "Přesměrování na platbu…",
+    payAndGetLink: (price: number) => `Zaplatit $${price} a získat odkaz`,
+    goBackEdit: "← Zpět a upravit",
+    securePayment:
+      "Bezpečná platba přes Stripe. Váš odkaz je trvalý — sdílejte ho navždy.",
+    livePreview: "Živý náhled",
+    exactlyWhatGuests: "Přesně takto to uvidí vaši hosté.",
+    somethingWentWrong: "Něco se pokazilo. Zkuste to prosím znovu.",
+    networkError: "Chyba sítě. Zkuste to prosím znovu.",
+
+    // Success page
+    paymentConfirmed: "Platba potvrzena",
+    invitationReady1: "Vaše oznámení",
+    invitationReady2: "je připraveno.",
+    shareLink:
+      "Sdílejte níže uvedený odkaz se svými hosty. Je trvalý — mohou ho otevřít na jakémkoli zařízení, kdykoli.",
+    generatingLink: "Generování odkazu…",
+    copiedToClipboard: "✓ Zkopírováno do schránky!",
+    copyYourLink: "Zkopírovat odkaz na oznámení",
+    previewInvitation: "Náhled oznámení →",
+    linkComingSoon:
+      "Váš odkaz se generuje — brzy dorazí na váš e-mail. Pokud ho neobdržíte do 5 minut, kontaktujte nás.",
+    backToForevermore: "← Zpět na Forevermore",
+
+    // Invite page (guest view)
+    weddingInvitation: "Svatební oznámení",
+    togetherForever: "Navždy spolu",
+    requestPresence: "Žádáme vás o vaši přítomnost",
+    kindlyRsvp: "Prosíme o potvrzení účasti",
+    createdWith: "Vytvořeno s",
+
+    // InvitePreview placeholders
+    partnerOnePlaceholder: "Partner jedna",
+    partnerTwoPlaceholder: "Partner dva",
+    datePlaceholder: "Den, měsíc, rok",
+    venuePlaceholder: "Název místa",
+    locationPlaceholder: "Město, země",
+  },
+
+  sk: {
+    // Nav
+    howItWorks: "Ako to funguje",
+    designs: "Vzory",
+    getStarted: "Začať",
+
+    // Hero
+    tagline: "Digitálne svadobné oznámenia",
+    heroTitle1: "Váš príbeh lásky,",
+    heroTitle2: "krásne vyrozprávaný.",
+    heroSub:
+      "Elegantné digitálne oznámenia, na ktoré vaši hostia nezabudnú. Prispôsobte za pár minút. Zdieľajte odkaz. Žiadna tlač, žiadne poštovné, žiadny stres.",
+    designYourInvitation: "Vytvoriť oznámenie",
+    viewDesigns: "Zobraziť vzory",
+    heroQuote: "Začiatok navždy.",
+
+    // How it works
+    howItWorksLabel: "Ako to funguje",
+    step1Title: "Vyberte vzor",
+    step1Desc: "Prezrite si našu kolekciu elegantných šablón oznámení.",
+    step2Title: "Prispôsobte si",
+    step2Desc:
+      "Pridajte mená, dátum, miesto a osobný odkaz — a sledujte živý náhľad v reálnom čase.",
+    step3Title: "Zaplaťte",
+    step3Desc: "Zaplaťte raz. Žiadne predplatné, žiadne skryté poplatky.",
+    step4Title: "Zdieľajte odkaz",
+    step4Desc:
+      "Okamžite dostanete jedinečný odkaz. Skopírujte, vložte, odošlite — hostia uvidia krásne oznámenie online.",
+
+    // Designs
+    ourDesigns: "Naše vzory",
+    chooseYourStyle: "Vyberte svoj štýl",
+    sampleInvitation: "Ukážkové oznámenie",
+    comingSoon: "Pripravujeme",
+    customize: "Prispôsobiť →",
+
+    // CTA
+    readyToBegin: "Pripravení začať?",
+    createInMinutes: "Vytvorte oznámenie za pár minút.",
+    startDesigning: "Začať navrhovať",
+
+    // Footer
+    footerText: "Forevermore — Digitálne svadobné oznámenia",
+    allRightsReserved: "Všetky práva vyhradené.",
+
+    // Customize page
+    customizeStep: "Prispôsobiť",
+    reviewStep: "Kontrola a platba",
+    yourDetails: "Vaše údaje",
+    looksGood: "Vyzerá dobre?",
+    makeItYours: "Urobte ho svojím.",
+    fillInDetails:
+      "Vyplňte údaje a sledujte, ako sa oznámenie aktualizuje naživo napravo.",
+    theCouple: "Pár",
+    firstPartner: "Prvý partner *",
+    secondPartner: "Druhý partner *",
+    dateAndTime: "Dátum a čas",
+    date: "Dátum *",
+    time: "Čas",
+    venue: "Miesto",
+    venueName: "Názov miesta *",
+    cityAndCountry: "Mesto a krajina *",
+    personalMessage: "Osobný odkaz",
+    noteForGuests: "Odkaz pre hostí (voliteľné)",
+    rsvpEmail: "RSVP e-mail",
+    guestsWillRsvp: "Hostia odpovedia na tento e-mail *",
+    invalidEmail:
+      "Zadajte prosím platnú e-mailovú adresu (napr. emma@example.com)",
+    reviewInvitation: "Skontrolovať oznámenie →",
+    requiredFields: "* Povinné polia",
+    lookingBeautiful: "Vyzerá krásne.",
+    readyAfterPayment:
+      "Vaše oznámenie je pripravené. Po platbe okamžite dostanete trvalý zdieľaný odkaz.",
+    design: "Vzor",
+    couple: "Pár",
+    total: "Celkom",
+    redirecting: "Presmerovanie na platbu…",
+    payAndGetLink: (price: number) => `Zaplatiť $${price} a získať odkaz`,
+    goBackEdit: "← Späť a upraviť",
+    securePayment:
+      "Bezpečná platba cez Stripe. Váš odkaz je trvalý — zdieľajte ho navždy.",
+    livePreview: "Živý náhľad",
+    exactlyWhatGuests: "Presne takto to uvidia vaši hostia.",
+    somethingWentWrong: "Niečo sa pokazilo. Skúste to prosím znova.",
+    networkError: "Chyba siete. Skúste to prosím znova.",
+
+    // Success page
+    paymentConfirmed: "Platba potvrdená",
+    invitationReady1: "Vaše oznámenie",
+    invitationReady2: "je pripravené.",
+    shareLink:
+      "Zdieľajte odkaz nižšie so svojimi hosťami. Je trvalý — môžu ho otvoriť na akomkoľvek zariadení, kedykoľvek.",
+    generatingLink: "Generovanie odkazu…",
+    copiedToClipboard: "✓ Skopírované do schránky!",
+    copyYourLink: "Skopírovať odkaz na oznámenie",
+    previewInvitation: "Náhľad oznámenia →",
+    linkComingSoon:
+      "Váš odkaz sa generuje — čoskoro dorazí na váš e-mail. Ak ho nedostanete do 5 minút, kontaktujte nás.",
+    backToForevermore: "← Späť na Forevermore",
+
+    // Invite page (guest view)
+    weddingInvitation: "Svadobné oznámenie",
+    togetherForever: "Navždy spolu",
+    requestPresence: "Prosíme o vašu prítomnosť",
+    kindlyRsvp: "Prosíme o potvrdenie účasti",
+    createdWith: "Vytvorené s",
+
+    // InvitePreview placeholders
+    partnerOnePlaceholder: "Partner jeden",
+    partnerTwoPlaceholder: "Partner dva",
+    datePlaceholder: "Deň, mesiac, rok",
+    venuePlaceholder: "Názov miesta",
+    locationPlaceholder: "Mesto, krajina",
+  },
+} as const;
+
+export type Translations = typeof translations.en;

@@ -1,28 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import InvitePreview from "@/components/InvitePreview";
 import type { InviteData } from "@/lib/types";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
-const INITIAL: InviteData = {
-  partner1: "",
-  partner2: "",
-  date: "",
-  time: "",
-  venue: "",
-  location: "",
-  message: "",
-  rsvp_email: "",
-  template: "elegant-minimal",
-};
+const TEMPLATES = [
+  { id: "elegant-minimal", label: "Élégant", tag: "Minimalist" },
+  { id: "jardin", label: "Jardin", tag: "Botanical" },
+];
 
-const PRICE = 15;
-
-export default function CustomizePage() {
+function CustomizeContent() {
   const { t } = useLanguage();
+  const searchParams = useSearchParams();
+  const initialTemplate = searchParams.get("template") === "jardin" ? "jardin" : "elegant-minimal";
+
+  const INITIAL: InviteData = {
+    partner1: "",
+    partner2: "",
+    date: "",
+    time: "",
+    venue: "",
+    location: "",
+    message: "",
+    rsvp_email: "",
+    template: initialTemplate,
+  };
+
+  const PRICE = 15;
+
   const [form, setForm] = useState<InviteData>(INITIAL);
   const [step, setStep] = useState<"edit" | "review">("edit");
   const [loading, setLoading] = useState(false);
@@ -101,6 +110,29 @@ export default function CustomizePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* ── LEFT: FORM ── */}
           <div>
+            {/* Template switcher */}
+            {step === "edit" && (
+              <div className="mb-8">
+                <p className="text-xs tracking-ultra-wide uppercase text-muted font-light mb-3">Design</p>
+                <div className="flex gap-3">
+                  {TEMPLATES.map((tmpl) => (
+                    <button
+                      key={tmpl.id}
+                      onClick={() => update("template", tmpl.id)}
+                      className={`flex-1 py-3 px-4 text-xs tracking-widest uppercase border transition-all duration-200 cursor-pointer ${
+                        form.template === tmpl.id
+                          ? "border-gold bg-gold/5 text-gold"
+                          : "border-gold-light text-muted hover:border-gold hover:text-charcoal"
+                      }`}
+                    >
+                      <span className="font-serif text-base block">{tmpl.label}</span>
+                      <span className="font-light">{tmpl.tag}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="flex items-center gap-4 mb-8">
               <div className="h-px w-12 bg-gold-light" />
               <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">
@@ -352,5 +384,13 @@ export default function CustomizePage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function CustomizePage() {
+  return (
+    <Suspense>
+      <CustomizeContent />
+    </Suspense>
   );
 }

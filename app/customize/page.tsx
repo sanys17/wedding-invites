@@ -73,18 +73,27 @@ export default function CustomizePage() {
   return (
     <main className="min-h-screen bg-cream">
       {/* ── NAV ── */}
-      <nav className="flex items-center justify-between px-8 py-6 max-w-6xl mx-auto border-b border-gold-light">
-        <Link
-          href="/"
-          className="font-serif text-2xl tracking-widest text-charcoal hover:text-gold transition-colors"
-        >
-          Forevermore
-        </Link>
-        <div className="flex items-center gap-6">
-          <LanguageSwitcher />
-          <span className="text-xs tracking-ultra-wide uppercase text-muted font-light">
-            {step === "edit" ? t.customizeStep : t.reviewStep}
-          </span>
+      <nav className="sticky top-0 z-40 bg-cream/95 backdrop-blur-md border-b border-gold-light/50 px-8 py-5 shadow-sm">
+        <div className="flex items-center justify-between max-w-6xl mx-auto">
+          <Link
+            href="/"
+            className="font-serif text-2xl tracking-widest text-charcoal hover:text-gold transition-colors cursor-pointer"
+          >
+            Forevermore
+          </Link>
+          <div className="flex items-center gap-6">
+            <LanguageSwitcher />
+            {/* Step indicator */}
+            <div className="hidden sm:flex items-center gap-2 text-xs tracking-widest uppercase font-light">
+              <span className={step === "edit" ? "text-gold" : "text-muted/40"}>
+                01 · {t.customizeStep}
+              </span>
+              <span className="text-muted/30">—</span>
+              <span className={step === "review" ? "text-gold" : "text-muted/40"}>
+                02 · {t.reviewStep}
+              </span>
+            </div>
+          </div>
         </div>
       </nav>
 

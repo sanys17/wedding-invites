@@ -345,6 +345,6 @@ export const translations = {
     venuePlaceholder: "Názov miesta",
     locationPlaceholder: "Mesto, krajina",
   },
-} as const;
+};
 
 export type Translations = typeof translations.en;

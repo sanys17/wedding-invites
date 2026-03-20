@@ -11,6 +11,7 @@ export interface TemplateT {
   locationPlaceholder: string;
   togetherForever: string;
   requestPresence: string;
+  togetherWithFamilies: string;
 }
 
 const DEFAULT_T: TemplateT = {
@@ -22,6 +23,7 @@ const DEFAULT_T: TemplateT = {
   locationPlaceholder: "City, Country",
   togetherForever: "Together Forever",
   requestPresence: "Request the honour of your presence",
+  togetherWithFamilies: "Together with their families",
 };
 
 type TP = { data: InviteData; t?: TemplateT };
@@ -410,10 +412,10 @@ export function Versailles({ data: d, t: tProp }: TP) {
       <Scroll pos="bottom-0 left-0" transform="translate(0,56) scale(1,-1)" />
       <Scroll pos="bottom-0 right-0" transform="translate(56,56) scale(-1,-1)" />
       <p className="text-[8px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-3 opacity-80">
-        Together with their families
+        {t.togetherWithFamilies}
       </p>
       <p className="text-[8px] tracking-[0.3em] uppercase text-[#6B6359] font-sans font-light mb-5 opacity-70">
-        request the honour of your presence
+        {t.requestPresence}
       </p>
       <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
       <p className="text-[#B8960C] tracking-widest text-xl mb-0.5">&amp;</p>

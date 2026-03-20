@@ -104,6 +104,7 @@ export const translations = {
     // Invite page (guest view)
     weddingInvitation: "Wedding Invitation",
     togetherForever: "Together Forever",
+    togetherWithFamilies: "Together with their families",
     requestPresence: "Request the honour of your presence",
     kindlyRsvp: "Kindly RSVP",
     createdWith: "Created with",
@@ -219,6 +220,7 @@ export const translations = {
     // Invite page (guest view)
     weddingInvitation: "Svatební oznámení",
     togetherForever: "Navždy spolu",
+    togetherWithFamilies: "Společně se svými rodinami",
     requestPresence: "Žádáme vás o vaši přítomnost",
     kindlyRsvp: "Prosíme o potvrzení účasti",
     createdWith: "Vytvořeno s",
@@ -334,6 +336,7 @@ export const translations = {
     // Invite page (guest view)
     weddingInvitation: "Svadobné oznámenie",
     togetherForever: "Navždy spolu",
+    togetherWithFamilies: "Spoločne so svojimi rodinami",
     requestPresence: "Prosíme o vašu prítomnosť",
     kindlyRsvp: "Prosíme o potvrdenie účasti",
     createdWith: "Vytvorené s",

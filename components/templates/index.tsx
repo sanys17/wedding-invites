@@ -39,7 +39,7 @@ export function Elegant({ data: d, t: tProp }: TP) {
     <div className="w-full h-full bg-white flex flex-col items-center justify-center px-10 py-10 text-center">
       <div className="flex items-center gap-3 w-full mb-7">
         <div className="flex-1 h-px bg-[#D4B86A]" />
-        <span className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans font-light"{t.weddingInvitation}</span>
+        <span className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans font-light">{t.weddingInvitation}</span>
         <div className="flex-1 h-px bg-[#D4B86A]" />
       </div>
       <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
@@ -79,7 +79,7 @@ export function Jardin({ data: d, t: tProp }: TP) {
       <div className="flex items-center gap-2 w-full mb-5">
         <div className="flex-1 h-px bg-[#D4B86A]" /><span className="text-[#B8960C]">✿</span><div className="flex-1 h-px bg-[#D4B86A]" />
       </div>
-      <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans font-light mb-5"{t.weddingInvitation}</p>
+      <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans font-light mb-5">{t.weddingInvitation}</p>
       <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
       <p className="text-[#B8960C] tracking-widest text-xl mb-0.5">&amp;</p>
       <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d, t)}</h1>
@@ -125,7 +125,7 @@ export function Lumiere({ data: d, t: tProp }: TP) {
         <circle cx="40" cy="40" r="4" fill="none" stroke="#B8960C" strokeWidth="0.8" />
         <circle cx="40" cy="40" r="1.5" fill="#B8960C" />
       </svg>
-      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4"{t.weddingInvitation}</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4">{t.weddingInvitation}</p>
       <h1 className="font-serif text-3xl font-light tracking-wider text-[#1C1917] mb-0.5">{P1(d, t)}</h1>
       <p className="text-[#B8960C] tracking-[0.4em] text-sm font-sans font-light mb-0.5">— &amp; —</p>
       <h1 className="font-serif text-3xl font-light tracking-wider text-[#1C1917] mb-6">{P2(d, t)}</h1>
@@ -156,7 +156,7 @@ export function Nocturne({ data: d, t: tProp }: TP) {
       </svg>
       <div className="flex items-center gap-3 w-full mb-5">
         <div className="flex-1 h-px bg-[#D4B86A] opacity-30" />
-        <span className="text-[9px] tracking-[0.3em] uppercase text-[#D4B86A] font-sans font-light opacity-70"{t.weddingInvitation}</span>
+        <span className="text-[9px] tracking-[0.3em] uppercase text-[#D4B86A] font-sans font-light opacity-70">{t.weddingInvitation}</span>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-30" />
       </div>
       <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5" style={{ color: "#F5F0E8" }}>{P1(d, t)}</h1>
@@ -330,7 +330,7 @@ export function Sakura({ data: d, t: tProp }: TP) {
         ))}
       </svg>
       <div className="pl-10 pr-6 w-full">
-        <p className="text-[9px] tracking-[0.35em] uppercase font-sans font-light mb-5" style={{ color: "#FB7185" }}{t.weddingInvitation}</p>
+        <p className="text-[9px] tracking-[0.35em] uppercase font-sans font-light mb-5" style={{ color: "#FB7185" }}>{t.weddingInvitation}</p>
         <div className="flex items-center gap-2 mb-5 justify-center px-6">
           <div className="flex-1 h-px" style={{ background: "#FDA4AF", opacity: 0.5 }} />
           <span style={{ color: "#FDA4AF" }}>✿</span>
@@ -376,7 +376,7 @@ export function Riviera({ data: d, t: tProp }: TP) {
       {Array.from({ length: 8 }).map((_, i) => (
         <div key={`r${i}`} className="absolute right-4" style={{ top: `${12 + i * 10}%`, width: 4, height: 4, borderRadius: "50%", background: "#1E3A8A", opacity: 0.15 }} />
       ))}
-      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-4 mt-10" style={{ color: "#1E3A8A", opacity: 0.7 }}{t.weddingInvitation}</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-4 mt-10" style={{ color: "#1E3A8A", opacity: 0.7 }}>{t.weddingInvitation}</p>
       <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
       <p className="tracking-widest text-xl mb-0.5" style={{ color: "#1E3A8A" }}>&amp;</p>
       <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d, t)}</h1>
@@ -487,7 +487,7 @@ export function Tuscany({ data: d, t: tProp }: TP) {
           </g>
         ))}
       </svg>
-      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-4" style={{ color: "#92400E", opacity: 0.7 }}{t.weddingInvitation}</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-4" style={{ color: "#92400E", opacity: 0.7 }}>{t.weddingInvitation}</p>
       <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
       <p className="tracking-widest text-xl mb-0.5" style={{ color: "#92400E" }}>&amp;</p>
       <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d, t)}</h1>
@@ -518,7 +518,7 @@ export function Noir({ data: d, t: tProp }: TP) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center text-center relative" style={{ background: "#0A0A0A" }}>
       <div className="px-8 w-full">
-        <p className="text-[8px] tracking-[0.5em] uppercase font-sans font-light mb-6" style={{ color: "#6B6359" }}{t.weddingInvitation}</p>
+        <p className="text-[8px] tracking-[0.5em] uppercase font-sans font-light mb-6" style={{ color: "#6B6359" }}>{t.weddingInvitation}</p>
         <h1 className="font-serif font-light italic leading-none mb-0" style={{ fontSize: "clamp(2.5rem,10vw,3.5rem)", color: "#F5F0E8" }}>{P1(d, t)}</h1>
         <div className="flex items-center gap-0 my-3">
           <div className="flex-1 h-px" style={{ background: "#B8960C" }} />
@@ -636,7 +636,7 @@ export function Eden({ data: d, t: tProp }: TP) {
           </g>
         ))}
       </svg>
-      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4 relative z-10 opacity-80"{t.weddingInvitation}</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4 relative z-10 opacity-80">{t.weddingInvitation}</p>
       <div className="flex items-center gap-2 w-full mb-4 relative z-10">
         <div className="flex-1 h-px bg-[#B8960C] opacity-20" />
         <span className="text-[#B8960C] opacity-50 text-xs">✿</span>
@@ -676,7 +676,7 @@ export function Venezia({ data: d, t: tProp }: TP) {
         <path d="M20 160 C15 140 18 120 22 100" fill="none" stroke="#D4B86A" strokeWidth="0.4" opacity="0.3" />
         <path d="M220 160 C225 140 222 120 218 100" fill="none" stroke="#D4B86A" strokeWidth="0.4" opacity="0.3" />
       </svg>
-      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-3 mt-16 relative z-10 opacity-80"{t.weddingInvitation}</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-3 mt-16 relative z-10 opacity-80">{t.weddingInvitation}</p>
       <div className="flex items-center gap-3 w-full mb-4 relative z-10 px-6">
         <div className="flex-1 h-px bg-[#D4B86A] opacity-40" />
         <svg width="8" height="8" viewBox="0 0 8 8"><rect x="1" y="1" width="6" height="6" fill="#B8960C" opacity="0.5" transform="rotate(45 4 4)" /></svg>
@@ -710,7 +710,7 @@ export function Cote({ data: d, t: tProp }: TP) {
       {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
         <div key={i} className="absolute left-0 right-0 h-px" style={{ bottom: `${10 + i * 5}%`, background: "#BFDBFE", opacity: i % 2 === 0 ? 0.5 : 0.25 }} />
       ))}
-      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-5 relative z-10" style={{ color: "#1D4ED8", opacity: 0.6 }}{t.weddingInvitation}</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-5 relative z-10" style={{ color: "#1D4ED8", opacity: 0.6 }}>{t.weddingInvitation}</p>
       <div className="flex items-center gap-3 w-full mb-5 relative z-10">
         <div className="flex-1 h-px" style={{ background: "#93C5FD", opacity: 0.6 }} />
         <svg width="12" height="6" viewBox="0 0 12 6"><path d="M0 6 C2 0 10 0 12 6Z" fill="#93C5FD" opacity="0.5" /></svg>
@@ -740,7 +740,7 @@ export function Aurora({ data: d, t: tProp }: TP) {
       {/* Aurora gradient bands */}
       <div className="absolute top-0 left-0 right-0 h-32 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(52,211,153,0.12) 0%, rgba(96,165,250,0.10) 40%, rgba(167,139,250,0.08) 70%, transparent 100%)" }} />
       <div className="absolute top-0 left-0 right-0 h-20 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(52,211,153,0.06) 0%, transparent 100%)" }} />
-      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-8 mt-8 relative z-10" style={{ color: "#059669", opacity: 0.7 }}{t.weddingInvitation}</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-8 mt-8 relative z-10" style={{ color: "#059669", opacity: 0.7 }}>{t.weddingInvitation}</p>
       <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-tight mb-0 relative z-10">{P1(d, t)}</h1>
       <div className="flex items-center gap-3 w-full my-3 relative z-10">
         <div className="flex-1 h-px" style={{ background: "linear-gradient(90deg, #34D399, #60A5FA)" , opacity: 0.4 }} />
@@ -786,7 +786,7 @@ export function Monogram({ data: d, t: tProp }: TP) {
         <div className="flex-1 h-px bg-[#D4B86A] opacity-40" />
       </div>
       <p className="font-serif text-2xl font-light italic text-[#1C1917] mb-0.5 relative z-10">{P1(d, t)} &amp; {P2(d, t)}</p>
-      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4 relative z-10 opacity-70"{t.weddingInvitation}</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4 relative z-10 opacity-70">{t.weddingInvitation}</p>
       <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d, t)}</p>
       <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d, t)}</p>
       <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d, t)}</p>

@@ -2,35 +2,58 @@
 
 import type { InviteData } from "@/lib/types";
 
-type TP = { data: InviteData };
+export interface TemplateT {
+  weddingInvitation: string;
+  partnerOnePlaceholder: string;
+  partnerTwoPlaceholder: string;
+  datePlaceholder: string;
+  venuePlaceholder: string;
+  locationPlaceholder: string;
+  togetherForever: string;
+  requestPresence: string;
+}
 
-const P1 = (d: InviteData) => d.partner1 || "Partner One";
-const P2 = (d: InviteData) => d.partner2 || "Partner Two";
-const DATE = (d: InviteData) => d.date || "Day · Month · Year";
-const VENUE = (d: InviteData) => d.venue || "Venue";
-const LOC = (d: InviteData) => d.location || "City, Country";
+const DEFAULT_T: TemplateT = {
+  weddingInvitation: t.weddingInvitation,
+  partnerOnePlaceholder: "Partner One",
+  partnerTwoPlaceholder: "Partner Two",
+  datePlaceholder: "Day, Month Date, Year",
+  venuePlaceholder: "The Venue Name",
+  locationPlaceholder: "City, Country",
+  togetherForever: "Together Forever",
+  requestPresence: "Request the honour of your presence",
+};
+
+type TP = { data: InviteData; t?: TemplateT };
+
+const P1 = (d: InviteData, t: TemplateT) => d.partner1 || t.partnerOnePlaceholder;
+const P2 = (d: InviteData, t: TemplateT) => d.partner2 || t.partnerTwoPlaceholder;
+const DATE = (d: InviteData, t: TemplateT) => d.date || t.datePlaceholder;
+const VENUE = (d: InviteData, t: TemplateT) => d.venue || t.venuePlaceholder;
+const LOC = (d: InviteData, t: TemplateT) => d.location || t.locationPlaceholder;
 
 // ── 1. Élégant ─────────────────────────────────────────────────────────────
-export function Elegant({ data: d }: TP) {
+export function Elegant({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full bg-white flex flex-col items-center justify-center px-10 py-10 text-center">
       <div className="flex items-center gap-3 w-full mb-7">
         <div className="flex-1 h-px bg-[#D4B86A]" />
-        <span className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans font-light">Wedding Invitation</span>
+        <span className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans font-light"{t.weddingInvitation}</span>
         <div className="flex-1 h-px bg-[#D4B86A]" />
       </div>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
       <p className="text-[#B8960C] tracking-widest text-xl mb-0.5">&amp;</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-7">{P2(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-7">{P2(d, t)}</h1>
       <div className="flex items-center gap-3 w-full mb-7">
         <div className="flex-1 h-px bg-[#D4B86A]" />
         <span className="text-[#B8960C] text-xs">✦</span>
         <div className="flex-1 h-px bg-[#D4B86A]" />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-5">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-1">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-6">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-1">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-6">{LOC(d, t)}</p>
       {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-5">&ldquo;{d.message}&rdquo;</p>}
       {d.rsvp_email && (
         <div className="border border-[#D4B86A] px-5 py-2 mt-1">
@@ -43,7 +66,8 @@ export function Elegant({ data: d }: TP) {
 }
 
 // ── 2. Jardin ──────────────────────────────────────────────────────────────
-export function Jardin({ data: d }: TP) {
+export function Jardin({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full bg-white flex flex-col items-center justify-center px-10 py-10 text-center relative">
       {[["top-4 left-4", ""], ["top-4 right-4", "scaleX(-1)"], ["bottom-4 left-4", "scaleY(-1)"], ["bottom-4 right-4", "scale(-1)"]].map(([pos, tf]) => (
@@ -55,17 +79,17 @@ export function Jardin({ data: d }: TP) {
       <div className="flex items-center gap-2 w-full mb-5">
         <div className="flex-1 h-px bg-[#D4B86A]" /><span className="text-[#B8960C]">✿</span><div className="flex-1 h-px bg-[#D4B86A]" />
       </div>
-      <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans font-light mb-5">Wedding Invitation</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d)}</h1>
+      <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans font-light mb-5"{t.weddingInvitation}</p>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
       <p className="text-[#B8960C] tracking-widest text-xl mb-0.5">&amp;</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d, t)}</h1>
       <div className="flex items-center gap-2 w-full mb-5">
         <div className="flex-1 h-px bg-[#D4B86A]" /><span className="text-[#B8960C]">✿</span><div className="flex-1 h-px bg-[#D4B86A]" />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-1">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-5">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-1">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-5">{LOC(d, t)}</p>
       {d.rsvp_email && (
         <div className="border border-[#D4B86A] px-5 py-2">
           <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">RSVP</p>
@@ -77,7 +101,8 @@ export function Jardin({ data: d }: TP) {
 }
 
 // ── 3. Lumière (Art Deco) ──────────────────────────────────────────────────
-export function Lumiere({ data: d }: TP) {
+export function Lumiere({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   const rays = Array.from({ length: 12 });
   return (
     <div className="w-full h-full flex flex-col items-center justify-center px-8 py-10 text-center relative" style={{ background: "#FDFAF4" }}>
@@ -100,26 +125,27 @@ export function Lumiere({ data: d }: TP) {
         <circle cx="40" cy="40" r="4" fill="none" stroke="#B8960C" strokeWidth="0.8" />
         <circle cx="40" cy="40" r="1.5" fill="#B8960C" />
       </svg>
-      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4">Wedding Invitation</p>
-      <h1 className="font-serif text-3xl font-light tracking-wider text-[#1C1917] mb-0.5">{P1(d)}</h1>
+      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4"{t.weddingInvitation}</p>
+      <h1 className="font-serif text-3xl font-light tracking-wider text-[#1C1917] mb-0.5">{P1(d, t)}</h1>
       <p className="text-[#B8960C] tracking-[0.4em] text-sm font-sans font-light mb-0.5">— &amp; —</p>
-      <h1 className="font-serif text-3xl font-light tracking-wider text-[#1C1917] mb-6">{P2(d)}</h1>
+      <h1 className="font-serif text-3xl font-light tracking-wider text-[#1C1917] mb-6">{P2(d, t)}</h1>
       {/* Diamond rule */}
       <div className="flex items-center gap-2 w-full mb-5">
         <div className="flex-1 h-px bg-[#D4B86A] opacity-60" />
         <svg width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" fill="#B8960C" transform="rotate(45 6 6)" /></svg>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-60" />
       </div>
-      <p className="text-[11px] tracking-[0.25em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.25em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{d.time}</p>}
-      <p className="font-serif text-base text-[#1C1917] mb-0.5">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans">{LOC(d)}</p>
+      <p className="font-serif text-base text-[#1C1917] mb-0.5">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans">{LOC(d, t)}</p>
     </div>
   );
 }
 
 // ── 4. Nocturne (Dark Romance) ─────────────────────────────────────────────
-export function Nocturne({ data: d }: TP) {
+export function Nocturne({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full flex flex-col items-center justify-center px-10 py-10 text-center relative" style={{ background: "#1C1917" }}>
       {/* Moon */}
@@ -130,21 +156,21 @@ export function Nocturne({ data: d }: TP) {
       </svg>
       <div className="flex items-center gap-3 w-full mb-5">
         <div className="flex-1 h-px bg-[#D4B86A] opacity-30" />
-        <span className="text-[9px] tracking-[0.3em] uppercase text-[#D4B86A] font-sans font-light opacity-70">Wedding Invitation</span>
+        <span className="text-[9px] tracking-[0.3em] uppercase text-[#D4B86A] font-sans font-light opacity-70"{t.weddingInvitation}</span>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-30" />
       </div>
-      <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5" style={{ color: "#F5F0E8" }}>{P1(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5" style={{ color: "#F5F0E8" }}>{P1(d, t)}</h1>
       <p className="text-[#D4B86A] tracking-widest text-xl mb-0.5 opacity-80">&amp;</p>
-      <h1 className="font-serif text-4xl font-light italic leading-tight mb-6" style={{ color: "#F5F0E8" }}>{P2(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic leading-tight mb-6" style={{ color: "#F5F0E8" }}>{P2(d, t)}</h1>
       <div className="flex items-center gap-3 w-full mb-6">
         <div className="flex-1 h-px bg-[#D4B86A] opacity-30" />
         <span className="text-[#D4B86A] text-xs opacity-60">✦</span>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-30" />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#C8B99A" }}>{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#C8B99A" }}>{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider font-sans font-light mb-4" style={{ color: "#8A7A6A" }}>{d.time}</p>}
-      <p className="font-serif italic text-base mb-1" style={{ color: "#C8B99A" }}>{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider font-sans font-light" style={{ color: "#8A7A6A" }}>{LOC(d)}</p>
+      <p className="font-serif italic text-base mb-1" style={{ color: "#C8B99A" }}>{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider font-sans font-light" style={{ color: "#8A7A6A" }}>{LOC(d, t)}</p>
       {d.rsvp_email && (
         <div className="mt-5 border px-5 py-2" style={{ borderColor: "#D4B86A33" }}>
           <p className="text-[9px] tracking-[0.3em] uppercase text-[#D4B86A] font-sans mb-0.5 opacity-70">RSVP</p>
@@ -156,7 +182,8 @@ export function Nocturne({ data: d }: TP) {
 }
 
 // ── 5. Bloom (Floral Wreath) ───────────────────────────────────────────────
-export function Bloom({ data: d }: TP) {
+export function Bloom({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   const petals = Array.from({ length: 18 });
   return (
     <div className="w-full h-full bg-white flex flex-col items-center justify-center px-6 py-8 text-center relative">
@@ -180,9 +207,9 @@ export function Bloom({ data: d }: TP) {
         {/* Content inside wreath */}
         <div className="relative z-10 flex flex-col items-center justify-center w-36 h-36">
           <p className="text-[8px] tracking-[0.25em] uppercase text-[#B8960C] font-sans font-light mb-2">Together</p>
-          <h1 className="font-serif text-xl font-light italic text-[#1C1917] leading-tight">{P1(d)}</h1>
+          <h1 className="font-serif text-xl font-light italic text-[#1C1917] leading-tight">{P1(d, t)}</h1>
           <p className="text-[#B8960C] tracking-widest text-base">&amp;</p>
-          <h1 className="font-serif text-xl font-light italic text-[#1C1917] leading-tight">{P2(d)}</h1>
+          <h1 className="font-serif text-xl font-light italic text-[#1C1917] leading-tight">{P2(d, t)}</h1>
         </div>
       </div>
       <div className="flex items-center gap-3 w-full mb-4">
@@ -190,10 +217,10 @@ export function Bloom({ data: d }: TP) {
         <span className="text-[#B8960C] opacity-60 text-xs">✿</span>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-40" />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-1">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-1">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{LOC(d, t)}</p>
       {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-4">&ldquo;{d.message}&rdquo;</p>}
       {d.rsvp_email && (
         <div className="border border-[#D4B86A] px-4 py-1.5">
@@ -206,7 +233,8 @@ export function Bloom({ data: d }: TP) {
 }
 
 // ── 6. Gatsby (Art Deco 1920s) ─────────────────────────────────────────────
-export function Gatsby({ data: d }: TP) {
+export function Gatsby({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full flex flex-col items-center justify-center px-8 py-8 text-center relative" style={{ background: "#FDFAF4" }}>
       {/* Layered border */}
@@ -229,22 +257,22 @@ export function Gatsby({ data: d }: TP) {
         <path d="M5 35 A30 30 0 0 1 65 35" fill="none" stroke="#B8960C" strokeWidth="0.8" opacity="0.5" />
       </svg>
       <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-3">An Invitation</p>
-      <h1 className="font-serif text-3xl font-light tracking-widest text-[#1C1917] mb-0.5">{P1(d)}</h1>
+      <h1 className="font-serif text-3xl font-light tracking-widest text-[#1C1917] mb-0.5">{P1(d, t)}</h1>
       <div className="flex items-center gap-3 w-full my-2">
         <div className="flex-1 h-px bg-[#D4B86A] opacity-50" />
         <span className="text-[10px] tracking-[0.3em] text-[#B8960C] font-sans">&amp;</span>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-50" />
       </div>
-      <h1 className="font-serif text-3xl font-light tracking-widest text-[#1C1917] mb-5">{P2(d)}</h1>
+      <h1 className="font-serif text-3xl font-light tracking-widest text-[#1C1917] mb-5">{P2(d, t)}</h1>
       <div className="flex items-center gap-2 w-full mb-4">
         <div className="flex-1 h-px bg-[#D4B86A] opacity-40" />
         <svg width="10" height="10" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" fill="#B8960C" opacity="0.6" transform="rotate(45 5 5)" /></svg>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-40" />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
       {/* Fan bottom ornament */}
       <svg width="70" height="35" viewBox="0 0 70 35" className="mt-3" style={{ transform: "scaleY(-1)" }}>
         {Array.from({ length: 7 }).map((_, i) => {
@@ -259,7 +287,8 @@ export function Gatsby({ data: d }: TP) {
 }
 
 // ── 7. Nordic (Scandinavian Minimal) ──────────────────────────────────────
-export function Nordic({ data: d }: TP) {
+export function Nordic({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full bg-white flex flex-col items-center justify-center px-12 py-10 text-center relative">
       <div className="absolute top-10 left-0 right-0 flex items-center px-12">
@@ -269,18 +298,19 @@ export function Nordic({ data: d }: TP) {
         <div className="flex-1 h-px bg-[#1C1917] opacity-10" />
       </div>
       <p className="text-[8px] tracking-[0.5em] uppercase text-[#6B6359] font-sans font-light mb-12 opacity-60">Wedding</p>
-      <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-tight mb-1">{P1(d)}</h1>
+      <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-tight mb-1">{P1(d, t)}</h1>
       <p className="font-sans text-sm font-light text-[#6B6359] tracking-[0.4em] my-2 opacity-50">&amp;</p>
-      <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-tight mb-12">{P2(d)}</h1>
+      <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-tight mb-12">{P2(d, t)}</h1>
       <div className="h-px w-8 bg-[#B8960C] mb-6 opacity-60" />
-      <p className="text-[10px] tracking-[0.3em] uppercase text-[#6B6359] font-sans font-light mb-1 opacity-70">{DATE(d)}</p>
-      <p className="text-[10px] tracking-[0.2em] text-[#6B6359] font-sans font-light opacity-50">{VENUE(d)} · {LOC(d)}</p>
+      <p className="text-[10px] tracking-[0.3em] uppercase text-[#6B6359] font-sans font-light mb-1 opacity-70">{DATE(d, t)}</p>
+      <p className="text-[10px] tracking-[0.2em] text-[#6B6359] font-sans font-light opacity-50">{VENUE(d, t)} · {LOC(d, t)}</p>
     </div>
   );
 }
 
 // ── 8. Sakura (Japanese Blossom) ───────────────────────────────────────────
-export function Sakura({ data: d }: TP) {
+export function Sakura({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full bg-white flex flex-col items-center justify-center py-10 text-center relative overflow-hidden">
       {/* Branch left */}
@@ -300,24 +330,24 @@ export function Sakura({ data: d }: TP) {
         ))}
       </svg>
       <div className="pl-10 pr-6 w-full">
-        <p className="text-[9px] tracking-[0.35em] uppercase font-sans font-light mb-5" style={{ color: "#FB7185" }}>Wedding Invitation</p>
+        <p className="text-[9px] tracking-[0.35em] uppercase font-sans font-light mb-5" style={{ color: "#FB7185" }}{t.weddingInvitation}</p>
         <div className="flex items-center gap-2 mb-5 justify-center px-6">
           <div className="flex-1 h-px" style={{ background: "#FDA4AF", opacity: 0.5 }} />
           <span style={{ color: "#FDA4AF" }}>✿</span>
           <div className="flex-1 h-px" style={{ background: "#FDA4AF", opacity: 0.5 }} />
         </div>
-        <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d)}</h1>
+        <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
         <p className="tracking-widest text-xl mb-0.5" style={{ color: "#FB7185" }}>&amp;</p>
-        <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d)}</h1>
+        <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d, t)}</h1>
         <div className="flex items-center gap-2 mb-5 justify-center px-6">
           <div className="flex-1 h-px" style={{ background: "#FDA4AF", opacity: 0.5 }} />
           <span style={{ color: "#FDA4AF" }}>✿</span>
           <div className="flex-1 h-px" style={{ background: "#FDA4AF", opacity: 0.5 }} />
         </div>
-        <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d)}</p>
+        <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
         {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{d.time}</p>}
-        <p className="font-serif italic text-[#1C1917] text-base mb-1">{VENUE(d)}</p>
-        <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d)}</p>
+        <p className="font-serif italic text-[#1C1917] text-base mb-1">{VENUE(d, t)}</p>
+        <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
         {d.rsvp_email && (
           <div className="mt-4 border px-4 py-1.5 mx-auto inline-block" style={{ borderColor: "#FDA4AF88" }}>
             <p className="text-[9px] tracking-[0.3em] uppercase font-sans mb-0.5" style={{ color: "#FB7185" }}>RSVP</p>
@@ -330,7 +360,8 @@ export function Sakura({ data: d }: TP) {
 }
 
 // ── 9. Riviera (Mediterranean) ─────────────────────────────────────────────
-export function Riviera({ data: d }: TP) {
+export function Riviera({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full flex flex-col items-center justify-center px-8 py-8 text-center relative overflow-hidden" style={{ background: "#F8FAFF" }}>
       {/* Arch top */}
@@ -345,25 +376,26 @@ export function Riviera({ data: d }: TP) {
       {Array.from({ length: 8 }).map((_, i) => (
         <div key={`r${i}`} className="absolute right-4" style={{ top: `${12 + i * 10}%`, width: 4, height: 4, borderRadius: "50%", background: "#1E3A8A", opacity: 0.15 }} />
       ))}
-      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-4 mt-10" style={{ color: "#1E3A8A", opacity: 0.7 }}>Wedding Invitation</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d)}</h1>
+      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-4 mt-10" style={{ color: "#1E3A8A", opacity: 0.7 }}{t.weddingInvitation}</p>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
       <p className="tracking-widest text-xl mb-0.5" style={{ color: "#1E3A8A" }}>&amp;</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d, t)}</h1>
       <div className="flex items-center gap-3 w-full mb-5">
         <div className="flex-1 h-px" style={{ background: "#1E3A8A", opacity: 0.2 }} />
         <svg width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" fill="none" stroke="#1E3A8A" strokeWidth="0.8" transform="rotate(45 6 6)" opacity="0.5" /></svg>
         <div className="flex-1 h-px" style={{ background: "#1E3A8A", opacity: 0.2 }} />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
     </div>
   );
 }
 
 // ── 10. Versailles (Baroque Ornate) ───────────────────────────────────────
-export function Versailles({ data: d }: TP) {
+export function Versailles({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   const Scroll = ({ pos, transform }: { pos: string; transform: string }) => (
     <svg className={`absolute ${pos} w-14 h-14`} viewBox="0 0 56 56" fill="none">
       <path d="M8 8 C8 8 20 8 28 14 C36 20 36 28 28 28 C20 28 14 22 14 16 C14 10 20 8 24 12" stroke="#B8960C" strokeWidth="0.8" opacity="0.5" strokeLinecap="round" fill="none" transform={transform} />
@@ -383,9 +415,9 @@ export function Versailles({ data: d }: TP) {
       <p className="text-[8px] tracking-[0.3em] uppercase text-[#6B6359] font-sans font-light mb-5 opacity-70">
         request the honour of your presence
       </p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
       <p className="text-[#B8960C] tracking-widest text-xl mb-0.5">&amp;</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d, t)}</h1>
       {/* Baroque rule */}
       <svg width="160" height="12" viewBox="0 0 160 12" className="mb-5">
         <line x1="0" y1="6" x2="160" y2="6" stroke="#D4B86A" strokeWidth="0.5" opacity="0.5" />
@@ -393,16 +425,17 @@ export function Versailles({ data: d }: TP) {
         <line x1="0" y1="8" x2="160" y2="8" stroke="#D4B86A" strokeWidth="0.3" opacity="0.3" />
         <rect x="74" y="3" width="12" height="6" fill="#B8960C" opacity="0.4" transform="rotate(45 80 6)" />
       </svg>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
     </div>
   );
 }
 
 // ── 11. Celestial (Stars) ──────────────────────────────────────────────────
-export function Celestial({ data: d }: TP) {
+export function Celestial({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   const stars = [{ x: 20, y: 15, r: 1.5 }, { x: 180, y: 20, r: 1 }, { x: 210, y: 60, r: 1.5 }, { x: 30, y: 80, r: 1 }, { x: 190, y: 130, r: 1.2 }, { x: 15, y: 160, r: 1 }, { x: 205, y: 210, r: 1.5 }, { x: 25, y: 240, r: 1.2 }, { x: 195, y: 280, r: 1 }, { x: 10, y: 320, r: 1.5 }, { x: 200, y: 350, r: 1 }, { x: 35, y: 370, r: 1.2 }];
   return (
     <div className="w-full h-full flex flex-col items-center justify-center px-10 py-10 text-center relative overflow-hidden" style={{ background: "#0F172A" }}>
@@ -424,24 +457,25 @@ export function Celestial({ data: d }: TP) {
         <span className="text-[9px] tracking-[0.3em] uppercase text-[#D4B86A] font-sans font-light opacity-60">Under the Stars</span>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-20" />
       </div>
-      <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5 relative z-10" style={{ color: "#F5ECD7" }}>{P1(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5 relative z-10" style={{ color: "#F5ECD7" }}>{P1(d, t)}</h1>
       <p className="text-[#D4B86A] tracking-widest text-xl mb-0.5 opacity-70 relative z-10">&amp;</p>
-      <h1 className="font-serif text-4xl font-light italic leading-tight mb-6 relative z-10" style={{ color: "#F5ECD7" }}>{P2(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic leading-tight mb-6 relative z-10" style={{ color: "#F5ECD7" }}>{P2(d, t)}</h1>
       <div className="flex items-center gap-3 w-full mb-5 relative z-10">
         <div className="flex-1 h-px bg-[#D4B86A] opacity-20" />
         <span className="text-[#D4B86A] text-xs opacity-40">✦</span>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-20" />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase font-sans font-light mb-1 relative z-10" style={{ color: "#C8B99A" }}>{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase font-sans font-light mb-1 relative z-10" style={{ color: "#C8B99A" }}>{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider font-sans font-light mb-4 relative z-10" style={{ color: "#8A7A6A" }}>{d.time}</p>}
-      <p className="font-serif italic text-base mb-0.5 relative z-10" style={{ color: "#C8B99A" }}>{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider font-sans font-light relative z-10" style={{ color: "#8A7A6A" }}>{LOC(d)}</p>
+      <p className="font-serif italic text-base mb-0.5 relative z-10" style={{ color: "#C8B99A" }}>{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider font-sans font-light relative z-10" style={{ color: "#8A7A6A" }}>{LOC(d, t)}</p>
     </div>
   );
 }
 
 // ── 12. Tuscany (Italian Rustic) ──────────────────────────────────────────
-export function Tuscany({ data: d }: TP) {
+export function Tuscany({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full flex flex-col items-center justify-center px-10 py-8 text-center relative" style={{ background: "#FEFBF5" }}>
       {/* Olive branch top */}
@@ -453,19 +487,19 @@ export function Tuscany({ data: d }: TP) {
           </g>
         ))}
       </svg>
-      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-4" style={{ color: "#92400E", opacity: 0.7 }}>Wedding Invitation</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d)}</h1>
+      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-4" style={{ color: "#92400E", opacity: 0.7 }}{t.weddingInvitation}</p>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
       <p className="tracking-widest text-xl mb-0.5" style={{ color: "#92400E" }}>&amp;</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5">{P2(d, t)}</h1>
       <div className="flex items-center gap-3 w-full mb-5">
         <div className="flex-1 h-px" style={{ background: "#92400E", opacity: 0.2 }} />
         <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="3" fill="none" stroke="#92400E" strokeWidth="0.8" opacity="0.5" /></svg>
         <div className="flex-1 h-px" style={{ background: "#92400E", opacity: 0.2 }} />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{LOC(d, t)}</p>
       {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-4">&ldquo;{d.message}&rdquo;</p>}
       {/* Olive branch bottom */}
       <svg width="180" height="40" viewBox="0 0 180 40" style={{ transform: "scaleY(-1)" }}>
@@ -479,12 +513,13 @@ export function Tuscany({ data: d }: TP) {
 }
 
 // ── 13. Noir (Bold Typography) ─────────────────────────────────────────────
-export function Noir({ data: d }: TP) {
+export function Noir({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full flex flex-col items-center justify-center text-center relative" style={{ background: "#0A0A0A" }}>
       <div className="px-8 w-full">
-        <p className="text-[8px] tracking-[0.5em] uppercase font-sans font-light mb-6" style={{ color: "#6B6359" }}>Wedding Invitation</p>
-        <h1 className="font-serif font-light italic leading-none mb-0" style={{ fontSize: "clamp(2.5rem,10vw,3.5rem)", color: "#F5F0E8" }}>{P1(d)}</h1>
+        <p className="text-[8px] tracking-[0.5em] uppercase font-sans font-light mb-6" style={{ color: "#6B6359" }}{t.weddingInvitation}</p>
+        <h1 className="font-serif font-light italic leading-none mb-0" style={{ fontSize: "clamp(2.5rem,10vw,3.5rem)", color: "#F5F0E8" }}>{P1(d, t)}</h1>
         <div className="flex items-center gap-0 my-3">
           <div className="flex-1 h-px" style={{ background: "#B8960C" }} />
         </div>
@@ -492,18 +527,19 @@ export function Noir({ data: d }: TP) {
         <div className="flex items-center gap-0 my-3">
           <div className="flex-1 h-px" style={{ background: "#B8960C" }} />
         </div>
-        <h1 className="font-serif font-light italic leading-none mb-8" style={{ fontSize: "clamp(2.5rem,10vw,3.5rem)", color: "#F5F0E8" }}>{P2(d)}</h1>
-        <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-1" style={{ color: "#4A4A4A" }}>{DATE(d)}</p>
+        <h1 className="font-serif font-light italic leading-none mb-8" style={{ fontSize: "clamp(2.5rem,10vw,3.5rem)", color: "#F5F0E8" }}>{P2(d, t)}</h1>
+        <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-1" style={{ color: "#4A4A4A" }}>{DATE(d, t)}</p>
         {d.time && <p className="text-[9px] tracking-wider font-sans font-light mb-2" style={{ color: "#3A3A3A" }}>{d.time}</p>}
-        <p className="font-serif italic text-sm mb-0.5" style={{ color: "#5A5A5A" }}>{VENUE(d)}</p>
-        <p className="text-[9px] tracking-wider font-sans font-light" style={{ color: "#3A3A3A" }}>{LOC(d)}</p>
+        <p className="font-serif italic text-sm mb-0.5" style={{ color: "#5A5A5A" }}>{VENUE(d, t)}</p>
+        <p className="text-[9px] tracking-wider font-sans font-light" style={{ color: "#3A3A3A" }}>{LOC(d, t)}</p>
       </div>
     </div>
   );
 }
 
 // ── 14. Moderne (Swiss Grid) ───────────────────────────────────────────────
-export function Moderne({ data: d }: TP) {
+export function Moderne({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full bg-white flex flex-col justify-center relative">
       {/* Thick gold left bar */}
@@ -513,24 +549,25 @@ export function Moderne({ data: d }: TP) {
       <div className="absolute bottom-8 left-12 right-8 h-px bg-[#1C1917] opacity-10" />
       <div className="pl-14 pr-8">
         <p className="text-[8px] tracking-[0.5em] uppercase text-[#B8960C] font-sans font-light mb-6">Wedding</p>
-        <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-none mb-0">{P1(d)}</h1>
+        <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-none mb-0">{P1(d, t)}</h1>
         <div className="flex items-center gap-3 my-3">
           <span className="font-sans text-3xl font-light text-[#B8960C]">&amp;</span>
           <div className="flex-1 h-px bg-[#D4B86A] opacity-40" />
         </div>
-        <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-none mb-8">{P2(d)}</h1>
+        <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-none mb-8">{P2(d, t)}</h1>
         <div className="h-px w-12 bg-[#B8960C] mb-6 opacity-60" />
-        <p className="text-[10px] tracking-[0.3em] uppercase text-[#1C1917] font-sans font-light mb-1 opacity-70">{DATE(d)}</p>
+        <p className="text-[10px] tracking-[0.3em] uppercase text-[#1C1917] font-sans font-light mb-1 opacity-70">{DATE(d, t)}</p>
         {d.time && <p className="text-[10px] tracking-wider text-[#6B6359] font-sans font-light mb-2">{d.time}</p>}
-        <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d)}</p>
-        <p className="text-[10px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d)}</p>
+        <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
+        <p className="text-[10px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
       </div>
     </div>
   );
 }
 
 // ── 15. Parchment (Vintage) ────────────────────────────────────────────────
-export function Parchment({ data: d }: TP) {
+export function Parchment({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full flex flex-col items-center justify-center px-10 py-8 text-center relative" style={{ background: "#F5ECD7" }}>
       {/* Worn inner border (dashed) */}
@@ -551,24 +588,25 @@ export function Parchment({ data: d }: TP) {
         <span style={{ color: "#92400E", opacity: 0.5, fontSize: 10 }}>✦</span>
         <div className="flex-1 h-px" style={{ background: "#92400E", opacity: 0.3 }} />
       </div>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5">{P1(d, t)}</h1>
       <p className="tracking-widest text-xl mb-0.5" style={{ color: "#92400E" }}>&amp;</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-4">{P2(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-4">{P2(d, t)}</h1>
       <div className="flex items-center gap-3 w-full mb-4">
         <div className="flex-1 h-px" style={{ background: "#92400E", opacity: 0.3 }} />
         <span style={{ color: "#92400E", opacity: 0.5, fontSize: 10 }}>✦</span>
         <div className="flex-1 h-px" style={{ background: "#92400E", opacity: 0.3 }} />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
     </div>
   );
 }
 
 // ── 16. Eden (Lush Botanical Frame) ───────────────────────────────────────
-export function Eden({ data: d }: TP) {
+export function Eden({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   const leaves = [
     { x: 5, y: 20, r: -30, s: 1 }, { x: 0, y: 60, r: 15, s: 0.8 }, { x: 8, y: 100, r: -20, s: 1.1 },
     { x: 2, y: 140, r: 25, s: 0.9 }, { x: 10, y: 180, r: -15, s: 1 }, { x: 0, y: 220, r: 20, s: 0.85 },
@@ -598,30 +636,31 @@ export function Eden({ data: d }: TP) {
           </g>
         ))}
       </svg>
-      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4 relative z-10 opacity-80">Wedding Invitation</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4 relative z-10 opacity-80"{t.weddingInvitation}</p>
       <div className="flex items-center gap-2 w-full mb-4 relative z-10">
         <div className="flex-1 h-px bg-[#B8960C] opacity-20" />
         <span className="text-[#B8960C] opacity-50 text-xs">✿</span>
         <div className="flex-1 h-px bg-[#B8960C] opacity-20" />
       </div>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5 relative z-10">{P1(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5 relative z-10">{P1(d, t)}</h1>
       <p className="text-[#B8960C] tracking-widest text-xl mb-0.5 relative z-10">&amp;</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-4 relative z-10">{P2(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-4 relative z-10">{P2(d, t)}</h1>
       <div className="flex items-center gap-2 w-full mb-4 relative z-10">
         <div className="flex-1 h-px bg-[#B8960C] opacity-20" />
         <span className="text-[#B8960C] opacity-50 text-xs">✿</span>
         <div className="flex-1 h-px bg-[#B8960C] opacity-20" />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d, t)}</p>
     </div>
   );
 }
 
 // ── 17. Venezia (Gothic Arch) ──────────────────────────────────────────────
-export function Venezia({ data: d }: TP) {
+export function Venezia({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full flex flex-col items-center justify-center px-8 py-6 text-center relative" style={{ background: "#FDFBF8" }}>
       {/* Gothic arch SVG frame */}
@@ -637,30 +676,31 @@ export function Venezia({ data: d }: TP) {
         <path d="M20 160 C15 140 18 120 22 100" fill="none" stroke="#D4B86A" strokeWidth="0.4" opacity="0.3" />
         <path d="M220 160 C225 140 222 120 218 100" fill="none" stroke="#D4B86A" strokeWidth="0.4" opacity="0.3" />
       </svg>
-      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-3 mt-16 relative z-10 opacity-80">Wedding Invitation</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-3 mt-16 relative z-10 opacity-80"{t.weddingInvitation}</p>
       <div className="flex items-center gap-3 w-full mb-4 relative z-10 px-6">
         <div className="flex-1 h-px bg-[#D4B86A] opacity-40" />
         <svg width="8" height="8" viewBox="0 0 8 8"><rect x="1" y="1" width="6" height="6" fill="#B8960C" opacity="0.5" transform="rotate(45 4 4)" /></svg>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-40" />
       </div>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5 relative z-10">{P1(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5 relative z-10">{P1(d, t)}</h1>
       <p className="text-[#B8960C] tracking-widest text-xl mb-0.5 relative z-10">&amp;</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-4 relative z-10">{P2(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-4 relative z-10">{P2(d, t)}</h1>
       <div className="flex items-center gap-3 w-full mb-4 relative z-10 px-6">
         <div className="flex-1 h-px bg-[#D4B86A] opacity-40" />
         <svg width="8" height="8" viewBox="0 0 8 8"><rect x="1" y="1" width="6" height="6" fill="#B8960C" opacity="0.5" transform="rotate(45 4 4)" /></svg>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-40" />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d, t)}</p>
     </div>
   );
 }
 
 // ── 18. Côte (French Riviera) ──────────────────────────────────────────────
-export function Cote({ data: d }: TP) {
+export function Cote({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full bg-white flex flex-col items-center justify-center px-10 py-10 text-center relative overflow-hidden">
       {/* Horizontal stripe bands */}
@@ -670,54 +710,56 @@ export function Cote({ data: d }: TP) {
       {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
         <div key={i} className="absolute left-0 right-0 h-px" style={{ bottom: `${10 + i * 5}%`, background: "#BFDBFE", opacity: i % 2 === 0 ? 0.5 : 0.25 }} />
       ))}
-      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-5 relative z-10" style={{ color: "#1D4ED8", opacity: 0.6 }}>Wedding Invitation</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-5 relative z-10" style={{ color: "#1D4ED8", opacity: 0.6 }}{t.weddingInvitation}</p>
       <div className="flex items-center gap-3 w-full mb-5 relative z-10">
         <div className="flex-1 h-px" style={{ background: "#93C5FD", opacity: 0.6 }} />
         <svg width="12" height="6" viewBox="0 0 12 6"><path d="M0 6 C2 0 10 0 12 6Z" fill="#93C5FD" opacity="0.5" /></svg>
         <div className="flex-1 h-px" style={{ background: "#93C5FD", opacity: 0.6 }} />
       </div>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5 relative z-10">{P1(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-0.5 relative z-10">{P1(d, t)}</h1>
       <p className="tracking-widest text-xl mb-0.5 relative z-10" style={{ color: "#3B82F6" }}>&amp;</p>
-      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5 relative z-10">{P2(d)}</h1>
+      <h1 className="font-serif text-4xl font-light italic text-[#1C1917] leading-tight mb-5 relative z-10">{P2(d, t)}</h1>
       <div className="flex items-center gap-3 w-full mb-5 relative z-10">
         <div className="flex-1 h-px" style={{ background: "#93C5FD", opacity: 0.6 }} />
         <svg width="12" height="6" viewBox="0 0 12 6"><path d="M0 6 C2 0 10 0 12 6Z" fill="#93C5FD" opacity="0.5" /></svg>
         <div className="flex-1 h-px" style={{ background: "#93C5FD", opacity: 0.6 }} />
       </div>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d, t)}</p>
     </div>
   );
 }
 
 // ── 19. Aurora (Northern Lights) ───────────────────────────────────────────
-export function Aurora({ data: d }: TP) {
+export function Aurora({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   return (
     <div className="w-full h-full bg-white flex flex-col items-center justify-center px-10 py-10 text-center relative overflow-hidden">
       {/* Aurora gradient bands */}
       <div className="absolute top-0 left-0 right-0 h-32 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(52,211,153,0.12) 0%, rgba(96,165,250,0.10) 40%, rgba(167,139,250,0.08) 70%, transparent 100%)" }} />
       <div className="absolute top-0 left-0 right-0 h-20 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(52,211,153,0.06) 0%, transparent 100%)" }} />
-      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-8 mt-8 relative z-10" style={{ color: "#059669", opacity: 0.7 }}>Wedding Invitation</p>
-      <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-tight mb-0 relative z-10">{P1(d)}</h1>
+      <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-8 mt-8 relative z-10" style={{ color: "#059669", opacity: 0.7 }}{t.weddingInvitation}</p>
+      <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-tight mb-0 relative z-10">{P1(d, t)}</h1>
       <div className="flex items-center gap-3 w-full my-3 relative z-10">
         <div className="flex-1 h-px" style={{ background: "linear-gradient(90deg, #34D399, #60A5FA)" , opacity: 0.4 }} />
         <span className="font-sans font-light tracking-widest" style={{ color: "#818CF8" }}>&amp;</span>
         <div className="flex-1 h-px" style={{ background: "linear-gradient(90deg, #60A5FA, #A78BFA)", opacity: 0.4 }} />
       </div>
-      <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-tight mb-8 relative z-10">{P2(d)}</h1>
+      <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-tight mb-8 relative z-10">{P2(d, t)}</h1>
       <div className="h-px w-10 mb-6 relative z-10" style={{ background: "linear-gradient(90deg, #34D399, #818CF8)" }} />
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d)}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{d.time}</p>}
-      <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d, t)}</p>
     </div>
   );
 }
 
 // ── 20. Monogram (Classic Initials) ───────────────────────────────────────
-export function Monogram({ data: d }: TP) {
+export function Monogram({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
   const i1 = (d.partner1 || "A")[0].toUpperCase();
   const i2 = (d.partner2 || "B")[0].toUpperCase();
   return (
@@ -743,11 +785,11 @@ export function Monogram({ data: d }: TP) {
         <span className="text-[#B8960C] text-xs">✦</span>
         <div className="flex-1 h-px bg-[#D4B86A] opacity-40" />
       </div>
-      <p className="font-serif text-2xl font-light italic text-[#1C1917] mb-0.5 relative z-10">{P1(d)} &amp; {P2(d)}</p>
-      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4 relative z-10 opacity-70">Wedding Invitation</p>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d)}</p>
-      <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d)}</p>
+      <p className="font-serif text-2xl font-light italic text-[#1C1917] mb-0.5 relative z-10">{P1(d, t)} &amp; {P2(d, t)}</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4 relative z-10 opacity-70"{t.weddingInvitation}</p>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d, t)}</p>
+      <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d, t)}</p>
     </div>
   );
 }

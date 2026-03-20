@@ -14,7 +14,7 @@ export interface TemplateT {
 }
 
 const DEFAULT_T: TemplateT = {
-  weddingInvitation: t.weddingInvitation,
+  weddingInvitation: "Wedding Invitation",
   partnerOnePlaceholder: "Partner One",
   partnerTwoPlaceholder: "Partner Two",
   datePlaceholder: "Day, Month Date, Year",

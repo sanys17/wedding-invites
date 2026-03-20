@@ -7,16 +7,15 @@ import type { InviteData } from "@/lib/types";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-
-const TEMPLATES = [
-  { id: "elegant-minimal", label: "Élégant", tag: "Minimalist" },
-  { id: "jardin", label: "Jardin", tag: "Botanical" },
-];
+import { TEMPLATE_REGISTRY } from "@/components/templates";
 
 function CustomizeContent() {
   const { t } = useLanguage();
   const searchParams = useSearchParams();
-  const initialTemplate = searchParams.get("template") === "jardin" ? "jardin" : "elegant-minimal";
+  const paramTemplate = searchParams.get("template") ?? "elegant-minimal";
+  const initialTemplate = TEMPLATE_REGISTRY.find((r) => r.id === paramTemplate)
+    ? paramTemplate
+    : "elegant-minimal";
 
   const INITIAL: InviteData = {
     partner1: "",
@@ -113,23 +112,42 @@ function CustomizeContent() {
             {/* Template switcher */}
             {step === "edit" && (
               <div className="mb-8">
-                <p className="text-xs tracking-ultra-wide uppercase text-muted font-light mb-3">Design</p>
-                <div className="flex gap-3">
-                  {TEMPLATES.map((tmpl) => (
-                    <button
-                      key={tmpl.id}
-                      onClick={() => update("template", tmpl.id)}
-                      className={`flex-1 py-3 px-4 text-xs tracking-widest uppercase border transition-all duration-200 cursor-pointer ${
-                        form.template === tmpl.id
-                          ? "border-gold bg-gold/5 text-gold"
-                          : "border-gold-light text-muted hover:border-gold hover:text-charcoal"
-                      }`}
-                    >
-                      <span className="font-serif text-base block">{tmpl.label}</span>
-                      <span className="font-light">{tmpl.tag}</span>
-                    </button>
-                  ))}
+                <p className="text-xs tracking-ultra-wide uppercase text-muted font-light mb-3">Choose a Design</p>
+                <div className="grid grid-cols-4 gap-2 max-h-56 overflow-y-auto pr-1">
+                  {TEMPLATE_REGISTRY.map((tmpl) => {
+                    const TemplateComp = tmpl.component;
+                    const previewData: InviteData = {
+                      partner1: "Emma", partner2: "James",
+                      date: "Sept 14, 2025", time: "4:00 PM",
+                      venue: "Grand Estate", location: "Florence",
+                      message: "", rsvp_email: "", template: tmpl.id,
+                    };
+                    return (
+                      <button
+                        key={tmpl.id}
+                        onClick={() => update("template", tmpl.id)}
+                        className={`relative border transition-all duration-200 cursor-pointer group ${
+                          form.template === tmpl.id
+                            ? "border-gold shadow-sm"
+                            : "border-gold-light hover:border-gold"
+                        }`}
+                        style={{ aspectRatio: "3/4" }}
+                        title={`${tmpl.name} — ${tmpl.tag}`}
+                      >
+                        <div className="absolute inset-0 overflow-hidden" style={{ transform: "scale(0.18)", transformOrigin: "top left", width: "556%", height: "556%" }}>
+                          <TemplateComp data={previewData} />
+                        </div>
+                        {form.template === tmpl.id && (
+                          <div className="absolute inset-0 border-2 border-gold pointer-events-none" />
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
+                <p className="text-[10px] text-muted font-light mt-1.5">
+                  Selected: <span className="text-gold font-normal">{TEMPLATE_REGISTRY.find(r => r.id === form.template)?.name}</span>
+                  {" — "}{TEMPLATE_REGISTRY.find(r => r.id === form.template)?.tag}
+                </p>
               </div>
             )}
 

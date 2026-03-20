@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useState, useEffect } from "react";
+import { TEMPLATE_REGISTRY } from "@/components/templates";
+import type { InviteData } from "@/lib/types";
 
 export default function Home() {
   const { t } = useLanguage();
@@ -23,29 +25,12 @@ export default function Home() {
     { step: "04", title: t.step4Title, desc: t.step4Desc },
   ];
 
-  const TEMPLATES = [
-    {
-      id: "elegant-minimal",
-      name: "Élégant",
-      tag: "Minimalist · Timeless",
-      available: true,
-      image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80&fit=crop",
-    },
-    {
-      id: "jardin",
-      name: "Jardin",
-      tag: "Botanical · Romantic",
-      available: true,
-      image: "https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&q=80&fit=crop",
-    },
-    {
-      id: "coming-soon-2",
-      name: "Aurora",
-      tag: "Modern · Bold",
-      available: false,
-      image: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=600&q=80&fit=crop",
-    },
-  ];
+  const PREVIEW_DATA: InviteData = {
+    partner1: "Emma", partner2: "James",
+    date: "September 14, 2025", time: "4:00 PM",
+    venue: "The Grand Estate", location: "Florence, Italy",
+    message: "", rsvp_email: "rsvp@example.com", template: "",
+  };
 
   const WHY_DIGITAL = [
     {
@@ -255,113 +240,37 @@ export default function Home() {
             <div className="h-px w-12 bg-gold-light" />
           </div>
           <h2 className="font-serif text-4xl text-center text-charcoal mb-3 font-light">{t.chooseYourStyle}</h2>
-          <p className="text-center text-muted font-light text-sm mb-16 max-w-sm mx-auto">
-            Two styles available now. Each crafted to feel personal and elegant.
+          <p className="text-center text-muted font-light text-sm mb-16 max-w-md mx-auto">
+            20 unique designs — from dark and dramatic to light and botanical. Every style is yours to customize.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {TEMPLATES.map((tmpl) => (
-              <div
-                key={tmpl.id}
-                className={`group relative border transition-all duration-500 ${
-                  tmpl.available
-                    ? "border-gold-light hover:border-gold hover:shadow-[0_8px_40px_rgba(184,150,12,0.12)] cursor-pointer"
-                    : "border-gray-100 opacity-40 cursor-not-allowed"
-                }`}
-              >
-                {/* Photo banner */}
-                <div className="relative h-40 overflow-hidden">
-                  <Image
-                    src={tmpl.image}
-                    alt={tmpl.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    sizes="33vw"
-                  />
-                  <div className="absolute inset-0 bg-charcoal/20" />
-                  {!tmpl.available && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-xs tracking-ultra-wide uppercase text-white font-light bg-charcoal/60 px-4 py-2">
-                        {t.comingSoon}
-                      </span>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {TEMPLATE_REGISTRY.map((tmpl) => {
+              const TemplateComp = tmpl.component;
+              const previewData = { ...PREVIEW_DATA, template: tmpl.id };
+              return (
+                <Link
+                  key={tmpl.id}
+                  href={`/customize?template=${tmpl.id}`}
+                  className="group block border border-gold-light hover:border-gold hover:shadow-[0_4px_24px_rgba(184,150,12,0.15)] transition-all duration-400 cursor-pointer"
+                >
+                  {/* Actual rendered template preview */}
+                  <div className="relative overflow-hidden bg-white" style={{ aspectRatio: "3/4" }}>
+                    <div className="absolute inset-0" style={{ transform: "scale(0.22)", transformOrigin: "top left", width: "455%", height: "455%" }}>
+                      <TemplateComp data={previewData} />
                     </div>
-                  )}
-                </div>
-
-                {/* Invitation preview */}
-                <div className="bg-white py-8 px-6 flex flex-col items-center justify-center text-center relative">
-                  {/* Corner ornaments */}
-                  <div className="absolute top-3 left-3 w-4 h-4 border-t border-l border-gold-light opacity-70" />
-                  <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-gold-light opacity-70" />
-                  <div className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-gold-light opacity-70" />
-                  <div className="absolute bottom-3 right-3 w-4 h-4 border-b border-r border-gold-light opacity-70" />
-
-                  {tmpl.id === "jardin" ? (
-                    /* Jardin botanical preview */
-                    <>
-                      {/* Leaf ornaments */}
-                      <svg className="absolute top-5 left-5 w-8 h-8 text-gold-light opacity-50" viewBox="0 0 40 40" fill="currentColor">
-                        <path d="M20 2 C10 10 5 20 10 32 C15 20 25 15 35 20 C25 10 20 2 20 2Z" />
-                      </svg>
-                      <svg className="absolute bottom-5 right-5 w-8 h-8 text-gold-light opacity-50" viewBox="0 0 40 40" fill="currentColor" style={{ transform: "rotate(180deg)" }}>
-                        <path d="M20 2 C10 10 5 20 10 32 C15 20 25 15 35 20 C25 10 20 2 20 2Z" />
-                      </svg>
-                      <div className="flex items-center gap-2 w-full mb-3">
-                        <div className="flex-1 h-px bg-gold-light" />
-                        <span className="text-gold opacity-60">✿</span>
-                        <div className="flex-1 h-px bg-gold-light" />
-                      </div>
-                      <p className="text-xs tracking-ultra-wide uppercase text-gold font-light mb-3">{t.sampleInvitation}</p>
-                      <h3 className="font-serif text-3xl text-charcoal italic font-light">Emma &amp; James</h3>
-                      <div className="flex items-center gap-2 w-full my-3">
-                        <div className="flex-1 h-px bg-gold-light" />
-                        <span className="text-gold opacity-60">✿</span>
-                        <div className="flex-1 h-px bg-gold-light" />
-                      </div>
-                      <p className="text-xs tracking-widest text-muted uppercase font-light">September 14, 2025</p>
-                      <p className="text-xs text-muted font-light mt-1">The Garden Estate · Florence</p>
-                    </>
-                  ) : (
-                    /* Élégant minimal preview */
-                    <>
-                      <div className="flex items-center gap-3 w-full mb-4">
-                        <div className="flex-1 h-px bg-gold-light" />
-                        <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">
-                          {tmpl.available ? t.sampleInvitation : t.comingSoon}
-                        </span>
-                        <div className="flex-1 h-px bg-gold-light" />
-                      </div>
-                      <h3 className="font-serif text-3xl text-charcoal italic font-light mb-1">Emma</h3>
-                      <p className="text-gold font-light tracking-widest mb-1">&amp;</p>
-                      <h3 className="font-serif text-3xl text-charcoal italic font-light mb-4">James</h3>
-                      <div className="flex items-center gap-3 w-full mb-3">
-                        <div className="flex-1 h-px bg-gold-light" />
-                        <span className="text-gold text-xs">✦</span>
-                        <div className="flex-1 h-px bg-gold-light" />
-                      </div>
-                      <p className="text-xs tracking-widest text-muted uppercase font-light">September 14, 2025</p>
-                      <p className="text-xs text-muted font-light mt-1">The Grand Estate · Florence</p>
-                    </>
-                  )}
-                </div>
-
-                <div className="p-5 border-t border-gold-light bg-cream">
-                  <div className="flex items-baseline justify-between mb-1">
-                    <p className="font-serif text-xl text-charcoal">{tmpl.name}</p>
-                    {tmpl.available && <span className="text-xs text-gold font-light tracking-widest">$15</span>}
                   </div>
-                  <p className="text-xs text-muted tracking-wider">{tmpl.tag}</p>
-                  {tmpl.available && (
-                    <Link
-                      href={`/customize?template=${tmpl.id}`}
-                      className="inline-block mt-4 text-xs tracking-widest uppercase text-gold border-b border-gold pb-px hover:text-gold-dark transition-colors cursor-pointer"
-                    >
-                      {t.customize}
-                    </Link>
-                  )}
-                </div>
-              </div>
-            ))}
+                  {/* Label */}
+                  <div className="p-3 bg-cream border-t border-gold-light">
+                    <div className="flex items-baseline justify-between">
+                      <p className="font-serif text-base text-charcoal">{tmpl.name}</p>
+                      <span className="text-[10px] text-gold font-light tracking-widest">$15</span>
+                    </div>
+                    <p className="text-[10px] text-muted tracking-wide mt-0.5 leading-tight">{tmpl.tag}</p>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

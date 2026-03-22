@@ -39,6 +39,7 @@ export async function POST(req: NextRequest) {
       message: meta.message,
       rsvp_email: meta.rsvp_email,
       template: meta.template,
+      language: meta.language ?? "en",
       customer_email: session.customer_email,
       paid: true,
       stripe_session_id: session.id,

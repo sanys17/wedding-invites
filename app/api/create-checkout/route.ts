@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
         message: invite.message ?? "",
         rsvp_email: invite.rsvp_email,
         template: invite.template,
+        language: invite.language ?? "en",
       },
       // only prefill email if it looks valid
       ...(invite.rsvp_email?.includes("@") ? { customer_email: invite.rsvp_email } : {}),

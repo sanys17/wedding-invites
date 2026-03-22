@@ -38,5 +38,6 @@ export default async function InvitePage({ params }: Props) {
 
   if (!data || error) notFound();
 
-  return <InvitePageClient inv={data as InviteRecord} />;
+  const inv = data as InviteRecord & { language?: string };
+  return <InvitePageClient inv={inv} initialLang={(inv.language as "en" | "cs" | "sk") ?? "en"} />;
 }

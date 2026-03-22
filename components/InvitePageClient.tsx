@@ -2,9 +2,11 @@
 
 import type { InviteRecord } from "@/lib/types";
 import { useLanguage } from "@/context/LanguageContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import type { Lang } from "@/lib/translations";
 
-export default function InvitePageClient({ inv }: { inv: InviteRecord }) {
+function InviteContent({ inv }: { inv: InviteRecord }) {
   const { t } = useLanguage();
 
   return (
@@ -120,5 +122,19 @@ export default function InvitePageClient({ inv }: { inv: InviteRecord }) {
         <span className="font-serif italic text-muted/60">Forevermore</span>
       </p>
     </main>
+  );
+}
+
+export default function InvitePageClient({
+  inv,
+  initialLang = "en",
+}: {
+  inv: InviteRecord;
+  initialLang?: Lang;
+}) {
+  return (
+    <LanguageProvider initialLang={initialLang}>
+      <InviteContent inv={inv} />
+    </LanguageProvider>
   );
 }

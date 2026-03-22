@@ -9,6 +9,7 @@ export interface InviteData {
   message: string;     // personal note from the couple
   rsvp_email: string;  // where guests send RSVP
   template: string;    // e.g. "elegant-minimal"
+  language?: string;   // e.g. "en", "cs", "sk"
 }
 
 export interface InviteRecord extends InviteData {

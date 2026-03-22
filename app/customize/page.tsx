@@ -10,7 +10,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { TEMPLATE_REGISTRY } from "@/components/templates";
 
 function CustomizeContent() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const searchParams = useSearchParams();
   const paramTemplate = searchParams.get("template") ?? "elegant-minimal";
   const initialTemplate = TEMPLATE_REGISTRY.find((r) => r.id === paramTemplate)
@@ -63,7 +63,7 @@ function CustomizeContent() {
       const res = await fetch("/api/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ invite: form }),
+        body: JSON.stringify({ invite: { ...form, language: lang } }),
       });
       const data = await res.json();
       if (data.url) {

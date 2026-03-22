@@ -62,7 +62,7 @@ export default function Home() {
     },
   ];
 
-  const PRICING_INCLUDES = t.pricingIncludes;
+  const PRICING_INCLUDES = [t.pricingItem1, t.pricingItem2, t.pricingItem3, t.pricingItem4, t.pricingItem5];
 
   return (
     <main className="min-h-screen bg-cream overflow-x-hidden">

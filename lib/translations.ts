@@ -146,13 +146,11 @@ export const translations = {
     pricingHeading: "Simple & honest",
     pricingBadge: "One-time payment",
     pricingPer: "per invitation · no subscriptions ever",
-    pricingIncludes: [
-      "Live preview while you customize",
-      "Instant permanent shareable link",
-      "Works on all devices, forever",
-      "Secure Stripe checkout",
-      "No subscriptions, no renewals",
-    ],
+    pricingItem1: "Live preview while you customize",
+    pricingItem2: "Instant permanent shareable link",
+    pricingItem3: "Works on all devices, forever",
+    pricingItem4: "Secure Stripe checkout",
+    pricingItem5: "No subscriptions, no renewals",
 
     // Trust strip
     trustOneTime: "One-time $15",
@@ -305,13 +303,11 @@ export const translations = {
     pricingHeading: "Jednoduché a upřímné",
     pricingBadge: "Jednorázová platba",
     pricingPer: "za oznámení · žádné předplatné",
-    pricingIncludes: [
-      "Živý náhled při úpravách",
-      "Okamžitý trvalý odkaz ke sdílení",
-      "Funguje na všech zařízeních navždy",
-      "Bezpečná platba přes Stripe",
-      "Žádné předplatné ani obnovy",
-    ],
+    pricingItem1: "Živý náhled při úpravách",
+    pricingItem2: "Okamžitý trvalý odkaz ke sdílení",
+    pricingItem3: "Funguje na všech zařízeních navždy",
+    pricingItem4: "Bezpečná platba přes Stripe",
+    pricingItem5: "Žádné předplatné ani obnovy",
 
     // Trust strip
     trustOneTime: "Jednorázově 15 $",
@@ -464,13 +460,11 @@ export const translations = {
     pricingHeading: "Jednoduché a úprimné",
     pricingBadge: "Jednorazová platba",
     pricingPer: "za oznámenie · žiadne predplatné",
-    pricingIncludes: [
-      "Živý náhľad pri úpravách",
-      "Okamžitý trvalý odkaz na zdieľanie",
-      "Funguje na všetkých zariadeniach navždy",
-      "Bezpečná platba cez Stripe",
-      "Žiadne predplatné ani obnovy",
-    ],
+    pricingItem1: "Živý náhľad pri úpravách",
+    pricingItem2: "Okamžitý trvalý odkaz na zdieľanie",
+    pricingItem3: "Funguje na všetkých zariadeniach navždy",
+    pricingItem4: "Bezpečná platba cez Stripe",
+    pricingItem5: "Žiadne predplatné ani obnovy",
 
     // Trust strip
     trustOneTime: "Jednorazovo 15 $",

@@ -11,6 +11,14 @@ import type { InviteData } from "@/lib/types";
 export default function Home() {
   const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
+  type FilterKey = "all" | "vertical" | "horizontal" | "photo";
+  const [filter, setFilter] = useState<FilterKey>("all");
+  const FILTERS: { key: FilterKey; label: string }[] = [
+    { key: "all",        label: "All" },
+    { key: "vertical",   label: "Vertical" },
+    { key: "horizontal", label: "Horizontal" },
+    { key: "photo",      label: "With Photo" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -234,27 +242,59 @@ export default function Home() {
             <div className="h-px w-12 bg-gold-light" />
           </div>
           <h2 className="font-serif text-4xl text-center text-charcoal mb-3 font-light">{t.chooseYourStyle}</h2>
-          <p className="text-center text-muted font-light text-sm mb-16 max-w-md mx-auto">
+          <p className="text-center text-muted font-light text-sm mb-10 max-w-md mx-auto">
             {t.designsSubDesc}
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {TEMPLATE_REGISTRY.map((tmpl) => {
+          {/* Filter pills */}
+          <div className="flex gap-2 justify-center mb-10 flex-wrap">
+            {FILTERS.map((f) => (
+              <button
+                key={f.key}
+                onClick={() => setFilter(f.key)}
+                className={`px-5 py-2 text-[11px] tracking-widest uppercase font-light border transition-all duration-200 ${
+                  filter === f.key
+                    ? "border-gold text-gold bg-gold/5"
+                    : "border-gold-light text-muted hover:border-gold hover:text-gold"
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Grid */}
+          {(() => {
+            const filtered = TEMPLATE_REGISTRY.filter((tmpl) => {
+              if (filter === "vertical")   return tmpl.orientation === "vertical";
+              if (filter === "horizontal") return tmpl.orientation === "horizontal";
+              if (filter === "photo")      return tmpl.supportsImage;
+              return true;
+            });
+
+            const hasHorizontal = filtered.some(t => t.orientation === "horizontal");
+            const hasVertical   = filtered.some(t => t.orientation === "vertical");
+            const mixed = hasHorizontal && hasVertical;
+
+            const TemplateCard = ({ tmpl }: { tmpl: typeof TEMPLATE_REGISTRY[0] }) => {
               const TemplateComp = tmpl.component;
               const previewData = { ...PREVIEW_DATA, template: tmpl.id };
+              const isHoriz = tmpl.orientation === "horizontal";
               return (
                 <Link
-                  key={tmpl.id}
                   href={`/customize?template=${tmpl.id}`}
-                  className="group block border border-gold-light hover:border-gold hover:shadow-[0_4px_24px_rgba(184,150,12,0.15)] transition-all duration-400 cursor-pointer"
+                  className="group block border border-gold-light hover:border-gold hover:shadow-[0_4px_24px_rgba(184,150,12,0.15)] transition-all duration-300 cursor-pointer"
                 >
-                  {/* Actual rendered template preview */}
-                  <div className="relative overflow-hidden bg-white" style={{ aspectRatio: "3/4" }}>
+                  <div className="relative overflow-hidden bg-white" style={{ aspectRatio: isHoriz ? "4/3" : "3/4" }}>
                     <div className="absolute inset-0" style={{ transform: "scale(0.22)", transformOrigin: "top left", width: "455%", height: "455%" }}>
                       <TemplateComp data={previewData} />
                     </div>
+                    {tmpl.supportsImage && (
+                      <div className="absolute top-2 right-2 bg-gold/80 text-white text-[8px] tracking-widest uppercase px-1.5 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                        Photo
+                      </div>
+                    )}
                   </div>
-                  {/* Label */}
                   <div className="p-3 bg-cream border-t border-gold-light">
                     <div className="flex items-baseline justify-between">
                       <p className="font-serif text-base text-charcoal">{tmpl.name}</p>
@@ -264,8 +304,48 @@ export default function Home() {
                   </div>
                 </Link>
               );
-            })}
-          </div>
+            };
+
+            if (mixed) {
+              const verticals   = filtered.filter(t => t.orientation === "vertical");
+              const horizontals = filtered.filter(t => t.orientation === "horizontal");
+              return (
+                <div className="space-y-12">
+                  {verticals.length > 0 && (
+                    <div>
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="h-px flex-1 bg-gold-light" />
+                        <span className="text-[10px] tracking-ultra-wide uppercase text-muted font-light">Vertical</span>
+                        <div className="h-px flex-1 bg-gold-light" />
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        {verticals.map(tmpl => <TemplateCard key={tmpl.id} tmpl={tmpl} />)}
+                      </div>
+                    </div>
+                  )}
+                  {horizontals.length > 0 && (
+                    <div>
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="h-px flex-1 bg-gold-light" />
+                        <span className="text-[10px] tracking-ultra-wide uppercase text-muted font-light">Horizontal</span>
+                        <div className="h-px flex-1 bg-gold-light" />
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {horizontals.map(tmpl => <TemplateCard key={tmpl.id} tmpl={tmpl} />)}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            const isHorizFilter = hasHorizontal;
+            return (
+              <div className={`grid gap-4 ${isHorizFilter ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3" : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"}`}>
+                {filtered.map(tmpl => <TemplateCard key={tmpl.id} tmpl={tmpl} />)}
+              </div>
+            );
+          })()}
         </div>
       </section>
 

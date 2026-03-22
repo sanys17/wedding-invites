@@ -21,6 +21,9 @@ export default function InvitePreview({ data, animate = false }: Props) {
     venuePlaceholder: t.venuePlaceholder,
     locationPlaceholder: t.locationPlaceholder,
     togetherForever: t.togetherForever,
+    together: t.together,
+    anInvitation: t.anInvitation,
+    rsvp: t.rsvp,
     togetherWithFamilies: t.togetherWithFamilies,
     requestPresence: t.requestPresence,
   };

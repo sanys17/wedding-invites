@@ -10,6 +10,9 @@ export interface TemplateT {
   venuePlaceholder: string;
   locationPlaceholder: string;
   togetherForever: string;
+  together: string;
+  anInvitation: string;
+  rsvp: string;
   requestPresence: string;
   togetherWithFamilies: string;
 }
@@ -22,6 +25,9 @@ const DEFAULT_T: TemplateT = {
   venuePlaceholder: "The Venue Name",
   locationPlaceholder: "City, Country",
   togetherForever: "Together Forever",
+  together: "Together",
+  anInvitation: "An Invitation",
+  rsvp: "RSVP",
   requestPresence: "Request the honour of your presence",
   togetherWithFamilies: "Together with their families",
 };
@@ -59,7 +65,7 @@ export function Elegant({ data: d, t: tProp }: TP) {
       {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-5">&ldquo;{d.message}&rdquo;</p>}
       {d.rsvp_email && (
         <div className="border border-[#D4B86A] px-5 py-2 mt-1">
-          <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-1">RSVP</p>
+          <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-1"{t.rsvp}</p>
           <p className="text-[10px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
         </div>
       )}
@@ -94,7 +100,7 @@ export function Jardin({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-5">{LOC(d, t)}</p>
       {d.rsvp_email && (
         <div className="border border-[#D4B86A] px-5 py-2">
-          <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">RSVP</p>
+          <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5"{t.rsvp}</p>
           <p className="text-[10px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
         </div>
       )}
@@ -175,7 +181,7 @@ export function Nocturne({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-wider font-sans font-light" style={{ color: "#8A7A6A" }}>{LOC(d, t)}</p>
       {d.rsvp_email && (
         <div className="mt-5 border px-5 py-2" style={{ borderColor: "#D4B86A33" }}>
-          <p className="text-[9px] tracking-[0.3em] uppercase text-[#D4B86A] font-sans mb-0.5 opacity-70">RSVP</p>
+          <p className="text-[9px] tracking-[0.3em] uppercase text-[#D4B86A] font-sans mb-0.5 opacity-70"{t.rsvp}</p>
           <p className="text-[10px] font-sans" style={{ color: "#8A7A6A" }}>{d.rsvp_email}</p>
         </div>
       )}
@@ -208,7 +214,7 @@ export function Bloom({ data: d, t: tProp }: TP) {
         </svg>
         {/* Content inside wreath */}
         <div className="relative z-10 flex flex-col items-center justify-center w-36 h-36">
-          <p className="text-[8px] tracking-[0.25em] uppercase text-[#B8960C] font-sans font-light mb-2">Together</p>
+          <p className="text-[8px] tracking-[0.25em] uppercase text-[#B8960C] font-sans font-light mb-2"{t.together}</p>
           <h1 className="font-serif text-xl font-light italic text-[#1C1917] leading-tight">{P1(d, t)}</h1>
           <p className="text-[#B8960C] tracking-widest text-base">&amp;</p>
           <h1 className="font-serif text-xl font-light italic text-[#1C1917] leading-tight">{P2(d, t)}</h1>
@@ -226,7 +232,7 @@ export function Bloom({ data: d, t: tProp }: TP) {
       {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-4">&ldquo;{d.message}&rdquo;</p>}
       {d.rsvp_email && (
         <div className="border border-[#D4B86A] px-4 py-1.5">
-          <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">RSVP</p>
+          <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5"{t.rsvp}</p>
           <p className="text-[10px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
         </div>
       )}
@@ -258,7 +264,7 @@ export function Gatsby({ data: d, t: tProp }: TP) {
         })}
         <path d="M5 35 A30 30 0 0 1 65 35" fill="none" stroke="#B8960C" strokeWidth="0.8" opacity="0.5" />
       </svg>
-      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-3">An Invitation</p>
+      <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-3"{t.anInvitation}</p>
       <h1 className="font-serif text-3xl font-light tracking-widest text-[#1C1917] mb-0.5">{P1(d, t)}</h1>
       <div className="flex items-center gap-3 w-full my-2">
         <div className="flex-1 h-px bg-[#D4B86A] opacity-50" />
@@ -352,7 +358,7 @@ export function Sakura({ data: d, t: tProp }: TP) {
         <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
         {d.rsvp_email && (
           <div className="mt-4 border px-4 py-1.5 mx-auto inline-block" style={{ borderColor: "#FDA4AF88" }}>
-            <p className="text-[9px] tracking-[0.3em] uppercase font-sans mb-0.5" style={{ color: "#FB7185" }}>RSVP</p>
+            <p className="text-[9px] tracking-[0.3em] uppercase font-sans mb-0.5" style={{ color: "#FB7185" }}{t.rsvp}</p>
             <p className="text-[10px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
           </div>
         )}

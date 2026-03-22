@@ -35,9 +35,30 @@ function CustomizeContent() {
   const [step, setStep] = useState<"edit" | "review">("edit");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [imageUploading, setImageUploading] = useState(false);
+  const [imageError, setImageError] = useState("");
 
   function update(field: keyof InviteData, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImageUploading(true);
+    setImageError("");
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload-image", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.url) update("image_url", data.url);
+      else setImageError("Upload failed. Try again.");
+    } catch {
+      setImageError("Upload failed. Try again.");
+    } finally {
+      setImageUploading(false);
+    }
   }
 
   function isValidEmail(email: string) {
@@ -148,6 +169,31 @@ function CustomizeContent() {
                   Selected: <span className="text-gold font-normal">{TEMPLATE_REGISTRY.find(r => r.id === form.template)?.name}</span>
                   {" — "}{TEMPLATE_REGISTRY.find(r => r.id === form.template)?.tag}
                 </p>
+              </div>
+            )}
+
+            {/* Image upload — only shown for templates that support it */}
+            {step === "edit" && TEMPLATE_REGISTRY.find(r => r.id === form.template)?.supportsImage && (
+              <div className="mb-8">
+                <p className="text-xs tracking-ultra-wide uppercase text-muted font-light mb-3">Photo</p>
+                <label className={`flex flex-col items-center justify-center border border-dashed border-gold-light p-6 cursor-pointer hover:border-gold transition-colors ${imageUploading ? "opacity-50 pointer-events-none" : ""}`}>
+                  {form.image_url ? (
+                    <div className="w-full flex flex-col items-center gap-3">
+                      <img src={form.image_url} alt="Preview" className="h-28 object-contain rounded" />
+                      <p className="text-xs text-muted font-light">Click to change photo</p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center gap-2 text-muted">
+                      <svg className="w-8 h-8 text-gold-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                      </svg>
+                      <p className="text-xs font-light text-center">Upload your couple photo<br /><span className="text-[10px] text-muted/60">JPG, PNG · max 5 MB</span></p>
+                      {imageUploading && <p className="text-xs text-gold">Uploading…</p>}
+                    </div>
+                  )}
+                  <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                </label>
+                {imageError && <p className="text-xs text-red-500 mt-1">{imageError}</p>}
               </div>
             )}
 

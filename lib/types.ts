@@ -10,6 +10,7 @@ export interface InviteData {
   rsvp_email: string;  // where guests send RSVP
   template: string;    // e.g. "elegant-minimal"
   language?: string;   // e.g. "en", "cs", "sk"
+  image_url?: string;  // custom couple photo URL
 }
 
 export interface InviteRecord extends InviteData {

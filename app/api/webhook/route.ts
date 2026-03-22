@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
       rsvp_email: meta.rsvp_email,
       template: meta.template,
       language: meta.language ?? "en",
+      image_url: meta.image_url ?? null,
       customer_email: session.customer_email,
       paid: true,
       stripe_session_id: session.id,

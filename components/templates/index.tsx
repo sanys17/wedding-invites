@@ -802,28 +802,448 @@ export function Monogram({ data: d, t: tProp }: TP) {
   );
 }
 
+// ══════════════════════════════════════════════════════════════════════════════
+// NEW VERTICAL TEMPLATES (3:4) — with custom image support
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── 21. Portrait (Photo + Text) ─────────────────────────────────────────────
+export function Portrait({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full flex flex-col" style={{ background: "#0D0D0D" }}>
+      {/* Photo top half */}
+      <div className="flex-1 relative overflow-hidden" style={{ maxHeight: "55%" }}>
+        {d.image_url ? (
+          <img src={d.image_url} alt="Couple" className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)" }}>
+            <svg className="w-16 h-16 opacity-20" viewBox="0 0 64 64" fill="white">
+              <circle cx="24" cy="20" r="8" /><circle cx="40" cy="20" r="8" />
+              <path d="M8 56c0-12 8-20 16-20s16 8 16 20" /><path d="M24 56c0-12 8-20 16-20s16 8 16 20" />
+            </svg>
+          </div>
+        )}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 50%, #0D0D0D 100%)" }} />
+        {/* Gold frame corners */}
+        <div className="absolute top-4 left-4 w-6 h-6 border-t border-l" style={{ borderColor: "#C9A96E" }} />
+        <div className="absolute top-4 right-4 w-6 h-6 border-t border-r" style={{ borderColor: "#C9A96E" }} />
+      </div>
+      {/* Text bottom */}
+      <div className="px-8 pb-8 pt-2 flex flex-col items-center text-center">
+        <div className="flex items-center gap-3 w-full mb-4">
+          <div className="flex-1 h-px" style={{ background: "#C9A96E" }} />
+          <span className="text-[8px] tracking-[0.4em] uppercase font-sans font-light" style={{ color: "#C9A96E" }}>{t.weddingInvitation}</span>
+          <div className="flex-1 h-px" style={{ background: "#C9A96E" }} />
+        </div>
+        <h1 className="font-serif text-3xl font-light italic leading-tight mb-0.5" style={{ color: "#F5F0E8" }}>{P1(d, t)}</h1>
+        <p className="text-lg tracking-widest mb-0.5" style={{ color: "#C9A96E" }}>&amp;</p>
+        <h1 className="font-serif text-3xl font-light italic leading-tight mb-4" style={{ color: "#F5F0E8" }}>{P2(d, t)}</h1>
+        <p className="text-[10px] tracking-[0.25em] uppercase font-sans font-light mb-1" style={{ color: "#8B8070" }}>{DATE(d, t)}</p>
+        <p className="font-serif italic text-sm mb-0.5" style={{ color: "#F5F0E8" }}>{VENUE(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light" style={{ color: "#8B8070" }}>{LOC(d, t)}</p>
+        {d.rsvp_email && (
+          <div className="mt-4 border px-4 py-1.5" style={{ borderColor: "#C9A96E" }}>
+            <p className="text-[8px] tracking-[0.3em] uppercase font-sans" style={{ color: "#C9A96E" }}>RSVP · {d.rsvp_email}</p>
+          </div>
+        )}
+        <div className="absolute bottom-4 left-4 w-6 h-6 border-b border-l" style={{ borderColor: "#C9A96E" }} />
+        <div className="absolute bottom-4 right-4 w-6 h-6 border-b border-r" style={{ borderColor: "#C9A96E" }} />
+      </div>
+    </div>
+  );
+}
+
+// ── 22. Manuscript (Letter Style) ───────────────────────────────────────────
+export function Manuscript({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center px-10 py-8 relative" style={{ background: "#F7F0E3", fontFamily: "Georgia, serif" }}>
+      {/* Aged paper texture lines */}
+      {Array.from({ length: 18 }).map((_, i) => (
+        <div key={i} className="absolute left-0 right-0 h-px" style={{ top: `${6 + i * 5.2}%`, background: "rgba(139,115,85,0.08)" }} />
+      ))}
+      {/* Red margin line */}
+      <div className="absolute top-0 bottom-0 w-px" style={{ left: "15%", background: "rgba(180,60,60,0.2)" }} />
+      <div className="relative z-10 text-center w-full">
+        <p className="text-[9px] tracking-[0.3em] uppercase font-sans font-light mb-5" style={{ color: "#8B7355" }}>{d.date || t.datePlaceholder} · {d.location || t.locationPlaceholder}</p>
+        <p className="text-xs font-sans font-light mb-3 italic" style={{ color: "#6B5A40" }}>Dear friends &amp; family,</p>
+        <p className="text-xs font-sans font-light mb-5 leading-relaxed" style={{ color: "#6B5A40" }}>We joyfully invite you to witness the union of</p>
+        <h1 className="font-serif text-4xl font-light italic mb-0.5" style={{ color: "#2C2218" }}>{P1(d, t)}</h1>
+        <p className="text-lg mb-0.5 font-serif italic" style={{ color: "#8B7355" }}>&amp;</p>
+        <h1 className="font-serif text-4xl font-light italic mb-5" style={{ color: "#2C2218" }}>{P2(d, t)}</h1>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex-1 h-px" style={{ background: "#C4A882" }} />
+          <span className="font-serif italic text-xs" style={{ color: "#8B7355" }}>♦</span>
+          <div className="flex-1 h-px" style={{ background: "#C4A882" }} />
+        </div>
+        <p className="text-xs font-sans font-light mb-1" style={{ color: "#6B5A40" }}>{VENUE(d, t)}</p>
+        {d.message && <p className="text-xs italic font-sans leading-relaxed mt-3" style={{ color: "#8B7355" }}>&ldquo;{d.message}&rdquo;</p>}
+        <p className="font-serif italic text-base mt-5" style={{ color: "#2C2218" }}>With love,</p>
+        <p className="font-serif text-lg italic" style={{ color: "#2C2218" }}>{P1(d, t)} &amp; {P2(d, t)}</p>
+      </div>
+    </div>
+  );
+}
+
+// ── 23. Cathedral (Gothic Dark) ─────────────────────────────────────────────
+export function Cathedral({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center px-8 py-8 text-center relative overflow-hidden" style={{ background: "#0F0A1E" }}>
+      {/* Gothic arch SVG */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 400" preserveAspectRatio="none" fill="none">
+        <path d="M30 400 L30 150 Q30 30 150 30 Q270 30 270 150 L270 400" stroke="#4A2D7A" strokeWidth="1" fill="none" opacity="0.6"/>
+        <path d="M50 400 L50 155 Q50 55 150 55 Q250 55 250 155 L250 400" stroke="#6B3FA0" strokeWidth="0.5" fill="none" opacity="0.4"/>
+        {/* Stained glass geometric */}
+        <path d="M150 30 L150 100" stroke="#7B3FBE" strokeWidth="0.5" opacity="0.6"/>
+        <circle cx="150" cy="30" r="20" stroke="#9B5DE5" strokeWidth="0.5" fill="none" opacity="0.4"/>
+        <circle cx="150" cy="30" r="12" stroke="#F7B731" strokeWidth="0.5" fill="rgba(247,183,49,0.05)" opacity="0.6"/>
+        {/* Side decorations */}
+        {[80, 160, 240, 320].map((y, i) => (
+          <g key={i}>
+            <line x1="30" y1={y} x2="55" y2={y} stroke="#4A2D7A" strokeWidth="0.5" opacity="0.5"/>
+            <line x1="245" y1={y} x2="270" y2={y} stroke="#4A2D7A" strokeWidth="0.5" opacity="0.5"/>
+          </g>
+        ))}
+      </svg>
+      <div className="relative z-10">
+        <div className="w-8 h-8 mx-auto mb-4 border border-yellow-500/30 rotate-45 flex items-center justify-center">
+          <div className="w-4 h-4 border border-yellow-500/50 rotate-0" />
+        </div>
+        <p className="text-[8px] tracking-[0.5em] uppercase font-sans font-light mb-5" style={{ color: "#9B5DE5" }}>{t.weddingInvitation}</p>
+        <h1 className="font-serif text-3xl font-light italic leading-tight mb-0.5" style={{ color: "#F0EBF8" }}>{P1(d, t)}</h1>
+        <p className="text-base tracking-widest mb-0.5" style={{ color: "#F7B731" }}>&amp;</p>
+        <h1 className="font-serif text-3xl font-light italic leading-tight mb-6" style={{ color: "#F0EBF8" }}>{P2(d, t)}</h1>
+        <div className="flex items-center gap-2 mb-4">
+          <div className="flex-1 h-px" style={{ background: "linear-gradient(to right, transparent, #4A2D7A)" }} />
+          <span style={{ color: "#F7B731", fontSize: "10px" }}>✦</span>
+          <div className="flex-1 h-px" style={{ background: "linear-gradient(to left, transparent, #4A2D7A)" }} />
+        </div>
+        <p className="text-[10px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#9B8AB0" }}>{DATE(d, t)}</p>
+        <p className="font-serif italic text-sm mb-1" style={{ color: "#F0EBF8" }}>{VENUE(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light" style={{ color: "#7B6A90" }}>{LOC(d, t)}</p>
+        {d.message && <p className="text-[10px] italic font-sans mt-4 leading-relaxed" style={{ color: "#9B8AB0" }}>&ldquo;{d.message}&rdquo;</p>}
+      </div>
+    </div>
+  );
+}
+
+// ── 24. Wildflower (Meadow Watercolor) ──────────────────────────────────────
+export function Wildflower({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center px-8 py-6 text-center relative" style={{ background: "#FDFAF5" }}>
+      {/* Wildflower wreath SVG */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 400" fill="none" preserveAspectRatio="xMidYMid meet">
+        {/* Top flowers */}
+        {[
+          { cx: 70, cy: 45, r: 8, c: "#E8A0B0", petals: 5 },
+          { cx: 110, cy: 30, r: 6, c: "#F4C2A1", petals: 6 },
+          { cx: 150, cy: 22, r: 10, c: "#B8D4A8", petals: 7 },
+          { cx: 190, cy: 30, r: 6, c: "#E8A0B0", petals: 5 },
+          { cx: 230, cy: 45, r: 8, c: "#F4C2A1", petals: 6 },
+        ].map(({ cx, cy, r, c, petals }, i) => (
+          <g key={i}>
+            {Array.from({ length: petals }).map((_, j) => {
+              const angle = (j * 360) / petals;
+              const rad = (angle * Math.PI) / 180;
+              return <ellipse key={j} cx={cx + r * 1.5 * Math.cos(rad)} cy={cy + r * 1.5 * Math.sin(rad)} rx={r * 0.8} ry={r * 0.5} fill={c} opacity="0.6" transform={`rotate(${angle}, ${cx + r * 1.5 * Math.cos(rad)}, ${cy + r * 1.5 * Math.sin(rad)})`} />;
+            })}
+            <circle cx={cx} cy={cy} r={r * 0.5} fill="#F9E4B7" />
+            {/* Stem */}
+            <path d={`M${cx} ${cy + r} Q${cx - 5} ${cy + 30} ${cx - 3} ${cy + 50}`} stroke="#8DB87A" strokeWidth="0.8" fill="none" opacity="0.5"/>
+          </g>
+        ))}
+        {/* Left side botanical */}
+        <path d="M15 150 Q40 120 30 90" stroke="#8DB87A" strokeWidth="1" fill="none" opacity="0.4"/>
+        <ellipse cx="30" cy="90" rx="12" ry="7" fill="#B8D4A8" opacity="0.35" transform="rotate(-30, 30, 90)"/>
+        <path d="M20 200 Q50 170 35 140" stroke="#8DB87A" strokeWidth="1" fill="none" opacity="0.4"/>
+        {/* Right side botanical */}
+        <path d="M285 150 Q260 120 270 90" stroke="#8DB87A" strokeWidth="1" fill="none" opacity="0.4"/>
+        <ellipse cx="270" cy="90" rx="12" ry="7" fill="#B8D4A8" opacity="0.35" transform="rotate(30, 270, 90)"/>
+        {/* Bottom flowers */}
+        {[70, 150, 230].map((cx, i) => (
+          <g key={i}>
+            <circle cx={cx} cy={370} r={6} fill={["#E8A0B0", "#F4C2A1", "#E8A0B0"][i]} opacity="0.5"/>
+            <path d={`M${cx} ${364} Q${cx - 8} ${340} ${cx - 5} ${310}`} stroke="#8DB87A" strokeWidth="0.8" fill="none" opacity="0.4"/>
+          </g>
+        ))}
+      </svg>
+      <div className="relative z-10">
+        <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-5" style={{ color: "#9B7E6A" }}>{t.weddingInvitation}</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5" style={{ color: "#3D2B1F" }}>{P1(d, t)}</h1>
+        <p className="text-base tracking-widest mb-0.5" style={{ color: "#C4826E" }}>&amp;</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-5" style={{ color: "#3D2B1F" }}>{P2(d, t)}</h1>
+        <p className="text-[10px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#9B7E6A" }}>{DATE(d, t)}</p>
+        <p className="font-serif italic text-sm mb-1" style={{ color: "#3D2B1F" }}>{VENUE(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light mb-3" style={{ color: "#9B7E6A" }}>{LOC(d, t)}</p>
+        {d.message && <p className="text-[10px] italic font-sans leading-relaxed" style={{ color: "#7A6050" }}>&ldquo;{d.message}&rdquo;</p>}
+      </div>
+    </div>
+  );
+}
+
+// ── 25. Prism (Bold Geometric) ───────────────────────────────────────────────
+export function Prism({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full relative overflow-hidden flex flex-col items-center justify-center text-center px-8" style={{ background: "#0A0A0A" }}>
+      {/* Geometric prism shapes */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 400" preserveAspectRatio="none">
+        <polygon points="0,0 120,0 60,200" fill="rgba(255,100,100,0.08)"/>
+        <polygon points="300,0 180,0 240,200" fill="rgba(100,100,255,0.08)"/>
+        <polygon points="0,400 120,400 60,200" fill="rgba(100,255,150,0.06)"/>
+        <polygon points="300,400 180,400 240,200" fill="rgba(255,200,100,0.06)"/>
+        <line x1="0" y1="0" x2="60" y2="200" stroke="rgba(255,100,100,0.3)" strokeWidth="0.5"/>
+        <line x1="300" y1="0" x2="240" y2="200" stroke="rgba(100,100,255,0.3)" strokeWidth="0.5"/>
+        <line x1="60" y1="200" x2="150" y2="400" stroke="rgba(100,255,150,0.2)" strokeWidth="0.5"/>
+        <line x1="240" y1="200" x2="150" y2="400" stroke="rgba(255,200,100,0.2)" strokeWidth="0.5"/>
+        {/* Center glow */}
+        <circle cx="150" cy="200" r="60" fill="url(#prismGlow)" />
+        <defs>
+          <radialGradient id="prismGlow" cx="50%" cy="50%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.03"/>
+            <stop offset="100%" stopColor="white" stopOpacity="0"/>
+          </radialGradient>
+        </defs>
+      </svg>
+      <div className="relative z-10">
+        <div className="mb-6">
+          <div className="flex items-center gap-2 justify-center mb-2">
+            <div className="w-12 h-px" style={{ background: "linear-gradient(to right, transparent, #FF6464)" }} />
+            <span className="text-[8px] tracking-[0.5em] uppercase font-sans font-light" style={{ color: "#888" }}>{t.weddingInvitation}</span>
+            <div className="w-12 h-px" style={{ background: "linear-gradient(to left, transparent, #6464FF)" }} />
+          </div>
+        </div>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5" style={{ color: "#F8F8F8" }}>{P1(d, t)}</h1>
+        <p className="text-xl font-light mb-0.5" style={{ background: "linear-gradient(90deg, #FF6464, #6464FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>&amp;</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-6" style={{ color: "#F8F8F8" }}>{P2(d, t)}</h1>
+        <div className="w-16 h-px mx-auto mb-4" style={{ background: "linear-gradient(90deg, #FF6464, #6464FF)" }} />
+        <p className="text-[10px] tracking-[0.3em] uppercase font-sans font-light mb-1" style={{ color: "#888" }}>{DATE(d, t)}</p>
+        <p className="font-serif italic text-sm mb-1" style={{ color: "#E0E0E0" }}>{VENUE(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light" style={{ color: "#666" }}>{LOC(d, t)}</p>
+        {d.rsvp_email && (
+          <p className="text-[9px] tracking-[0.3em] uppercase font-sans mt-5" style={{ color: "#FF6464" }}>RSVP · {d.rsvp_email}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// NEW HORIZONTAL TEMPLATES (4:3) — with custom image support
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── 26. Cinéma (Letterbox) ───────────────────────────────────────────────────
+export function Cinema({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full relative overflow-hidden flex items-center justify-center" style={{ background: "#080808" }}>
+      {/* Background image */}
+      {d.image_url && (
+        <img src={d.image_url} alt="" className="absolute inset-0 w-full h-full object-cover opacity-40" />
+      )}
+      {/* Letterbox bars */}
+      <div className="absolute top-0 left-0 right-0 h-[12%]" style={{ background: "#080808" }} />
+      <div className="absolute bottom-0 left-0 right-0 h-[12%]" style={{ background: "#080808" }} />
+      {/* Vignette */}
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.8) 100%)" }} />
+      <div className="relative z-10 text-center px-12">
+        <p className="text-[8px] tracking-[0.6em] uppercase font-sans font-light mb-4" style={{ color: "rgba(255,255,255,0.4)" }}>{t.weddingInvitation}</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight" style={{ color: "#F5F5F0" }}>{P1(d, t)}</h1>
+        <p className="text-2xl tracking-widest my-1" style={{ color: "rgba(255,255,255,0.5)" }}>&amp;</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-5" style={{ color: "#F5F5F0" }}>{P2(d, t)}</h1>
+        <div className="flex items-center gap-4 justify-center mb-4">
+          <div className="flex-1 h-px max-w-16" style={{ background: "rgba(255,255,255,0.2)" }} />
+          <p className="text-[10px] tracking-[0.3em] uppercase font-sans font-light" style={{ color: "rgba(255,255,255,0.5)" }}>{DATE(d, t)}</p>
+          <div className="flex-1 h-px max-w-16" style={{ background: "rgba(255,255,255,0.2)" }} />
+        </div>
+        <p className="font-serif italic text-sm" style={{ color: "#D0CCBC" }}>{VENUE(d, t)} · {LOC(d, t)}</p>
+      </div>
+    </div>
+  );
+}
+
+// ── 27. Diptych (Split Photo + Text) ────────────────────────────────────────
+export function Diptych({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full flex" style={{ background: "#FAF7F2" }}>
+      {/* Left: photo panel */}
+      <div className="relative overflow-hidden" style={{ width: "42%", background: "#1C1C1C" }}>
+        {d.image_url ? (
+          <img src={d.image_url} alt="Couple" className="w-full h-full object-cover" style={{ filter: "grayscale(20%)" }} />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center" style={{ background: "linear-gradient(160deg, #2A2A2A 0%, #1A1A1A 100%)" }}>
+            <svg className="w-12 h-12 opacity-20" viewBox="0 0 48 48" fill="white">
+              <circle cx="18" cy="16" r="6"/><circle cx="30" cy="16" r="6"/>
+              <path d="M6 42c0-9 6-15 12-15s12 6 12 15"/>
+            </svg>
+          </div>
+        )}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to right, transparent 70%, rgba(250,247,242,0.4) 100%)" }} />
+      </div>
+      {/* Dividing line */}
+      <div className="w-px self-stretch my-6" style={{ background: "#C9A96E" }} />
+      {/* Right: text panel */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-6 text-center">
+        <p className="text-[8px] tracking-[0.4em] uppercase font-sans font-light mb-4" style={{ color: "#B8960C" }}>{t.weddingInvitation}</p>
+        <h1 className="font-serif text-2xl font-light italic leading-tight mb-0.5" style={{ color: "#1C1917" }}>{P1(d, t)}</h1>
+        <p className="tracking-widest text-lg mb-0.5" style={{ color: "#B8960C" }}>&amp;</p>
+        <h1 className="font-serif text-2xl font-light italic leading-tight mb-4" style={{ color: "#1C1917" }}>{P2(d, t)}</h1>
+        <div className="w-full h-px mb-4" style={{ background: "#D4B86A" }} />
+        <p className="text-[9px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#6B6359" }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[9px] tracking-wider font-sans font-light mb-2" style={{ color: "#9B9490" }}>{d.time}</p>}
+        <p className="font-serif italic text-sm mb-0.5" style={{ color: "#1C1917" }}>{VENUE(d, t)}</p>
+        <p className="text-[9px] tracking-wider font-sans font-light mb-3" style={{ color: "#6B6359" }}>{LOC(d, t)}</p>
+        {d.message && <p className="text-[9px] italic font-sans leading-relaxed mb-3" style={{ color: "#8B8070" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && <p className="text-[8px] tracking-[0.3em] uppercase font-sans" style={{ color: "#B8960C" }}>RSVP · {d.rsvp_email}</p>}
+      </div>
+    </div>
+  );
+}
+
+// ── 28. Pavilion (Wide Arch) ─────────────────────────────────────────────────
+export function Pavilion({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full flex items-center justify-center relative overflow-hidden" style={{ background: "#F9F5EE" }}>
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+        {/* Arch frame */}
+        <path d="M40 300 L40 120 Q40 20 200 20 Q360 20 360 120 L360 300" stroke="#C9A96E" strokeWidth="1" fill="none"/>
+        <path d="M55 300 L55 125 Q55 38 200 38 Q345 38 345 125 L345 300" stroke="#D4B86A" strokeWidth="0.5" fill="none" opacity="0.5"/>
+        {/* Corner ornaments */}
+        <path d="M40 300 L40 270 Q40 260 50 260 L80 260" stroke="#C9A96E" strokeWidth="0.8" fill="none"/>
+        <path d="M360 300 L360 270 Q360 260 350 260 L320 260" stroke="#C9A96E" strokeWidth="0.8" fill="none"/>
+        {/* Keystone */}
+        <path d="M188 18 L200 4 L212 18" stroke="#C9A96E" strokeWidth="0.8" fill="none"/>
+        <circle cx="200" cy="4" r="3" fill="#C9A96E" opacity="0.6"/>
+        {/* Column bases */}
+        <rect x="30" y="285" width="25" height="3" fill="#C9A96E" opacity="0.3"/>
+        <rect x="345" y="285" width="25" height="3" fill="#C9A96E" opacity="0.3"/>
+      </svg>
+      <div className="relative z-10 text-center px-16">
+        <p className="text-[8px] tracking-[0.5em] uppercase font-sans font-light mb-4" style={{ color: "#B8960C" }}>{t.weddingInvitation}</p>
+        <h1 className="font-serif text-3xl font-light italic leading-tight mb-0.5" style={{ color: "#2C2218" }}>{P1(d, t)}</h1>
+        <p className="text-lg tracking-widest mb-0.5" style={{ color: "#C9A96E" }}>&amp;</p>
+        <h1 className="font-serif text-3xl font-light italic leading-tight mb-5" style={{ color: "#2C2218" }}>{P2(d, t)}</h1>
+        <div className="flex items-center gap-3 justify-center mb-3">
+          <div className="w-8 h-px" style={{ background: "#C9A96E" }} />
+          <span className="text-xs" style={{ color: "#C9A96E" }}>✦</span>
+          <div className="w-8 h-px" style={{ background: "#C9A96E" }} />
+        </div>
+        <p className="text-[9px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#8B7355" }}>{DATE(d, t)}</p>
+        <p className="font-serif italic text-sm" style={{ color: "#2C2218" }}>{VENUE(d, t)} · {LOC(d, t)}</p>
+      </div>
+    </div>
+  );
+}
+
+// ── 29. Blueprint (Technical Romantic) ───────────────────────────────────────
+export function Blueprint({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full relative overflow-hidden flex items-center justify-center" style={{ background: "#1a3a5c" }}>
+      {/* Grid lines */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <line key={`h${i}`} x1="0" y1={i * 16} x2="400" y2={i * 16} stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
+        ))}
+        {Array.from({ length: 26 }).map((_, i) => (
+          <line key={`v${i}`} x1={i * 16} y1="0" x2={i * 16} y2="300" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
+        ))}
+        {/* Thick border */}
+        <rect x="16" y="12" width="368" height="276" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none"/>
+        <rect x="22" y="18" width="356" height="264" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" fill="none"/>
+        {/* Title block bottom right */}
+        <rect x="290" y="240" width="94" height="36" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" fill="none"/>
+        <line x1="290" y1="252" x2="384" y2="252" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5"/>
+        {/* Cross hairs */}
+        <circle cx="32" cy="24" r="4" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" fill="none"/>
+        <line x1="28" y1="24" x2="36" y2="24" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5"/>
+        <line x1="32" y1="20" x2="32" y2="28" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5"/>
+      </svg>
+      <div className="relative z-10 text-center px-12">
+        <p className="text-[7px] tracking-[0.6em] uppercase font-sans font-light mb-5" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "monospace" }}>CEREMONY — DRAWING No. 001</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight" style={{ color: "#FFFFFF" }}>{P1(d, t)}</h1>
+        <p className="text-base tracking-widest my-1" style={{ color: "rgba(255,255,255,0.4)" }}>&amp;</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-5" style={{ color: "#FFFFFF" }}>{P2(d, t)}</h1>
+        <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-1" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}>{DATE(d, t)}</p>
+        <p className="text-[9px] tracking-wider font-sans font-light" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "monospace" }}>{VENUE(d, t)} · {LOC(d, t)}</p>
+      </div>
+    </div>
+  );
+}
+
+// ── 30. Solstice (Terracotta Warmth) ─────────────────────────────────────────
+export function Solstice({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full flex relative overflow-hidden" style={{ background: "#F2E8D9" }}>
+      {/* Left: warm color block */}
+      <div className="flex flex-col items-center justify-center" style={{ width: "35%", background: "#C65D3A", padding: "24px 16px" }}>
+        {/* Sun SVG */}
+        <svg viewBox="0 0 80 80" className="w-14 h-14 mb-4">
+          <circle cx="40" cy="40" r="16" fill="#F2E8D9" opacity="0.9"/>
+          {Array.from({ length: 12 }).map((_, i) => {
+            const angle = (i * 30 * Math.PI) / 180;
+            return <line key={i} x1={40 + 20 * Math.cos(angle)} y1={40 + 20 * Math.sin(angle)} x2={40 + 28 * Math.cos(angle)} y2={40 + 28 * Math.sin(angle)} stroke="#F2E8D9" strokeWidth="1.5" opacity="0.7"/>;
+          })}
+        </svg>
+        <p className="text-[8px] tracking-[0.3em] uppercase font-sans font-light text-center" style={{ color: "rgba(242,232,217,0.7)" }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[10px] font-sans font-light text-center mt-1" style={{ color: "rgba(242,232,217,0.7)" }}>{d.time}</p>}
+      </div>
+      {/* Right: text */}
+      <div className="flex-1 flex flex-col items-start justify-center px-7 py-6">
+        <p className="text-[8px] tracking-[0.4em] uppercase font-sans font-light mb-5" style={{ color: "#C65D3A" }}>{t.weddingInvitation}</p>
+        <h1 className="font-serif text-3xl font-light italic leading-tight mb-0.5" style={{ color: "#2C1810" }}>{P1(d, t)}</h1>
+        <p className="text-lg tracking-widest mb-0.5" style={{ color: "#C65D3A" }}>&amp;</p>
+        <h1 className="font-serif text-3xl font-light italic leading-tight mb-5" style={{ color: "#2C1810" }}>{P2(d, t)}</h1>
+        <div className="w-12 h-px mb-4" style={{ background: "#C9A96E" }} />
+        <p className="font-serif italic text-sm mb-1" style={{ color: "#2C1810" }}>{VENUE(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light mb-3" style={{ color: "#8B6B50" }}>{LOC(d, t)}</p>
+        {d.message && <p className="text-[9px] italic font-sans leading-relaxed" style={{ color: "#8B6B50" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && <p className="text-[8px] tracking-[0.3em] uppercase font-sans mt-3" style={{ color: "#C65D3A" }}>RSVP · {d.rsvp_email}</p>}
+      </div>
+    </div>
+  );
+}
+
 // ── Registry ────────────────────────────────────────────────────────────────
 export const TEMPLATE_REGISTRY = [
-  { id: "elegant-minimal", name: "Élégant",   tag: "Minimalist · Timeless",    component: Elegant,    available: true,  image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80&fit=crop" },
-  { id: "jardin",          name: "Jardin",    tag: "Botanical · Romantic",      component: Jardin,     available: true,  image: "https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&q=80&fit=crop" },
-  { id: "lumiere",         name: "Lumière",   tag: "Art Deco · Geometric",      component: Lumiere,    available: true,  image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80&fit=crop" },
-  { id: "nocturne",        name: "Nocturne",  tag: "Dark · Dramatic",           component: Nocturne,   available: true,  image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80&fit=crop" },
-  { id: "bloom",           name: "Bloom",     tag: "Floral · Dreamy",           component: Bloom,      available: true,  image: "https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=600&q=80&fit=crop" },
-  { id: "gatsby",          name: "Gatsby",    tag: "Art Deco · 1920s",          component: Gatsby,     available: true,  image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80&fit=crop" },
-  { id: "nordic",          name: "Nordic",    tag: "Scandinavian · Clean",      component: Nordic,     available: true,  image: "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=600&q=80&fit=crop" },
-  { id: "sakura",          name: "Sakura",    tag: "Blossom · Delicate",        component: Sakura,     available: true,  image: "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=600&q=80&fit=crop" },
-  { id: "riviera",         name: "Riviera",   tag: "Mediterranean · Arch",      component: Riviera,    available: true,  image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80&fit=crop" },
-  { id: "versailles",      name: "Versailles",tag: "Baroque · Ornate",          component: Versailles, available: true,  image: "https://images.unsplash.com/photo-1551009175-8a68da93d5f9?w=600&q=80&fit=crop" },
-  { id: "celestial",       name: "Celestial", tag: "Stars · Mystical",          component: Celestial,  available: true,  image: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80&fit=crop" },
-  { id: "tuscany",         name: "Tuscany",   tag: "Italian · Rustic",          component: Tuscany,    available: true,  image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=600&q=80&fit=crop" },
-  { id: "noir",            name: "Noir",      tag: "Bold · Typography",         component: Noir,       available: true,  image: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=600&q=80&fit=crop" },
-  { id: "moderne",         name: "Moderne",   tag: "Swiss · Grid",              component: Moderne,    available: true,  image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80&fit=crop" },
-  { id: "parchment",       name: "Parchment", tag: "Vintage · Nostalgic",       component: Parchment,  available: true,  image: "https://images.unsplash.com/photo-1516562309708-05f3b220653f?w=600&q=80&fit=crop" },
-  { id: "eden",            name: "Eden",      tag: "Lush · Tropical",           component: Eden,       available: true,  image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80&fit=crop" },
-  { id: "venezia",         name: "Venezia",   tag: "Gothic · Venetian",         component: Venezia,    available: true,  image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80&fit=crop" },
-  { id: "cote",            name: "Côte",      tag: "French · Coastal",          component: Cote,       available: true,  image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80&fit=crop" },
-  { id: "aurora",          name: "Aurora",    tag: "Northern Lights · Modern",  component: Aurora,     available: true,  image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80&fit=crop" },
-  { id: "monogram",        name: "Monogram",  tag: "Classic · Initials",        component: Monogram,   available: true,  image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&q=80&fit=crop" },
+  // ── Vertical (3:4) ──────────────────────────────────────────────────────────
+  { id: "elegant-minimal", name: "Élégant",    tag: "Minimalist · Timeless",      component: Elegant,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80&fit=crop" },
+  { id: "jardin",          name: "Jardin",     tag: "Botanical · Romantic",       component: Jardin,     orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&q=80&fit=crop" },
+  { id: "lumiere",         name: "Lumière",    tag: "Art Deco · Geometric",       component: Lumiere,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80&fit=crop" },
+  { id: "nocturne",        name: "Nocturne",   tag: "Dark · Dramatic",            component: Nocturne,   orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80&fit=crop" },
+  { id: "bloom",           name: "Bloom",      tag: "Floral · Dreamy",            component: Bloom,      orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=600&q=80&fit=crop" },
+  { id: "gatsby",          name: "Gatsby",     tag: "Art Deco · 1920s",           component: Gatsby,     orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80&fit=crop" },
+  { id: "nordic",          name: "Nordic",     tag: "Scandinavian · Clean",       component: Nordic,     orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=600&q=80&fit=crop" },
+  { id: "sakura",          name: "Sakura",     tag: "Blossom · Delicate",         component: Sakura,     orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=600&q=80&fit=crop" },
+  { id: "riviera",         name: "Riviera",    tag: "Mediterranean · Arch",       component: Riviera,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80&fit=crop" },
+  { id: "versailles",      name: "Versailles", tag: "Baroque · Ornate",           component: Versailles, orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1551009175-8a68da93d5f9?w=600&q=80&fit=crop" },
+  { id: "celestial",       name: "Celestial",  tag: "Stars · Mystical",           component: Celestial,  orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80&fit=crop" },
+  { id: "tuscany",         name: "Tuscany",    tag: "Italian · Rustic",           component: Tuscany,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=600&q=80&fit=crop" },
+  { id: "noir",            name: "Noir",       tag: "Bold · Typography",          component: Noir,       orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=600&q=80&fit=crop" },
+  { id: "moderne",         name: "Moderne",    tag: "Swiss · Grid",               component: Moderne,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80&fit=crop" },
+  { id: "parchment",       name: "Parchment",  tag: "Vintage · Nostalgic",        component: Parchment,  orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1516562309708-05f3b220653f?w=600&q=80&fit=crop" },
+  { id: "eden",            name: "Eden",       tag: "Lush · Tropical",            component: Eden,       orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80&fit=crop" },
+  { id: "venezia",         name: "Venezia",    tag: "Gothic · Venetian",          component: Venezia,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80&fit=crop" },
+  { id: "cote",            name: "Côte",       tag: "French · Coastal",           component: Cote,       orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80&fit=crop" },
+  { id: "aurora",          name: "Aurora",     tag: "Northern Lights · Modern",   component: Aurora,     orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80&fit=crop" },
+  { id: "monogram",        name: "Monogram",   tag: "Classic · Initials",         component: Monogram,   orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&q=80&fit=crop" },
+  // ── New Vertical (with photo) ────────────────────────────────────────────────
+  { id: "portrait",        name: "Portrait",   tag: "Photo · Cinematic",          component: Portrait,   orientation: "vertical",   supportsImage: true,  image: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80&fit=crop" },
+  { id: "manuscript",      name: "Manuscript", tag: "Letter · Handwritten",       component: Manuscript, orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600&q=80&fit=crop" },
+  { id: "cathedral",       name: "Cathedral",  tag: "Gothic · Dark Magic",        component: Cathedral,  orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&q=80&fit=crop" },
+  { id: "wildflower",      name: "Wildflower", tag: "Meadow · Watercolor",        component: Wildflower, orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1490750967868-88df5691cc5f?w=600&q=80&fit=crop" },
+  { id: "prism",           name: "Prism",      tag: "Geometric · Bold",           component: Prism,      orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&fit=crop" },
+  // ── Horizontal (4:3) ────────────────────────────────────────────────────────
+  { id: "cinema",          name: "Cinéma",     tag: "Letterbox · Photo",          component: Cinema,     orientation: "horizontal", supportsImage: true,  image: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600&q=80&fit=crop" },
+  { id: "diptych",         name: "Diptych",    tag: "Split · Photo + Text",       component: Diptych,    orientation: "horizontal", supportsImage: true,  image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80&fit=crop" },
+  { id: "pavilion",        name: "Pavilion",   tag: "Arch · Mediterranean",       component: Pavilion,   orientation: "horizontal", supportsImage: false, image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80&fit=crop" },
+  { id: "blueprint",       name: "Blueprint",  tag: "Technical · Modern",         component: Blueprint,  orientation: "horizontal", supportsImage: false, image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80&fit=crop" },
+  { id: "solstice",        name: "Solstice",   tag: "Terracotta · Warm",          component: Solstice,   orientation: "horizontal", supportsImage: false, image: "https://images.unsplash.com/photo-1533854775446-95c4609da544?w=600&q=80&fit=crop" },
 ];
 
 export function getTemplateComponent(id: string) {

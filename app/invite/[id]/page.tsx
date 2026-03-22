@@ -16,15 +16,27 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { data } = await supabase
     .from("invites")
-    .select("*")
+    .select("partner1,partner2,date,venue,location")
     .eq("id", params.id)
     .single();
 
   if (!data) return { title: "Wedding Invitation" };
   const inv = data as InviteRecord;
+  const title = `${inv.partner1} & ${inv.partner2} — Wedding Invitation`;
+  const description = `You're invited to celebrate the wedding of ${inv.partner1} and ${inv.partner2}${inv.date ? ` on ${inv.date}` : ""}${inv.venue ? ` at ${inv.venue}` : ""}.`;
   return {
-    title: `${inv.partner1} & ${inv.partner2} — Wedding Invitation`,
-    description: `You're invited to celebrate the wedding of ${inv.partner1} and ${inv.partner2} on ${inv.date}.`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 

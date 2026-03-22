@@ -39,8 +39,8 @@ export default function Home() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
         </svg>
       ),
-      title: "Instant link",
-      desc: "Share your link the moment payment is confirmed. No waiting, no shipping, no lost invitations.",
+      title: t.whyDigital1Title,
+      desc: t.whyDigital1Desc,
     },
     {
       icon: (
@@ -48,8 +48,8 @@ export default function Home() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 8.25h3m-3 3.75h3m-6-3.75H9m1.5-3.75H9" />
         </svg>
       ),
-      title: "Any device, always",
-      desc: "Guests open it on their phone, tablet, or laptop. One link works everywhere, forever.",
+      title: t.whyDigital2Title,
+      desc: t.whyDigital2Desc,
     },
     {
       icon: (
@@ -57,18 +57,12 @@ export default function Home() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
         </svg>
       ),
-      title: "Zero waste",
-      desc: "No paper, no printing, no postage. Beautiful and kind to the planet — like every great love story.",
+      title: t.whyDigital3Title,
+      desc: t.whyDigital3Desc,
     },
   ];
 
-  const PRICING_INCLUDES = [
-    "Live preview while you customize",
-    "Instant permanent shareable link",
-    "Works on all devices, forever",
-    "Secure Stripe checkout",
-    "No subscriptions, no renewals",
-  ];
+  const PRICING_INCLUDES = t.pricingIncludes;
 
   return (
     <main className="min-h-screen bg-cream overflow-x-hidden">
@@ -144,9 +138,9 @@ export default function Home() {
             {/* Trust strip */}
             <div className="flex items-center gap-5 mt-10 fade-in-delay-3 flex-wrap">
               {[
-                { label: "One-time $15", icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
-                { label: "Instant link", icon: "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" },
-                { label: "Secure payment", icon: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" },
+                { label: t.trustOneTime, icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
+                { label: t.trustInstant, icon: "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" },
+                { label: t.trustSecure, icon: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" },
               ].map(({ label, icon }, i) => (
                 <div key={label} className="flex items-center gap-4">
                   {i > 0 && <div className="h-3 w-px bg-gold-light hidden sm:block" />}
@@ -210,8 +204,8 @@ export default function Home() {
             <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">{t.howItWorksLabel}</span>
             <div className="h-px w-12 bg-gold-light" />
           </div>
-          <h2 className="font-serif text-4xl text-center text-charcoal mb-3 font-light">Ready in four simple steps</h2>
-          <p className="text-center text-muted text-sm font-light mb-16">From blank to beautiful in minutes.</p>
+          <h2 className="font-serif text-4xl text-center text-charcoal mb-3 font-light">{t.howItWorksSubtitle}</h2>
+          <p className="text-center text-muted text-sm font-light mb-16">{t.howItWorksSubDesc}</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 relative">
             <div className="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-gold-light to-transparent z-0" />
@@ -241,7 +235,7 @@ export default function Home() {
           </div>
           <h2 className="font-serif text-4xl text-center text-charcoal mb-3 font-light">{t.chooseYourStyle}</h2>
           <p className="text-center text-muted font-light text-sm mb-16 max-w-md mx-auto">
-            20 unique designs — from dark and dramatic to light and botanical. Every style is yours to customize.
+            {t.designsSubDesc}
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -288,11 +282,13 @@ export default function Home() {
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <div className="flex items-center gap-4 mb-4">
             <div className="h-px w-12 bg-gold/60" />
-            <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">Your special day</span>
+            <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">{t.lifestyleLabel}</span>
             <div className="h-px w-12 bg-gold/60" />
           </div>
           <h2 className="font-serif text-4xl md:text-5xl text-cream font-light italic mb-6">
-            Share your love story<br />with the world
+            {t.lifestyleHeading.split("\n").map((line, i) => (
+              <span key={i}>{line}{i === 0 && <br />}</span>
+            ))}
           </h2>
           <Link href="/customize" className="border border-gold text-gold px-10 py-3 text-xs tracking-widest uppercase hover:bg-gold hover:text-white transition-all duration-300 cursor-pointer">
             {t.startDesigning}
@@ -305,12 +301,12 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-4 mb-4 justify-center">
             <div className="h-px w-12 bg-gold-light" />
-            <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">Why digital</span>
+            <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">{t.whyDigitalLabel}</span>
             <div className="h-px w-12 bg-gold-light" />
           </div>
           <h2 className="font-serif text-4xl text-center text-charcoal mb-16 font-light">
-            Modern love deserves a{" "}
-            <span className="italic text-gold">modern invitation</span>
+            {t.whyDigitalHeading}{" "}
+            <span className="italic text-gold">{t.whyDigitalHeadingItalic}</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {WHY_DIGITAL.map(({ icon, title, desc }) => (
@@ -329,18 +325,18 @@ export default function Home() {
         <div className="max-w-sm mx-auto">
           <div className="flex items-center gap-4 mb-4 justify-center">
             <div className="h-px w-12 bg-gold-light" />
-            <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">Pricing</span>
+            <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">{t.pricingLabel}</span>
             <div className="h-px w-12 bg-gold-light" />
           </div>
-          <h2 className="font-serif text-4xl text-center text-charcoal mb-10 font-light">Simple &amp; honest</h2>
+          <h2 className="font-serif text-4xl text-center text-charcoal mb-10 font-light">{t.pricingHeading}</h2>
           <div className="border border-gold-light p-10 bg-white relative">
             <div className="absolute top-3 left-3 w-5 h-5 border-t border-l border-gold-light" />
             <div className="absolute top-3 right-3 w-5 h-5 border-t border-r border-gold-light" />
             <div className="absolute bottom-3 left-3 w-5 h-5 border-b border-l border-gold-light" />
             <div className="absolute bottom-3 right-3 w-5 h-5 border-b border-r border-gold-light" />
-            <p className="text-xs tracking-ultra-wide uppercase text-gold font-light mb-3 text-center">One-time payment</p>
+            <p className="text-xs tracking-ultra-wide uppercase text-gold font-light mb-3 text-center">{t.pricingBadge}</p>
             <div className="font-serif text-7xl text-charcoal font-light text-center mb-1">$15</div>
-            <p className="text-muted text-xs font-light text-center tracking-wider mb-8">per invitation · no subscriptions ever</p>
+            <p className="text-muted text-xs font-light text-center tracking-wider mb-8">{t.pricingPer}</p>
             <div className="space-y-3 mb-8">
               {PRICING_INCLUDES.map((item) => (
                 <div key={item} className="flex items-center gap-3 text-sm text-muted font-light">

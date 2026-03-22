@@ -118,6 +118,46 @@ export const translations = {
     datePlaceholder: "Day, Month Date, Year",
     venuePlaceholder: "The Venue Name",
     locationPlaceholder: "City, Country",
+
+    // Landing page — Why Digital section
+    whyDigitalLabel: "Why Digital",
+    whyDigitalHeading: "Modern love deserves a",
+    whyDigitalHeadingItalic: "modern invitation",
+    whyDigital1Title: "Instant link",
+    whyDigital1Desc: "Share your link the moment payment is confirmed. No waiting, no shipping, no lost invitations.",
+    whyDigital2Title: "Any device, always",
+    whyDigital2Desc: "Guests open it on their phone, tablet, or laptop. One link works everywhere, forever.",
+    whyDigital3Title: "Zero waste",
+    whyDigital3Desc: "No paper, no printing, no postage. Beautiful and kind to the planet — like every great love story.",
+
+    // Landing page — How it works subheading
+    howItWorksSubtitle: "Ready in four simple steps",
+    howItWorksSubDesc: "From blank to beautiful in minutes.",
+
+    // Landing page — Designs subheading
+    designsSubDesc: "20 unique designs — from dark and dramatic to light and botanical. Every style is yours to customize.",
+
+    // Landing page — Lifestyle banner
+    lifestyleLabel: "Your special day",
+    lifestyleHeading: "Share your love story\nwith the world",
+
+    // Landing page — Pricing
+    pricingLabel: "Pricing",
+    pricingHeading: "Simple & honest",
+    pricingBadge: "One-time payment",
+    pricingPer: "per invitation · no subscriptions ever",
+    pricingIncludes: [
+      "Live preview while you customize",
+      "Instant permanent shareable link",
+      "Works on all devices, forever",
+      "Secure Stripe checkout",
+      "No subscriptions, no renewals",
+    ],
+
+    // Trust strip
+    trustOneTime: "One-time $15",
+    trustInstant: "Instant link",
+    trustSecure: "Secure payment",
   },
 
   cs: {
@@ -237,6 +277,46 @@ export const translations = {
     datePlaceholder: "Den, měsíc, rok",
     venuePlaceholder: "Název místa",
     locationPlaceholder: "Město, země",
+
+    // Landing page — Why Digital section
+    whyDigitalLabel: "Proč digitálně",
+    whyDigitalHeading: "Moderní láska si zaslouží",
+    whyDigitalHeadingItalic: "moderní oznámení",
+    whyDigital1Title: "Okamžitý odkaz",
+    whyDigital1Desc: "Sdílejte odkaz ihned po potvrzení platby. Žádné čekání, žádné zásilky, žádná ztráta oznámení.",
+    whyDigital2Title: "Na každém zařízení",
+    whyDigital2Desc: "Hosté ho otevřou na telefonu, tabletu nebo notebooku. Jeden odkaz funguje všude, navždy.",
+    whyDigital3Title: "Bez odpadu",
+    whyDigital3Desc: "Žádný papír, žádný tisk, žádné poštovné. Krásné a šetrné k přírodě — jako každý velký příběh lásky.",
+
+    // Landing page — How it works subheading
+    howItWorksSubtitle: "Hotovo ve čtyřech jednoduchých krocích",
+    howItWorksSubDesc: "Z prázdné stránky k dokonalému oznámení za pár minut.",
+
+    // Landing page — Designs subheading
+    designsSubDesc: "20 unikátních vzorů — od temných a dramatických po světlé a botanické. Každý styl si přizpůsobíte.",
+
+    // Landing page — Lifestyle banner
+    lifestyleLabel: "Váš výjimečný den",
+    lifestyleHeading: "Sdílejte váš příběh lásky\nse světem",
+
+    // Landing page — Pricing
+    pricingLabel: "Ceny",
+    pricingHeading: "Jednoduché a upřímné",
+    pricingBadge: "Jednorázová platba",
+    pricingPer: "za oznámení · žádné předplatné",
+    pricingIncludes: [
+      "Živý náhled při úpravách",
+      "Okamžitý trvalý odkaz ke sdílení",
+      "Funguje na všech zařízeních navždy",
+      "Bezpečná platba přes Stripe",
+      "Žádné předplatné ani obnovy",
+    ],
+
+    // Trust strip
+    trustOneTime: "Jednorázově 15 $",
+    trustInstant: "Okamžitý odkaz",
+    trustSecure: "Bezpečná platba",
   },
 
   sk: {
@@ -356,6 +436,46 @@ export const translations = {
     datePlaceholder: "Deň, mesiac, rok",
     venuePlaceholder: "Názov miesta",
     locationPlaceholder: "Mesto, krajina",
+
+    // Landing page — Why Digital section
+    whyDigitalLabel: "Prečo digitálne",
+    whyDigitalHeading: "Moderná láska si zaslúži",
+    whyDigitalHeadingItalic: "moderné oznámenie",
+    whyDigital1Title: "Okamžitý odkaz",
+    whyDigital1Desc: "Zdieľajte odkaz hneď po potvrdení platby. Žiadne čakanie, žiadne zásielky, žiadna strata oznámenia.",
+    whyDigital2Title: "Na každom zariadení",
+    whyDigital2Desc: "Hostia ho otvoria na telefóne, tablete alebo notebooku. Jeden odkaz funguje všade, navždy.",
+    whyDigital3Title: "Bez odpadu",
+    whyDigital3Desc: "Žiadny papier, žiadna tlač, žiadne poštovné. Krásne a šetrné k prírode — ako každý veľký príbeh lásky.",
+
+    // Landing page — How it works subheading
+    howItWorksSubtitle: "Hotovo v štyroch jednoduchých krokoch",
+    howItWorksSubDesc: "Z prázdnej stránky k dokonalému oznámeniu za pár minút.",
+
+    // Landing page — Designs subheading
+    designsSubDesc: "20 jedinečných vzorov — od tmavých a dramatických po svetlé a botanické. Každý štýl si prispôsobíte.",
+
+    // Landing page — Lifestyle banner
+    lifestyleLabel: "Váš výnimočný deň",
+    lifestyleHeading: "Zdieľajte váš príbeh lásky\nso svetom",
+
+    // Landing page — Pricing
+    pricingLabel: "Ceny",
+    pricingHeading: "Jednoduché a úprimné",
+    pricingBadge: "Jednorazová platba",
+    pricingPer: "za oznámenie · žiadne predplatné",
+    pricingIncludes: [
+      "Živý náhľad pri úpravách",
+      "Okamžitý trvalý odkaz na zdieľanie",
+      "Funguje na všetkých zariadeniach navždy",
+      "Bezpečná platba cez Stripe",
+      "Žiadne predplatné ani obnovy",
+    ],
+
+    // Trust strip
+    trustOneTime: "Jednorazovo 15 $",
+    trustInstant: "Okamžitý odkaz",
+    trustSecure: "Bezpečná platba",
   },
 };
 

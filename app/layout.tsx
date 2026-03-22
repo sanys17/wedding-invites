@@ -17,11 +17,9 @@ const jost = Jost({
   display: "swap",
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
-  ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
-  : process.env.VERCEL_URL
-  ? new URL(`https://${process.env.VERCEL_URL}`)
-  : new URL("http://localhost:3000");
+const baseUrl = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://wedding-inv-nine.vercel.app"
+);
 
 export const metadata: Metadata = {
   metadataBase: baseUrl,

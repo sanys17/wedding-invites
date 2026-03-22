@@ -98,6 +98,7 @@ export function Jardin({ data: d, t: tProp }: TP) {
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{d.time}</p>}
       <p className="font-serif italic text-[#1C1917] text-base mb-1">{VENUE(d, t)}</p>
       <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-5">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-4">&ldquo;{d.message}&rdquo;</p>}
       {d.rsvp_email && (
         <div className="border border-[#D4B86A] px-5 py-2">
           <p className="text-[9px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
@@ -146,7 +147,14 @@ export function Lumiere({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-[0.25em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{d.time}</p>}
       <p className="font-serif text-base text-[#1C1917] mb-0.5">{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans">{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans mb-4">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-4">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border border-[#D4B86A] px-4 py-1.5">
+          <p className="text-[8px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -178,9 +186,10 @@ export function Nocturne({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#C8B99A" }}>{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider font-sans font-light mb-4" style={{ color: "#8A7A6A" }}>{d.time}</p>}
       <p className="font-serif italic text-base mb-1" style={{ color: "#C8B99A" }}>{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider font-sans font-light" style={{ color: "#8A7A6A" }}>{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider font-sans font-light mb-4" style={{ color: "#8A7A6A" }}>{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-sm leading-relaxed mb-4" style={{ color: "#8A7A6A" }}>&ldquo;{d.message}&rdquo;</p>}
       {d.rsvp_email && (
-        <div className="mt-5 border px-5 py-2" style={{ borderColor: "#D4B86A33" }}>
+        <div className="mt-2 border px-5 py-2" style={{ borderColor: "#D4B86A33" }}>
           <p className="text-[9px] tracking-[0.3em] uppercase text-[#D4B86A] font-sans mb-0.5 opacity-70">{t.rsvp}</p>
           <p className="text-[10px] font-sans" style={{ color: "#8A7A6A" }}>{d.rsvp_email}</p>
         </div>
@@ -280,7 +289,14 @@ export function Gatsby({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{d.time}</p>}
       <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-3">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border border-[#D4B86A] px-4 py-1.5 mb-2">
+          <p className="text-[8px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
       {/* Fan bottom ornament */}
       <svg width="70" height="35" viewBox="0 0 70 35" className="mt-3" style={{ transform: "scaleY(-1)" }}>
         {Array.from({ length: 7 }).map((_, i) => {
@@ -311,7 +327,16 @@ export function Nordic({ data: d, t: tProp }: TP) {
       <h1 className="font-serif text-5xl font-light text-[#1C1917] leading-tight mb-12">{P2(d, t)}</h1>
       <div className="h-px w-8 bg-[#B8960C] mb-6 opacity-60" />
       <p className="text-[10px] tracking-[0.3em] uppercase text-[#6B6359] font-sans font-light mb-1 opacity-70">{DATE(d, t)}</p>
-      <p className="text-[10px] tracking-[0.2em] text-[#6B6359] font-sans font-light opacity-50">{VENUE(d, t)} · {LOC(d, t)}</p>
+      {d.time && <p className="text-[10px] tracking-wider text-[#6B6359] font-sans font-light mb-3 opacity-50">{d.time}</p>}
+      <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
+      <p className="text-[10px] tracking-wider text-[#6B6359] font-sans font-light opacity-50 mb-3">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-3">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border border-[#D4B86A] px-4 py-1.5 mt-1">
+          <p className="text-[8px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -355,9 +380,10 @@ export function Sakura({ data: d, t: tProp }: TP) {
         <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
         {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{d.time}</p>}
         <p className="font-serif italic text-[#1C1917] text-base mb-1">{VENUE(d, t)}</p>
-        <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
+        <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-3">&ldquo;{d.message}&rdquo;</p>}
         {d.rsvp_email && (
-          <div className="mt-4 border px-4 py-1.5 mx-auto inline-block" style={{ borderColor: "#FDA4AF88" }}>
+          <div className="mt-2 border px-4 py-1.5 mx-auto inline-block" style={{ borderColor: "#FDA4AF88" }}>
             <p className="text-[9px] tracking-[0.3em] uppercase font-sans mb-0.5" style={{ color: "#FB7185" }}>{t.rsvp}</p>
             <p className="text-[10px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
           </div>
@@ -396,7 +422,14 @@ export function Riviera({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{d.time}</p>}
       <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-3">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border px-4 py-1.5 mt-1" style={{ borderColor: "#1E3A8A33" }}>
+          <p className="text-[8px] tracking-[0.3em] uppercase font-sans mb-0.5" style={{ color: "#1E3A8A", opacity: 0.6 }}>{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -436,7 +469,14 @@ export function Versailles({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{d.time}</p>}
       <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-4">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border border-[#D4B86A] px-4 py-1.5 mt-1">
+          <p className="text-[8px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -476,7 +516,14 @@ export function Celestial({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-[0.2em] uppercase font-sans font-light mb-1 relative z-10" style={{ color: "#C8B99A" }}>{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider font-sans font-light mb-4 relative z-10" style={{ color: "#8A7A6A" }}>{d.time}</p>}
       <p className="font-serif italic text-base mb-0.5 relative z-10" style={{ color: "#C8B99A" }}>{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider font-sans font-light relative z-10" style={{ color: "#8A7A6A" }}>{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider font-sans font-light mb-4 relative z-10" style={{ color: "#8A7A6A" }}>{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-sm leading-relaxed mb-4 relative z-10" style={{ color: "#8A7A6A" }}>&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border px-4 py-1.5 relative z-10" style={{ borderColor: "#D4B86A33" }}>
+          <p className="text-[8px] tracking-[0.3em] uppercase font-sans mb-0.5" style={{ color: "#D4B86A", opacity: 0.7 }}>{t.rsvp}</p>
+          <p className="text-[9px] font-sans" style={{ color: "#8A7A6A" }}>{d.rsvp_email}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -509,6 +556,12 @@ export function Tuscany({ data: d, t: tProp }: TP) {
       <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
       <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-4">{LOC(d, t)}</p>
       {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-4">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border border-[#D4B86A] px-4 py-1.5 mb-3">
+          <p className="text-[8px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
       {/* Olive branch bottom */}
       <svg width="180" height="40" viewBox="0 0 180 40" style={{ transform: "scaleY(-1)" }}>
         <path d="M10 20 C50 20 90 20 170 20" stroke="#78716C" strokeWidth="1" strokeLinecap="round" opacity="0.25" />
@@ -539,7 +592,14 @@ export function Noir({ data: d, t: tProp }: TP) {
         <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-1" style={{ color: "#4A4A4A" }}>{DATE(d, t)}</p>
         {d.time && <p className="text-[9px] tracking-wider font-sans font-light mb-2" style={{ color: "#3A3A3A" }}>{d.time}</p>}
         <p className="font-serif italic text-sm mb-0.5" style={{ color: "#5A5A5A" }}>{VENUE(d, t)}</p>
-        <p className="text-[9px] tracking-wider font-sans font-light" style={{ color: "#3A3A3A" }}>{LOC(d, t)}</p>
+        <p className="text-[9px] tracking-wider font-sans font-light mb-3" style={{ color: "#3A3A3A" }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-xs leading-relaxed mb-3" style={{ color: "#4A4A4A" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && (
+          <div className="border border-[#B8960C] px-4 py-1.5 mt-1">
+            <p className="text-[8px] tracking-[0.3em] uppercase font-sans mb-0.5" style={{ color: "#B8960C" }}>{t.rsvp}</p>
+            <p className="text-[9px] font-sans" style={{ color: "#4A4A4A" }}>{d.rsvp_email}</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -567,7 +627,14 @@ export function Moderne({ data: d, t: tProp }: TP) {
         <p className="text-[10px] tracking-[0.3em] uppercase text-[#1C1917] font-sans font-light mb-1 opacity-70">{DATE(d, t)}</p>
         {d.time && <p className="text-[10px] tracking-wider text-[#6B6359] font-sans font-light mb-2">{d.time}</p>}
         <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
-        <p className="text-[10px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
+        <p className="text-[10px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-3">&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && (
+          <div className="border border-[#D4B86A] px-4 py-1.5 mt-1">
+            <p className="text-[8px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
+            <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -607,7 +674,14 @@ export function Parchment({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{d.time}</p>}
       <p className="font-serif italic text-[#1C1917] text-base mb-0.5">{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light">{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-4">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border border-[#D4B86A] px-4 py-1.5 mt-1">
+          <p className="text-[8px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -661,7 +735,14 @@ export function Eden({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{d.time}</p>}
       <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-3 relative z-10">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border border-[#D4B86A] px-4 py-1.5 relative z-10">
+          <p className="text-[8px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -701,7 +782,14 @@ export function Venezia({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{d.time}</p>}
       <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-3 relative z-10">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border border-[#D4B86A] px-4 py-1.5 relative z-10">
+          <p className="text-[8px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -735,7 +823,14 @@ export function Cote({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{d.time}</p>}
       <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-3 relative z-10">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border border-[#3B82F6] border-opacity-30 px-4 py-1.5 relative z-10">
+          <p className="text-[8px] tracking-[0.3em] uppercase font-sans mb-0.5" style={{ color: "#3B82F6", opacity: 0.6 }}>{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -760,7 +855,14 @@ export function Aurora({ data: d, t: tProp }: TP) {
       <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d, t)}</p>
       {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{d.time}</p>}
       <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-3 relative z-10">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border border-[#D4B86A] px-4 py-1.5 relative z-10">
+          <p className="text-[8px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -796,8 +898,16 @@ export function Monogram({ data: d, t: tProp }: TP) {
       <p className="font-serif text-2xl font-light italic text-[#1C1917] mb-0.5 relative z-10">{P1(d, t)} &amp; {P2(d, t)}</p>
       <p className="text-[9px] tracking-[0.4em] uppercase text-[#B8960C] font-sans font-light mb-4 relative z-10 opacity-70">{t.weddingInvitation}</p>
       <p className="text-[11px] tracking-[0.2em] uppercase text-[#1C1917] font-sans font-light mb-1 relative z-10">{DATE(d, t)}</p>
+      {d.time && <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-2 relative z-10">{d.time}</p>}
       <p className="font-serif italic text-[#1C1917] text-base mb-0.5 relative z-10">{VENUE(d, t)}</p>
-      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light relative z-10">{LOC(d, t)}</p>
+      <p className="text-[11px] tracking-wider text-[#6B6359] font-sans font-light mb-3 relative z-10">{LOC(d, t)}</p>
+      {d.message && <p className="font-serif italic text-[#6B6359] text-sm leading-relaxed mb-3 relative z-10">&ldquo;{d.message}&rdquo;</p>}
+      {d.rsvp_email && (
+        <div className="border border-[#D4B86A] px-4 py-1.5 relative z-10">
+          <p className="text-[8px] tracking-[0.3em] uppercase text-[#B8960C] font-sans mb-0.5">{t.rsvp}</p>
+          <p className="text-[9px] text-[#6B6359] font-sans">{d.rsvp_email}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -839,10 +949,12 @@ export function Portrait({ data: d, t: tProp }: TP) {
         <p className="text-lg tracking-widest mb-0.5" style={{ color: "#C9A96E" }}>&amp;</p>
         <h1 className="font-serif text-3xl font-light italic leading-tight mb-4" style={{ color: "#F5F0E8" }}>{P2(d, t)}</h1>
         <p className="text-[10px] tracking-[0.25em] uppercase font-sans font-light mb-1" style={{ color: "#8B8070" }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[10px] tracking-wider font-sans font-light mb-1" style={{ color: "#8B8070" }}>{d.time}</p>}
         <p className="font-serif italic text-sm mb-0.5" style={{ color: "#F5F0E8" }}>{VENUE(d, t)}</p>
-        <p className="text-[10px] tracking-wider font-sans font-light" style={{ color: "#8B8070" }}>{LOC(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light mb-3" style={{ color: "#8B8070" }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-xs leading-relaxed mb-3" style={{ color: "#8B8070" }}>&ldquo;{d.message}&rdquo;</p>}
         {d.rsvp_email && (
-          <div className="mt-4 border px-4 py-1.5" style={{ borderColor: "#C9A96E" }}>
+          <div className="border px-4 py-1.5" style={{ borderColor: "#C9A96E" }}>
             <p className="text-[8px] tracking-[0.3em] uppercase font-sans" style={{ color: "#C9A96E" }}>RSVP · {d.rsvp_email}</p>
           </div>
         )}
@@ -865,7 +977,9 @@ export function Manuscript({ data: d, t: tProp }: TP) {
       {/* Red margin line */}
       <div className="absolute top-0 bottom-0 w-px" style={{ left: "15%", background: "rgba(180,60,60,0.2)" }} />
       <div className="relative z-10 text-center w-full">
-        <p className="text-[9px] tracking-[0.3em] uppercase font-sans font-light mb-5" style={{ color: "#8B7355" }}>{d.date || t.datePlaceholder} · {d.location || t.locationPlaceholder}</p>
+        <p className="text-[9px] tracking-[0.3em] uppercase font-sans font-light mb-1" style={{ color: "#8B7355" }}>{d.date || t.datePlaceholder}</p>
+        {d.time && <p className="text-[9px] tracking-wider font-sans font-light mb-1" style={{ color: "#8B7355" }}>{d.time}</p>}
+        <p className="text-[9px] tracking-[0.2em] font-sans font-light mb-5" style={{ color: "#8B7355" }}>{d.location || t.locationPlaceholder}</p>
         <p className="text-xs font-sans font-light mb-3 italic" style={{ color: "#6B5A40" }}>Dear friends &amp; family,</p>
         <p className="text-xs font-sans font-light mb-5 leading-relaxed" style={{ color: "#6B5A40" }}>We joyfully invite you to witness the union of</p>
         <h1 className="font-serif text-4xl font-light italic mb-0.5" style={{ color: "#2C2218" }}>{P1(d, t)}</h1>
@@ -878,7 +992,8 @@ export function Manuscript({ data: d, t: tProp }: TP) {
         </div>
         <p className="text-xs font-sans font-light mb-1" style={{ color: "#6B5A40" }}>{VENUE(d, t)}</p>
         {d.message && <p className="text-xs italic font-sans leading-relaxed mt-3" style={{ color: "#8B7355" }}>&ldquo;{d.message}&rdquo;</p>}
-        <p className="font-serif italic text-base mt-5" style={{ color: "#2C2218" }}>With love,</p>
+        {d.rsvp_email && <p className="text-[9px] tracking-[0.3em] uppercase font-sans mt-3" style={{ color: "#8B7355" }}>RSVP · {d.rsvp_email}</p>}
+        <p className="font-serif italic text-base mt-4" style={{ color: "#2C2218" }}>With love,</p>
         <p className="font-serif text-lg italic" style={{ color: "#2C2218" }}>{P1(d, t)} &amp; {P2(d, t)}</p>
       </div>
     </div>
@@ -920,9 +1035,16 @@ export function Cathedral({ data: d, t: tProp }: TP) {
           <div className="flex-1 h-px" style={{ background: "linear-gradient(to left, transparent, #4A2D7A)" }} />
         </div>
         <p className="text-[10px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#9B8AB0" }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[10px] tracking-wider font-sans font-light mb-1" style={{ color: "#7B6A90" }}>{d.time}</p>}
         <p className="font-serif italic text-sm mb-1" style={{ color: "#F0EBF8" }}>{VENUE(d, t)}</p>
-        <p className="text-[10px] tracking-wider font-sans font-light" style={{ color: "#7B6A90" }}>{LOC(d, t)}</p>
-        {d.message && <p className="text-[10px] italic font-sans mt-4 leading-relaxed" style={{ color: "#9B8AB0" }}>&ldquo;{d.message}&rdquo;</p>}
+        <p className="text-[10px] tracking-wider font-sans font-light mb-3" style={{ color: "#7B6A90" }}>{LOC(d, t)}</p>
+        {d.message && <p className="text-[10px] italic font-sans mt-2 leading-relaxed mb-3" style={{ color: "#9B8AB0" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && (
+          <div className="border mt-2 px-4 py-1.5" style={{ borderColor: "#4A2D7A" }}>
+            <p className="text-[8px] tracking-[0.3em] uppercase font-sans mb-0.5" style={{ color: "#9B5DE5" }}>{t.rsvp}</p>
+            <p className="text-[9px] font-sans" style={{ color: "#9B8AB0" }}>{d.rsvp_email}</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -975,9 +1097,11 @@ export function Wildflower({ data: d, t: tProp }: TP) {
         <p className="text-base tracking-widest mb-0.5" style={{ color: "#C4826E" }}>&amp;</p>
         <h1 className="font-serif text-4xl font-light italic leading-tight mb-5" style={{ color: "#3D2B1F" }}>{P2(d, t)}</h1>
         <p className="text-[10px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#9B7E6A" }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[10px] tracking-wider font-sans font-light mb-1" style={{ color: "#9B7E6A" }}>{d.time}</p>}
         <p className="font-serif italic text-sm mb-1" style={{ color: "#3D2B1F" }}>{VENUE(d, t)}</p>
         <p className="text-[10px] tracking-wider font-sans font-light mb-3" style={{ color: "#9B7E6A" }}>{LOC(d, t)}</p>
-        {d.message && <p className="text-[10px] italic font-sans leading-relaxed" style={{ color: "#7A6050" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.message && <p className="text-[10px] italic font-sans leading-relaxed mb-3" style={{ color: "#7A6050" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && <p className="text-[9px] tracking-[0.3em] uppercase font-sans" style={{ color: "#C4826E" }}>RSVP · {d.rsvp_email}</p>}
       </div>
     </div>
   );
@@ -1020,10 +1144,12 @@ export function Prism({ data: d, t: tProp }: TP) {
         <h1 className="font-serif text-4xl font-light italic leading-tight mb-6" style={{ color: "#F8F8F8" }}>{P2(d, t)}</h1>
         <div className="w-16 h-px mx-auto mb-4" style={{ background: "linear-gradient(90deg, #FF6464, #6464FF)" }} />
         <p className="text-[10px] tracking-[0.3em] uppercase font-sans font-light mb-1" style={{ color: "#888" }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[10px] tracking-wider font-sans font-light mb-1" style={{ color: "#666" }}>{d.time}</p>}
         <p className="font-serif italic text-sm mb-1" style={{ color: "#E0E0E0" }}>{VENUE(d, t)}</p>
-        <p className="text-[10px] tracking-wider font-sans font-light" style={{ color: "#666" }}>{LOC(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light mb-3" style={{ color: "#666" }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-xs leading-relaxed mb-3" style={{ color: "#888" }}>&ldquo;{d.message}&rdquo;</p>}
         {d.rsvp_email && (
-          <p className="text-[9px] tracking-[0.3em] uppercase font-sans mt-5" style={{ color: "#FF6464" }}>RSVP · {d.rsvp_email}</p>
+          <p className="text-[9px] tracking-[0.3em] uppercase font-sans mt-2" style={{ color: "#FF6464" }}>RSVP · {d.rsvp_email}</p>
         )}
       </div>
     </div>
@@ -1058,7 +1184,11 @@ export function Cinema({ data: d, t: tProp }: TP) {
           <p className="text-[10px] tracking-[0.3em] uppercase font-sans font-light" style={{ color: "rgba(255,255,255,0.5)" }}>{DATE(d, t)}</p>
           <div className="flex-1 h-px max-w-16" style={{ background: "rgba(255,255,255,0.2)" }} />
         </div>
-        <p className="font-serif italic text-sm" style={{ color: "#D0CCBC" }}>{VENUE(d, t)} · {LOC(d, t)}</p>
+        {d.time && <p className="text-[9px] tracking-wider font-sans font-light mb-3" style={{ color: "rgba(255,255,255,0.4)" }}>{d.time}</p>}
+        <p className="font-serif italic text-sm mb-1" style={{ color: "#D0CCBC" }}>{VENUE(d, t)}</p>
+        <p className="text-[9px] tracking-wider font-sans font-light mb-3" style={{ color: "rgba(255,255,255,0.4)" }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-xs leading-relaxed mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && <p className="text-[8px] tracking-[0.3em] uppercase font-sans" style={{ color: "rgba(255,255,255,0.35)" }}>RSVP · {d.rsvp_email}</p>}
       </div>
     </div>
   );
@@ -1133,7 +1263,16 @@ export function Pavilion({ data: d, t: tProp }: TP) {
           <div className="w-8 h-px" style={{ background: "#C9A96E" }} />
         </div>
         <p className="text-[9px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#8B7355" }}>{DATE(d, t)}</p>
-        <p className="font-serif italic text-sm" style={{ color: "#2C2218" }}>{VENUE(d, t)} · {LOC(d, t)}</p>
+        {d.time && <p className="text-[9px] tracking-wider font-sans font-light mb-1" style={{ color: "#8B7355" }}>{d.time}</p>}
+        <p className="font-serif italic text-sm mb-0.5" style={{ color: "#2C2218" }}>{VENUE(d, t)}</p>
+        <p className="text-[9px] tracking-wider font-sans font-light mb-3" style={{ color: "#8B7355" }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-xs leading-relaxed mb-3" style={{ color: "#8B7355" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && (
+          <div className="border border-[#C9A96E] border-opacity-40 px-4 py-1.5">
+            <p className="text-[7px] tracking-[0.3em] uppercase font-sans mb-0.5" style={{ color: "#B8960C" }}>{t.rsvp}</p>
+            <p className="text-[8px] font-sans" style={{ color: "#8B7355" }}>{d.rsvp_email}</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1169,7 +1308,11 @@ export function Blueprint({ data: d, t: tProp }: TP) {
         <p className="text-base tracking-widest my-1" style={{ color: "rgba(255,255,255,0.4)" }}>&amp;</p>
         <h1 className="font-serif text-4xl font-light italic leading-tight mb-5" style={{ color: "#FFFFFF" }}>{P2(d, t)}</h1>
         <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-1" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}>{DATE(d, t)}</p>
-        <p className="text-[9px] tracking-wider font-sans font-light" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "monospace" }}>{VENUE(d, t)} · {LOC(d, t)}</p>
+        {d.time && <p className="text-[9px] tracking-wider font-sans font-light mb-1" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "monospace" }}>{d.time}</p>}
+        <p className="font-serif italic text-sm mb-0.5" style={{ color: "rgba(255,255,255,0.7)" }}>{VENUE(d, t)}</p>
+        <p className="text-[9px] tracking-wider font-sans font-light mb-3" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "monospace" }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-xs leading-relaxed mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && <p className="text-[8px] tracking-[0.4em] uppercase font-sans" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "monospace" }}>RSVP · {d.rsvp_email}</p>}
       </div>
     </div>
   );

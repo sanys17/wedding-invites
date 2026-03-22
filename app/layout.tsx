@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Lora, Jost } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import { LanguageProvider } from "@/context/LanguageContext";
 
-const lora = Lora({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin", "latin-ext"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
   variable: "--font-serif",
   display: "swap",
 });
@@ -32,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${lora.variable} ${jost.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
       <body className="font-sans antialiased">
         <LanguageProvider>{children}</LanguageProvider>
       </body>

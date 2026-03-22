@@ -116,7 +116,7 @@ export default function Home() {
               <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">{t.tagline}</span>
             </div>
 
-            <h1 className="font-serif text-5xl md:text-7xl font-light text-charcoal leading-none mb-6 fade-in">
+            <h1 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-none mb-6 fade-in">
               {t.heroTitle1}
               <br />
               <span className="italic text-gold">{t.heroTitle2}</span>

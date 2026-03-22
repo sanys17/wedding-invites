@@ -31,8 +31,17 @@ function CustomizeContent() {
 
   const PRICE = 15;
 
+  type FilterKey = "all" | "vertical" | "horizontal" | "photo";
+  const FILTERS: { key: FilterKey; label: string }[] = [
+    { key: "all",        label: "All" },
+    { key: "vertical",   label: "Vertical" },
+    { key: "horizontal", label: "Horizontal" },
+    { key: "photo",      label: "With Photo" },
+  ];
+
   const [form, setForm] = useState<InviteData>(INITIAL);
   const [step, setStep] = useState<"edit" | "review">("edit");
+  const [filter, setFilter] = useState<FilterKey>("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [imageUploading, setImageUploading] = useState(false);
@@ -134,40 +143,117 @@ function CustomizeContent() {
             {step === "edit" && (
               <div className="mb-8">
                 <p className="text-xs tracking-ultra-wide uppercase text-muted font-light mb-3">Choose a Design</p>
-                <div className="grid grid-cols-4 gap-2 max-h-56 overflow-y-auto pr-1">
-                  {TEMPLATE_REGISTRY.map((tmpl) => {
-                    const TemplateComp = tmpl.component;
-                    const previewData: InviteData = {
-                      partner1: "Emma", partner2: "James",
-                      date: "Sept 14, 2025", time: "4:00 PM",
-                      venue: "Grand Estate", location: "Florence",
-                      message: "", rsvp_email: "", template: tmpl.id,
-                    };
-                    return (
-                      <button
-                        key={tmpl.id}
-                        onClick={() => update("template", tmpl.id)}
-                        className={`relative border transition-all duration-200 cursor-pointer group ${
-                          form.template === tmpl.id
-                            ? "border-gold shadow-sm"
-                            : "border-gold-light hover:border-gold"
-                        }`}
-                        style={{ aspectRatio: "3/4" }}
-                        title={`${tmpl.name} — ${tmpl.tag}`}
-                      >
-                        <div className="absolute inset-0 overflow-hidden" style={{ transform: "scale(0.18)", transformOrigin: "top left", width: "556%", height: "556%" }}>
-                          <TemplateComp data={previewData} />
-                        </div>
-                        {form.template === tmpl.id && (
-                          <div className="absolute inset-0 border-2 border-gold pointer-events-none" />
-                        )}
-                      </button>
-                    );
-                  })}
+
+                {/* Filter pills */}
+                <div className="flex gap-2 mb-3 flex-wrap">
+                  {FILTERS.map((f) => (
+                    <button
+                      key={f.key}
+                      onClick={() => setFilter(f.key)}
+                      className={`px-3 py-1 text-[10px] tracking-widest uppercase font-light border transition-all ${
+                        filter === f.key
+                          ? "border-gold text-gold bg-gold/5"
+                          : "border-gold-light text-muted hover:border-gold hover:text-gold"
+                      }`}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
                 </div>
-                <p className="text-[10px] text-muted font-light mt-1.5">
+
+                {/* Template grid */}
+                {(() => {
+                  const filtered = TEMPLATE_REGISTRY.filter((tmpl) => {
+                    if (filter === "vertical")   return tmpl.orientation === "vertical";
+                    if (filter === "horizontal") return tmpl.orientation === "horizontal";
+                    if (filter === "photo")      return tmpl.supportsImage;
+                    return true;
+                  });
+
+                  const hasHorizontal = filtered.some(t => t.orientation === "horizontal");
+                  const hasVertical   = filtered.some(t => t.orientation === "vertical");
+                  const mixed = hasHorizontal && hasVertical;
+
+                  if (mixed) {
+                    // Group by orientation when showing "all"
+                    const verticals   = filtered.filter(t => t.orientation === "vertical");
+                    const horizontals = filtered.filter(t => t.orientation === "horizontal");
+                    const previewData: InviteData = { partner1: "Emma", partner2: "James", date: "Sept 14, 2025", time: "4:00 PM", venue: "Grand Estate", location: "Florence", message: "", rsvp_email: "", template: "" };
+
+                    return (
+                      <div className="max-h-72 overflow-y-auto pr-1 space-y-4">
+                        {verticals.length > 0 && (
+                          <div>
+                            <p className="text-[9px] tracking-ultra-wide uppercase text-muted/50 font-light mb-2">Vertical</p>
+                            <div className="grid grid-cols-5 gap-2">
+                              {verticals.map((tmpl) => {
+                                const TC = tmpl.component;
+                                return (
+                                  <button key={tmpl.id} onClick={() => update("template", tmpl.id)}
+                                    className={`relative border transition-all cursor-pointer ${form.template === tmpl.id ? "border-gold shadow-sm" : "border-gold-light hover:border-gold"}`}
+                                    style={{ aspectRatio: "3/4" }} title={`${tmpl.name} — ${tmpl.tag}`}>
+                                    <div className="absolute inset-0 overflow-hidden" style={{ transform: "scale(0.155)", transformOrigin: "top left", width: "645%", height: "645%" }}>
+                                      <TC data={{ ...previewData, template: tmpl.id }} />
+                                    </div>
+                                    {form.template === tmpl.id && <div className="absolute inset-0 border-2 border-gold pointer-events-none" />}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                        {horizontals.length > 0 && (
+                          <div>
+                            <p className="text-[9px] tracking-ultra-wide uppercase text-muted/50 font-light mb-2">Horizontal</p>
+                            <div className="grid grid-cols-3 gap-2">
+                              {horizontals.map((tmpl) => {
+                                const TC = tmpl.component;
+                                return (
+                                  <button key={tmpl.id} onClick={() => update("template", tmpl.id)}
+                                    className={`relative border transition-all cursor-pointer ${form.template === tmpl.id ? "border-gold shadow-sm" : "border-gold-light hover:border-gold"}`}
+                                    style={{ aspectRatio: "4/3" }} title={`${tmpl.name} — ${tmpl.tag}`}>
+                                    <div className="absolute inset-0 overflow-hidden" style={{ transform: "scale(0.155)", transformOrigin: "top left", width: "645%", height: "645%" }}>
+                                      <TC data={{ ...previewData, template: tmpl.id }} />
+                                    </div>
+                                    {form.template === tmpl.id && <div className="absolute inset-0 border-2 border-gold pointer-events-none" />}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+
+                  // Single orientation view
+                  const isHoriz = hasHorizontal;
+                  const previewData: InviteData = { partner1: "Emma", partner2: "James", date: "Sept 14, 2025", time: "4:00 PM", venue: "Grand Estate", location: "Florence", message: "", rsvp_email: "", template: "" };
+                  return (
+                    <div className={`grid gap-2 max-h-72 overflow-y-auto pr-1 ${isHoriz ? "grid-cols-3" : "grid-cols-5"}`}>
+                      {filtered.map((tmpl) => {
+                        const TC = tmpl.component;
+                        return (
+                          <button key={tmpl.id} onClick={() => update("template", tmpl.id)}
+                            className={`relative border transition-all cursor-pointer ${form.template === tmpl.id ? "border-gold shadow-sm" : "border-gold-light hover:border-gold"}`}
+                            style={{ aspectRatio: isHoriz ? "4/3" : "3/4" }} title={`${tmpl.name} — ${tmpl.tag}`}>
+                            <div className="absolute inset-0 overflow-hidden" style={{ transform: "scale(0.155)", transformOrigin: "top left", width: "645%", height: "645%" }}>
+                              <TC data={{ ...previewData, template: tmpl.id }} />
+                            </div>
+                            {form.template === tmpl.id && <div className="absolute inset-0 border-2 border-gold pointer-events-none" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  );
+                })()}
+
+                <p className="text-[10px] text-muted font-light mt-2">
                   Selected: <span className="text-gold font-normal">{TEMPLATE_REGISTRY.find(r => r.id === form.template)?.name}</span>
                   {" — "}{TEMPLATE_REGISTRY.find(r => r.id === form.template)?.tag}
+                  {TEMPLATE_REGISTRY.find(r => r.id === form.template)?.supportsImage && (
+                    <span className="ml-2 text-gold/60">· supports photo</span>
+                  )}
                 </p>
               </div>
             )}

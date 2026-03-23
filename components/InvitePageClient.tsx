@@ -19,7 +19,17 @@ function InviteContent({ inv }: { inv: InviteRecord }) {
   const [attendingCount, setAttendingCount] = useState<number | null>(null);
   const [error, setError] = useState("");
 
+  // Restore state from localStorage + fetch count
   useEffect(() => {
+    const saved = localStorage.getItem(`rsvp_${inv.id}`);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setAttending(parsed.attending);
+        setName(parsed.name ?? "");
+        setStep("done");
+      } catch {}
+    }
     fetch(`/api/rsvp?invite_id=${inv.id}`)
       .then((r) => r.json())
       .then((d) => setAttendingCount(d.stats?.attending ?? 0))
@@ -40,6 +50,7 @@ function InviteContent({ inv }: { inv: InviteRecord }) {
       const data = await res.json();
       if (data.success) {
         setAttendingCount(data.attending_count);
+        localStorage.setItem(`rsvp_${inv.id}`, JSON.stringify({ attending, name }));
         setStep("done");
       } else {
         setError("Something went wrong. Please try again.");

@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = { title: "RSVP Dashboard — Forevermore" };
 
 interface Rsvp {

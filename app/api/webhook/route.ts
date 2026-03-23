@@ -3,6 +3,9 @@ import { stripe } from "@/lib/stripe";
 import { supabaseAdmin } from "@/lib/supabase";
 import { nanoid } from "nanoid";
 import type Stripe from "stripe";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -49,6 +52,56 @@ export async function POST(req: NextRequest) {
     if (error) {
       console.error("[webhook] Supabase insert error", error);
       return NextResponse.json({ error: "DB error" }, { status: 500 });
+    }
+
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://wedding-inv-nine.vercel.app";
+    const inviteUrl = `${baseUrl}/invite/${id}`;
+    const dashboardUrl = `${baseUrl}/dashboard/${id}`;
+
+    // Send confirmation email to customer
+    if (session.customer_email) {
+      await resend.emails.send({
+        from: "Forevermore <onboarding@resend.dev>",
+        to: session.customer_email,
+        subject: `Your wedding invitation is ready ✦`,
+        html: `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#FAF8F4;font-family:Georgia,serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#FAF8F4;padding:40px 0;">
+    <tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="background:#fff;border-top:3px solid #C9A96E;">
+        <tr><td style="padding:50px 50px 0;text-align:center;">
+          <p style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C9A96E;margin:0 0 24px;">Forevermore</p>
+          <h1 style="font-size:32px;font-weight:300;font-style:italic;color:#1C1917;margin:0 0 8px;">Your invitation is ready</h1>
+          <p style="font-family:Arial,sans-serif;font-size:14px;color:#6B6359;font-weight:300;margin:0 0 40px;">
+            ${meta.partner1} &amp; ${meta.partner2}
+          </p>
+          <div style="border-top:1px solid #E8DCC8;border-bottom:1px solid #E8DCC8;padding:20px 0;margin:0 0 40px;">
+            <p style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B6359;margin:0 0 6px;">Your shareable invite link</p>
+            <a href="${inviteUrl}" style="font-family:Arial,sans-serif;font-size:13px;color:#C9A96E;word-break:break-all;">${inviteUrl}</a>
+          </div>
+          <a href="${inviteUrl}" style="display:inline-block;background:#C9A96E;color:#fff;font-family:Arial,sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;padding:16px 36px;margin-bottom:40px;">
+            View Invitation
+          </a>
+        </td></tr>
+        <tr><td style="padding:0 50px 40px;text-align:center;">
+          <div style="background:#FAF8F4;padding:24px;border:1px solid #E8DCC8;">
+            <p style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C9A96E;margin:0 0 8px;">RSVP Dashboard</p>
+            <p style="font-family:Arial,sans-serif;font-size:12px;color:#6B6359;margin:0 0 12px;font-weight:300;">Track who's attending in real time. Keep this link private.</p>
+            <a href="${dashboardUrl}" style="font-family:Arial,sans-serif;font-size:11px;color:#C9A96E;word-break:break-all;">${dashboardUrl}</a>
+          </div>
+        </td></tr>
+        <tr><td style="border-top:3px solid #C9A96E;padding:24px;text-align:center;">
+          <p style="font-family:Arial,sans-serif;font-size:10px;color:#9B9490;margin:0;letter-spacing:2px;">FOREVERMORE · DIGITAL WEDDING INVITATIONS</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
+      });
     }
 
     console.log(`[webhook] Invite created: ${id}`);

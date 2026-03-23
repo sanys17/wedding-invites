@@ -11,6 +11,7 @@ function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const [inviteUrl, setInviteUrl] = useState<string | null>(null);
+  const [dashboardUrl, setDashboardUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [canNativeShare, setCanNativeShare] = useState(false);
@@ -34,6 +35,7 @@ function SuccessContent() {
 
         if (data.inviteUrl) {
           setInviteUrl(data.inviteUrl);
+          setDashboardUrl(data.inviteUrl.replace("/invite/", "/dashboard/"));
           setLoading(false);
         } else if (attempts < maxAttempts) {
           attempts++;
@@ -207,6 +209,14 @@ function SuccessContent() {
               className="block w-full border border-gold-light text-charcoal py-3 text-xs tracking-widest uppercase hover:border-gold transition-all duration-300">
               {t.previewInvitation}
             </a>
+
+            {/* Dashboard */}
+            {dashboardUrl && (
+              <a href={dashboardUrl} target="_blank" rel="noopener noreferrer"
+                className="block w-full border border-gold text-gold py-3 text-xs tracking-widest uppercase hover:bg-gold hover:text-white transition-all duration-300 text-center">
+                View RSVP Dashboard →
+              </a>
+            )}
           </div>
         ) : (
           <div className="border border-red-100 p-6 fade-in-delay-2">

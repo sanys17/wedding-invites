@@ -9,7 +9,8 @@ import { TEMPLATE_REGISTRY } from "@/components/templates";
 import type { InviteData } from "@/lib/types";
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const price = lang === "cs" ? "350 Kč" : "€14";
   const [scrolled, setScrolled] = useState(false);
   type FilterKey = "all" | "vertical" | "horizontal" | "photo" | "animated" | "video";
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -302,7 +303,7 @@ export default function Home() {
                   <div className="p-3 bg-cream border-t border-gold-light">
                     <div className="flex items-baseline justify-between">
                       <p className="font-serif text-base text-charcoal">{tmpl.name}</p>
-                      <span className="text-[10px] text-gold font-light tracking-widest">$15</span>
+                      <span className="text-[10px] text-gold font-light tracking-widest">{price}</span>
                     </div>
                     <p className="text-[10px] text-muted tracking-wide mt-0.5 leading-tight">{tmpl.tag}</p>
                   </div>
@@ -419,7 +420,7 @@ export default function Home() {
             <div className="absolute bottom-3 left-3 w-5 h-5 border-b border-l border-gold-light" />
             <div className="absolute bottom-3 right-3 w-5 h-5 border-b border-r border-gold-light" />
             <p className="text-xs tracking-ultra-wide uppercase text-gold font-light mb-3 text-center">{t.pricingBadge}</p>
-            <div className="font-serif text-7xl text-charcoal font-light text-center mb-1">$15</div>
+            <div className="font-serif text-7xl text-charcoal font-light text-center mb-1">{price}</div>
             <p className="text-muted text-xs font-light text-center tracking-wider mb-8">{t.pricingPer}</p>
             <div className="space-y-3 mb-8">
               {PRICING_INCLUDES.map((item) => (

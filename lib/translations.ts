@@ -153,7 +153,7 @@ export const translations = {
     pricingItem5: "No subscriptions, no renewals",
 
     // Trust strip
-    trustOneTime: "One-time $15",
+    trustOneTime: "One-time €14",
     trustInstant: "Instant link",
     trustSecure: "Secure payment",
 
@@ -322,7 +322,7 @@ export const translations = {
     pricingItem5: "Žádné předplatné ani obnovy",
 
     // Trust strip
-    trustOneTime: "Jednorázově 15 $",
+    trustOneTime: "Jednorázově 350 Kč",
     trustInstant: "Okamžitý odkaz",
     trustSecure: "Bezpečná platba",
 
@@ -491,7 +491,7 @@ export const translations = {
     pricingItem5: "Žiadne predplatné ani obnovy",
 
     // Trust strip
-    trustOneTime: "Jednorazovo 15 $",
+    trustOneTime: "Jednorazovo €14",
     trustInstant: "Okamžitý odkaz",
     trustSecure: "Bezpečná platba",
 

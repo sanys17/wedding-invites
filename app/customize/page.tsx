@@ -10,7 +10,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { TEMPLATE_REGISTRY } from "@/components/templates";
 
 function CustomizeContent() {
-  const { t, lang } = useLanguage();
+  const { t, lang, setLang } = useLanguage();
   const searchParams = useSearchParams();
   const paramTemplate = searchParams.get("template") ?? "elegant-minimal";
   const initialTemplate = TEMPLATE_REGISTRY.find((r) => r.id === paramTemplate)
@@ -352,6 +352,32 @@ function CustomizeContent() {
                 </p>
 
                 <div className="space-y-6">
+                  {/* Invitation Language — top of form */}
+                  <fieldset className="border border-gold-light px-4 pt-2 pb-4">
+                    <legend className="px-2 text-xs tracking-ultra-wide uppercase text-gold font-light font-sans">
+                      {t.invitationLanguage}
+                    </legend>
+                    <p className="text-xs uppercase tracking-widest text-muted font-sans font-light mt-2 mb-3">
+                      {t.languageGuestsSee}
+                    </p>
+                    <div className="flex gap-3">
+                      {(["en", "cs", "sk"] as const).map((l) => (
+                        <button
+                          key={l}
+                          type="button"
+                          onClick={() => { update("language", l); setLang(l); }}
+                          className={`flex-1 py-2 text-xs tracking-widest uppercase font-sans border transition-all ${
+                            (form.language ?? lang) === l
+                              ? "border-gold bg-gold/10 text-gold"
+                              : "border-gold-light text-muted hover:border-gold hover:text-gold"
+                          }`}
+                        >
+                          {l === "en" ? "English" : l === "cs" ? "Česky" : "Slovensky"}
+                        </button>
+                      ))}
+                    </div>
+                  </fieldset>
+
                   {/* Names */}
                   <fieldset className="border border-gold-light p-5">
                     <legend className="px-2 text-xs tracking-ultra-wide uppercase text-gold font-light font-sans">
@@ -364,7 +390,7 @@ function CustomizeContent() {
                         </span>
                         <input
                           className="mt-1 w-full border-b border-gold-light bg-transparent py-2 text-charcoal font-serif text-lg focus:outline-none focus:border-gold"
-                          placeholder="e.g. Emma"
+                          placeholder={t.egPartner1}
                           value={form.partner1}
                           onChange={(e) => update("partner1", e.target.value)}
                         />
@@ -375,7 +401,7 @@ function CustomizeContent() {
                         </span>
                         <input
                           className="mt-1 w-full border-b border-gold-light bg-transparent py-2 text-charcoal font-serif text-lg focus:outline-none focus:border-gold"
-                          placeholder="e.g. James"
+                          placeholder={t.egPartner2}
                           value={form.partner2}
                           onChange={(e) => update("partner2", e.target.value)}
                         />
@@ -395,7 +421,7 @@ function CustomizeContent() {
                         </span>
                         <input
                           className="mt-1 w-full border-b border-gold-light bg-transparent py-2 text-charcoal font-serif focus:outline-none focus:border-gold"
-                          placeholder="e.g. September 14, 2025"
+                          placeholder={t.egDate}
                           value={form.date}
                           onChange={(e) => update("date", e.target.value)}
                         />
@@ -406,7 +432,7 @@ function CustomizeContent() {
                         </span>
                         <input
                           className="mt-1 w-full border-b border-gold-light bg-transparent py-2 text-charcoal font-serif focus:outline-none focus:border-gold"
-                          placeholder="e.g. 4:00 PM"
+                          placeholder={t.egTime}
                           value={form.time}
                           onChange={(e) => update("time", e.target.value)}
                         />
@@ -426,7 +452,7 @@ function CustomizeContent() {
                         </span>
                         <input
                           className="mt-1 w-full border-b border-gold-light bg-transparent py-2 text-charcoal font-serif focus:outline-none focus:border-gold"
-                          placeholder="e.g. The Grand Estate"
+                          placeholder={t.egVenue}
                           value={form.venue}
                           onChange={(e) => update("venue", e.target.value)}
                         />
@@ -437,7 +463,7 @@ function CustomizeContent() {
                         </span>
                         <input
                           className="mt-1 w-full border-b border-gold-light bg-transparent py-2 text-charcoal font-serif focus:outline-none focus:border-gold"
-                          placeholder="e.g. Florence, Italy"
+                          placeholder={t.egLocation}
                           value={form.location}
                           onChange={(e) => update("location", e.target.value)}
                         />
@@ -457,7 +483,7 @@ function CustomizeContent() {
                       <textarea
                         rows={3}
                         className="mt-1 w-full border-b border-gold-light bg-transparent py-2 text-charcoal font-serif focus:outline-none focus:border-gold resize-none"
-                        placeholder="e.g. We joyfully invite you to celebrate with us…"
+                        placeholder={t.egMessage}
                         value={form.message}
                         onChange={(e) => update("message", e.target.value)}
                       />
@@ -476,7 +502,7 @@ function CustomizeContent() {
                       <input
                         type="email"
                         className="mt-1 w-full border-b border-gold-light bg-transparent py-2 text-charcoal font-serif focus:outline-none focus:border-gold"
-                        placeholder="e.g. emma@example.com"
+                        placeholder={t.egEmail}
                         value={form.rsvp_email}
                         onChange={(e) => update("rsvp_email", e.target.value)}
                       />
@@ -488,31 +514,6 @@ function CustomizeContent() {
                     </label>
                   </fieldset>
 
-                  {/* Invitation language */}
-                  <fieldset className="border border-gold-light px-4 pt-2 pb-4">
-                    <legend className="px-2 text-xs tracking-ultra-wide uppercase text-gold font-light font-sans">
-                      Invitation Language
-                    </legend>
-                    <p className="text-xs uppercase tracking-widest text-muted font-sans font-light mt-2 mb-3">
-                      Language your guests will see
-                    </p>
-                    <div className="flex gap-3">
-                      {(["en", "cs", "sk"] as const).map((l) => (
-                        <button
-                          key={l}
-                          type="button"
-                          onClick={() => update("language", l)}
-                          className={`flex-1 py-2 text-xs tracking-widest uppercase font-sans border transition-all ${
-                            (form.language ?? lang) === l
-                              ? "border-gold bg-gold/10 text-gold"
-                              : "border-gold-light text-muted hover:border-gold hover:text-gold"
-                          }`}
-                        >
-                          {l === "en" ? "English" : l === "cs" ? "Česky" : "Slovensky"}
-                        </button>
-                      ))}
-                    </div>
-                  </fieldset>
                 </div>
 
                 <button

@@ -156,6 +156,18 @@ export const translations = {
     trustOneTime: "One-time $15",
     trustInstant: "Instant link",
     trustSecure: "Secure payment",
+
+    // Form placeholders
+    egPartner1: "e.g. Emma",
+    egPartner2: "e.g. James",
+    egDate: "e.g. September 14, 2025",
+    egTime: "e.g. 4:00 PM",
+    egVenue: "e.g. The Grand Estate",
+    egLocation: "e.g. Florence, Italy",
+    egMessage: "e.g. We joyfully invite you to celebrate with us…",
+    egEmail: "e.g. emma@example.com",
+    invitationLanguage: "Invitation Language",
+    languageGuestsSee: "Language your guests will see",
   },
 
   cs: {
@@ -313,6 +325,18 @@ export const translations = {
     trustOneTime: "Jednorázově 15 $",
     trustInstant: "Okamžitý odkaz",
     trustSecure: "Bezpečná platba",
+
+    // Form placeholders
+    egPartner1: "např. Jana",
+    egPartner2: "např. Tomáš",
+    egDate: "např. 14. září 2025",
+    egTime: "např. 16:00",
+    egVenue: "např. Zámek Kozel",
+    egLocation: "např. Praha, Česká republika",
+    egMessage: "např. S radostí vás zveme, abyste s námi slavili…",
+    egEmail: "např. jana@example.com",
+    invitationLanguage: "Jazyk oznámení",
+    languageGuestsSee: "Jazyk, který uvidí vaši hosté",
   },
 
   sk: {
@@ -470,6 +494,18 @@ export const translations = {
     trustOneTime: "Jednorazovo 15 $",
     trustInstant: "Okamžitý odkaz",
     trustSecure: "Bezpečná platba",
+
+    // Form placeholders
+    egPartner1: "napr. Zuzana",
+    egPartner2: "napr. Martin",
+    egDate: "napr. 14. septembra 2025",
+    egTime: "napr. 16:00",
+    egVenue: "napr. Kaštieľ Betliar",
+    egLocation: "napr. Bratislava, Slovensko",
+    egMessage: "napr. S radosťou vás pozývame, aby ste s nami oslávili…",
+    egEmail: "napr. zuzana@example.com",
+    invitationLanguage: "Jazyk oznámenia",
+    languageGuestsSee: "Jazyk, ktorý uvidia vaši hostia",
   },
 };
 

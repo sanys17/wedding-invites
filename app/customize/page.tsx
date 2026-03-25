@@ -31,9 +31,11 @@ function CustomizeContent() {
 
   const PRICE = 15;
 
-  type FilterKey = "all" | "vertical" | "horizontal" | "photo";
+  type FilterKey = "all" | "vertical" | "horizontal" | "photo" | "animated" | "video";
   const FILTERS: { key: FilterKey; label: string }[] = [
     { key: "all",        label: "All" },
+    { key: "animated",   label: "✦ Animated" },
+    { key: "video",      label: "▶ Video" },
     { key: "vertical",   label: "Vertical" },
     { key: "horizontal", label: "Horizontal" },
     { key: "photo",      label: "With Photo" },
@@ -46,6 +48,8 @@ function CustomizeContent() {
   const [error, setError] = useState("");
   const [imageUploading, setImageUploading] = useState(false);
   const [imageError, setImageError] = useState("");
+  const [videoUploading, setVideoUploading] = useState(false);
+  const [videoError, setVideoError] = useState("");
 
   function update(field: keyof InviteData, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -67,6 +71,25 @@ function CustomizeContent() {
       setImageError("Upload failed. Try again.");
     } finally {
       setImageUploading(false);
+    }
+  }
+
+  async function handleVideoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setVideoUploading(true);
+    setVideoError("");
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload-video", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.url) update("video_url", data.url);
+      else setVideoError(data.error ?? "Upload failed. Try again.");
+    } catch {
+      setVideoError("Upload failed. Try again.");
+    } finally {
+      setVideoUploading(false);
     }
   }
 
@@ -167,6 +190,8 @@ function CustomizeContent() {
                     if (filter === "vertical")   return tmpl.orientation === "vertical";
                     if (filter === "horizontal") return tmpl.orientation === "horizontal";
                     if (filter === "photo")      return tmpl.supportsImage;
+                    if (filter === "animated")   return (tmpl as any).animated;
+                    if (filter === "video")      return (tmpl as any).supportsVideo;
                     return true;
                   });
 
@@ -280,6 +305,31 @@ function CustomizeContent() {
                   <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
                 </label>
                 {imageError && <p className="text-xs text-red-500 mt-1">{imageError}</p>}
+              </div>
+            )}
+
+            {/* Video upload — only shown for templates that support video */}
+            {step === "edit" && TEMPLATE_REGISTRY.find(r => r.id === form.template)?.supportsVideo && (
+              <div className="mb-8">
+                <p className="text-xs tracking-ultra-wide uppercase text-muted font-light mb-3">Background Video</p>
+                <label className={`flex flex-col items-center justify-center border border-dashed border-gold-light p-6 cursor-pointer hover:border-gold transition-colors ${videoUploading ? "opacity-50 pointer-events-none" : ""}`}>
+                  {form.video_url ? (
+                    <div className="w-full flex flex-col items-center gap-3">
+                      <video src={form.video_url} className="h-28 rounded object-cover w-full" muted loop playsInline autoPlay />
+                      <p className="text-xs text-muted font-light">Click to change video</p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center gap-2 text-muted">
+                      <svg className="w-8 h-8 text-gold-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+                      </svg>
+                      <p className="text-xs font-light text-center">Upload your background video<br /><span className="text-[10px] text-muted/60">MP4, MOV · max 50 MB</span></p>
+                      {videoUploading && <p className="text-xs text-gold">Uploading…</p>}
+                    </div>
+                  )}
+                  <input type="file" accept="video/*" className="hidden" onChange={handleVideoUpload} />
+                </label>
+                {videoError && <p className="text-xs text-red-500 mt-1">{videoError}</p>}
               </div>
             )}
 

@@ -1352,41 +1352,341 @@ export function Solstice({ data: d, t: tProp }: TP) {
   );
 }
 
+// ══════════════════════════════════════════════════════════════════════════════
+// ANIMATED TEMPLATES (CSS keyframe animations)
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── 31. Petals (Falling Rose Petals) ─────────────────────────────────────────
+export function Petals({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  const petals = Array.from({ length: 18 }, (_, i) => ({
+    left: `${5 + (i * 5.5) % 90}%`,
+    delay: `${(i * 0.4) % 7}s`,
+    duration: `${5 + (i * 0.7) % 4}s`,
+    size: `${10 + (i * 3) % 14}px`,
+    rotate: `${(i * 37) % 360}deg`,
+  }));
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center px-10 py-10 text-center relative overflow-hidden" style={{ background: "#FDF8F3" }}>
+      <style>{`
+        @keyframes petalFall {
+          0%   { transform: translateY(-60px) rotate(0deg) scale(1); opacity: 0; }
+          10%  { opacity: 0.8; }
+          90%  { opacity: 0.6; }
+          100% { transform: translateY(110%) rotate(360deg) scale(0.7); opacity: 0; }
+        }
+        @keyframes petalSway {
+          0%, 100% { margin-left: 0; }
+          50%       { margin-left: 20px; }
+        }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(16px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+      {petals.map((p, i) => (
+        <div key={i} className="absolute top-0 pointer-events-none" style={{ left: p.left, animation: `petalFall ${p.duration} ${p.delay} infinite linear, petalSway ${p.duration} ${p.delay} infinite ease-in-out` }}>
+          <svg width={p.size} height={p.size} viewBox="0 0 24 24" style={{ transform: `rotate(${p.rotate})` }}>
+            <ellipse cx="12" cy="12" rx="6" ry="11" fill="#E8A0B0" opacity="0.55" transform="rotate(-20 12 12)" />
+          </svg>
+        </div>
+      ))}
+      <div style={{ animation: "fadeInUp 1.2s ease both" }}>
+        <p className="text-[9px] tracking-[0.4em] uppercase font-sans font-light mb-5" style={{ color: "#C4826E" }}>{t.weddingInvitation}</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5" style={{ color: "#2C1810" }}>{P1(d, t)}</h1>
+        <p className="text-base tracking-widest mb-0.5" style={{ color: "#E8A0B0" }}>&amp;</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-6" style={{ color: "#2C1810" }}>{P2(d, t)}</h1>
+      </div>
+      <div style={{ animation: "fadeInUp 1.2s 0.4s ease both", opacity: 0 }}>
+        <div className="flex items-center gap-3 w-full mb-4">
+          <div className="flex-1 h-px" style={{ background: "#E8A0B0", opacity: 0.5 }} />
+          <span style={{ color: "#E8A0B0", fontSize: 12 }}>✿</span>
+          <div className="flex-1 h-px" style={{ background: "#E8A0B0", opacity: 0.5 }} />
+        </div>
+        <p className="text-[10px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#9B7E6A" }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[10px] tracking-wider font-sans font-light mb-1" style={{ color: "#9B7E6A" }}>{d.time}</p>}
+        <p className="font-serif italic text-sm mb-0.5" style={{ color: "#2C1810" }}>{VENUE(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light mb-3" style={{ color: "#9B7E6A" }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-xs leading-relaxed mb-3" style={{ color: "#C4826E" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && <p className="text-[8px] tracking-[0.3em] uppercase font-sans" style={{ color: "#C4826E" }}>RSVP · {d.rsvp_email}</p>}
+      </div>
+    </div>
+  );
+}
+
+// ── 32. Firefly (Twinkling Lights) ───────────────────────────────────────────
+export function Firefly({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  const flies = Array.from({ length: 24 }, (_, i) => ({
+    x: `${5 + (i * 13) % 90}%`,
+    y: `${10 + (i * 17) % 80}%`,
+    delay: `${(i * 0.3) % 4}s`,
+    size: `${2 + (i * 0.5) % 3}px`,
+  }));
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center px-10 py-10 text-center relative overflow-hidden" style={{ background: "#0D1B0F" }}>
+      <style>{`
+        @keyframes fireflyPulse {
+          0%, 100% { opacity: 0; transform: scale(0.5); }
+          50%       { opacity: 0.9; transform: scale(1.2); }
+        }
+        @keyframes fireflyDrift {
+          0%   { transform: translate(0, 0); }
+          25%  { transform: translate(8px, -12px); }
+          50%  { transform: translate(-6px, -8px); }
+          75%  { transform: translate(10px, 4px); }
+          100% { transform: translate(0, 0); }
+        }
+        @keyframes revealUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+      {flies.map((f, i) => (
+        <div key={i} className="absolute pointer-events-none" style={{ left: f.x, top: f.y, animation: `fireflyDrift ${4 + i % 3}s ${f.delay} infinite ease-in-out` }}>
+          <div style={{ width: f.size, height: f.size, borderRadius: "50%", background: "#A8F084", boxShadow: `0 0 6px 2px rgba(168,240,132,0.6)`, animation: `fireflyPulse ${2 + i % 2}s ${f.delay} infinite ease-in-out` }} />
+        </div>
+      ))}
+      <div style={{ animation: "revealUp 1.4s 0.3s ease both", opacity: 0 }}>
+        <div className="flex items-center gap-3 w-full mb-5">
+          <div className="flex-1 h-px" style={{ background: "rgba(168,240,132,0.2)" }} />
+          <span className="text-[8px] tracking-[0.5em] uppercase font-sans font-light" style={{ color: "rgba(168,240,132,0.5)" }}>{t.weddingInvitation}</span>
+          <div className="flex-1 h-px" style={{ background: "rgba(168,240,132,0.2)" }} />
+        </div>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5" style={{ color: "#F5F0E8" }}>{P1(d, t)}</h1>
+        <p className="text-lg tracking-widest mb-0.5" style={{ color: "rgba(168,240,132,0.6)" }}>&amp;</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-6" style={{ color: "#F5F0E8" }}>{P2(d, t)}</h1>
+        <div className="flex items-center gap-3 w-full mb-4">
+          <div className="flex-1 h-px" style={{ background: "rgba(168,240,132,0.15)" }} />
+          <span style={{ color: "rgba(168,240,132,0.4)", fontSize: 10 }}>✦</span>
+          <div className="flex-1 h-px" style={{ background: "rgba(168,240,132,0.15)" }} />
+        </div>
+        <p className="text-[10px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[10px] tracking-wider font-sans font-light mb-1" style={{ color: "rgba(255,255,255,0.3)" }}>{d.time}</p>}
+        <p className="font-serif italic text-sm mb-0.5" style={{ color: "rgba(255,255,255,0.7)" }}>{VENUE(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light mb-3" style={{ color: "rgba(255,255,255,0.35)" }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-xs leading-relaxed mb-3" style={{ color: "rgba(255,255,255,0.4)" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && <p className="text-[8px] tracking-[0.3em] uppercase font-sans" style={{ color: "rgba(168,240,132,0.4)" }}>RSVP · {d.rsvp_email}</p>}
+      </div>
+    </div>
+  );
+}
+
+// ── 33. Shimmer (Gold Dust) ───────────────────────────────────────────────────
+export function Shimmer({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  const particles = Array.from({ length: 30 }, (_, i) => ({
+    left: `${(i * 3.3) % 100}%`,
+    top: `${(i * 7.1) % 100}%`,
+    delay: `${(i * 0.2) % 5}s`,
+    size: `${1.5 + (i * 0.3) % 2.5}px`,
+  }));
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center px-10 py-10 text-center relative overflow-hidden" style={{ background: "#0A0806" }}>
+      <style>{`
+        @keyframes shimmerFloat {
+          0%   { transform: translateY(0) scale(1); opacity: 0; }
+          20%  { opacity: 1; }
+          80%  { opacity: 0.6; }
+          100% { transform: translateY(-80px) scale(0.6); opacity: 0; }
+        }
+        @keyframes goldGlow {
+          0%, 100% { text-shadow: 0 0 20px rgba(201,169,110,0.3); }
+          50%       { text-shadow: 0 0 40px rgba(201,169,110,0.6), 0 0 80px rgba(201,169,110,0.2); }
+        }
+        @keyframes shimmerIn {
+          from { opacity: 0; letter-spacing: 0.5em; }
+          to   { opacity: 1; letter-spacing: 0.04em; }
+        }
+      `}</style>
+      {particles.map((p, i) => (
+        <div key={i} className="absolute pointer-events-none rounded-full" style={{ left: p.left, top: p.top, width: p.size, height: p.size, background: "#C9A96E", boxShadow: "0 0 4px rgba(201,169,110,0.8)", animation: `shimmerFloat ${4 + (i % 3)}s ${p.delay} infinite ease-out` }} />
+      ))}
+      <div className="relative z-10">
+        <p className="text-[8px] tracking-[0.6em] uppercase font-sans font-light mb-6" style={{ color: "#C9A96E", opacity: 0.5, animation: "shimmerIn 2s ease both" }}>{t.weddingInvitation}</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5" style={{ color: "#F5ECD7", animation: "goldGlow 4s ease-in-out infinite" }}>{P1(d, t)}</h1>
+        <p className="text-lg tracking-widest mb-0.5" style={{ color: "#C9A96E" }}>&amp;</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-6" style={{ color: "#F5ECD7", animation: "goldGlow 4s 0.5s ease-in-out infinite" }}>{P2(d, t)}</h1>
+        <div className="w-16 h-px mx-auto mb-5" style={{ background: "linear-gradient(90deg, transparent, #C9A96E, transparent)" }} />
+        <p className="text-[10px] tracking-[0.3em] uppercase font-sans font-light mb-1" style={{ color: "rgba(201,169,110,0.6)" }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[10px] tracking-wider font-sans font-light mb-1" style={{ color: "rgba(201,169,110,0.4)" }}>{d.time}</p>}
+        <p className="font-serif italic text-sm mb-0.5" style={{ color: "#C8B99A" }}>{VENUE(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light mb-3" style={{ color: "rgba(201,169,110,0.4)" }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-xs leading-relaxed mb-3" style={{ color: "rgba(201,169,110,0.5)" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && <p className="text-[8px] tracking-[0.3em] uppercase font-sans" style={{ color: "rgba(201,169,110,0.4)" }}>RSVP · {d.rsvp_email}</p>}
+      </div>
+    </div>
+  );
+}
+
+// ── 34. Ripple (Water Reflection) ────────────────────────────────────────────
+export function Ripple({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center px-10 py-10 text-center relative overflow-hidden" style={{ background: "#F0F6FA" }}>
+      <style>{`
+        @keyframes rippleExpand {
+          0%   { transform: translate(-50%,-50%) scale(0); opacity: 0.6; }
+          100% { transform: translate(-50%,-50%) scale(4); opacity: 0; }
+        }
+        @keyframes floatIn {
+          from { opacity: 0; transform: translateY(12px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmerText {
+          0%, 100% { opacity: 0.85; }
+          50%       { opacity: 1; }
+        }
+      `}</style>
+      {[0, 1, 2, 3].map((i) => (
+        <div key={i} className="absolute pointer-events-none rounded-full border" style={{ left: "50%", top: "45%", width: 120, height: 120, borderColor: "rgba(100,160,200,0.25)", animation: `rippleExpand 5s ${i * 1.25}s infinite ease-out` }} />
+      ))}
+      <div className="relative z-10" style={{ animation: "floatIn 1.2s ease both" }}>
+        <p className="text-[8px] tracking-[0.5em] uppercase font-sans font-light mb-5" style={{ color: "#4A7E9B", opacity: 0.7 }}>{t.weddingInvitation}</p>
+        <div className="flex items-center gap-3 w-full mb-4">
+          <div className="flex-1 h-px" style={{ background: "rgba(100,160,200,0.3)" }} />
+          <span style={{ color: "rgba(100,160,200,0.5)", fontSize: 10 }}>◇</span>
+          <div className="flex-1 h-px" style={{ background: "rgba(100,160,200,0.3)" }} />
+        </div>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5" style={{ color: "#1C3A4A", animation: "shimmerText 4s ease-in-out infinite" }}>{P1(d, t)}</h1>
+        <p className="text-lg tracking-widest mb-0.5" style={{ color: "#64A0C8" }}>&amp;</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-5" style={{ color: "#1C3A4A", animation: "shimmerText 4s 0.5s ease-in-out infinite" }}>{P2(d, t)}</h1>
+        <div className="flex items-center gap-3 w-full mb-4">
+          <div className="flex-1 h-px" style={{ background: "rgba(100,160,200,0.3)" }} />
+          <span style={{ color: "rgba(100,160,200,0.5)", fontSize: 10 }}>◇</span>
+          <div className="flex-1 h-px" style={{ background: "rgba(100,160,200,0.3)" }} />
+        </div>
+        <p className="text-[10px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "#4A7E9B", opacity: 0.7 }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[10px] tracking-wider font-sans font-light mb-1" style={{ color: "#4A7E9B", opacity: 0.5 }}>{d.time}</p>}
+        <p className="font-serif italic text-sm mb-0.5" style={{ color: "#1C3A4A" }}>{VENUE(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light mb-3" style={{ color: "#4A7E9B", opacity: 0.6 }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-xs leading-relaxed mb-3" style={{ color: "#4A7E9B" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && <p className="text-[8px] tracking-[0.3em] uppercase font-sans" style={{ color: "#4A7E9B", opacity: 0.6 }}>RSVP · {d.rsvp_email}</p>}
+      </div>
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// VIDEO BACKGROUND TEMPLATES
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── 35. Velvet (Video + Overlay) ─────────────────────────────────────────────
+export function Velvet({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full relative overflow-hidden flex flex-col items-center justify-center text-center px-10">
+      {/* Video background */}
+      {d.video_url ? (
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" src={d.video_url} />
+      ) : (
+        <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #1a0a0a 0%, #2d1515 40%, #0d0505 100%)" }} />
+      )}
+      {/* Rich dark overlay */}
+      <div className="absolute inset-0" style={{ background: "rgba(10,5,5,0.62)" }} />
+      {/* Vignette */}
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%)" }} />
+      <div className="relative z-10">
+        <div className="flex items-center gap-3 w-full mb-5">
+          <div className="flex-1 h-px" style={{ background: "rgba(201,169,110,0.4)" }} />
+          <span className="text-[8px] tracking-[0.5em] uppercase font-sans font-light" style={{ color: "rgba(201,169,110,0.7)" }}>{t.weddingInvitation}</span>
+          <div className="flex-1 h-px" style={{ background: "rgba(201,169,110,0.4)" }} />
+        </div>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-0.5" style={{ color: "#F5ECD7" }}>{P1(d, t)}</h1>
+        <p className="text-xl tracking-widest mb-0.5" style={{ color: "#C9A96E" }}>&amp;</p>
+        <h1 className="font-serif text-4xl font-light italic leading-tight mb-6" style={{ color: "#F5ECD7" }}>{P2(d, t)}</h1>
+        <div className="w-12 h-px mx-auto mb-5" style={{ background: "#C9A96E", opacity: 0.5 }} />
+        <p className="text-[10px] tracking-[0.3em] uppercase font-sans font-light mb-1" style={{ color: "rgba(201,169,110,0.7)" }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[10px] tracking-wider font-sans font-light mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>{d.time}</p>}
+        <p className="font-serif italic text-sm mb-0.5" style={{ color: "#C8B99A" }}>{VENUE(d, t)}</p>
+        <p className="text-[10px] tracking-wider font-sans font-light mb-3" style={{ color: "rgba(255,255,255,0.4)" }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-xs leading-relaxed mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && (
+          <div className="border mt-2 px-4 py-1.5 inline-block" style={{ borderColor: "rgba(201,169,110,0.3)" }}>
+            <p className="text-[8px] tracking-[0.3em] uppercase font-sans" style={{ color: "rgba(201,169,110,0.6)" }}>RSVP · {d.rsvp_email}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── 36. Frame (Video + Elegant Border) ───────────────────────────────────────
+export function Frame({ data: d, t: tProp }: TP) {
+  const t = tProp ?? DEFAULT_T;
+  return (
+    <div className="w-full h-full relative overflow-hidden flex" style={{ background: "#080808" }}>
+      {/* Video left 55% */}
+      <div className="relative overflow-hidden" style={{ width: "55%" }}>
+        {d.video_url ? (
+          <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" src={d.video_url} />
+        ) : (
+          <div className="w-full h-full" style={{ background: "linear-gradient(160deg, #1a1a1a 0%, #0d0d0d 100%)" }} />
+        )}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to right, transparent 60%, rgba(8,8,8,0.9) 100%)" }} />
+      </div>
+      {/* Text right panel */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 text-center relative">
+        <div className="absolute inset-4 border pointer-events-none" style={{ borderColor: "rgba(201,169,110,0.15)" }} />
+        <p className="text-[8px] tracking-[0.5em] uppercase font-sans font-light mb-5" style={{ color: "#C9A96E", opacity: 0.6 }}>{t.weddingInvitation}</p>
+        <h1 className="font-serif text-2xl font-light italic leading-tight mb-0.5" style={{ color: "#F5ECD7" }}>{P1(d, t)}</h1>
+        <p className="tracking-widest text-lg mb-0.5" style={{ color: "#C9A96E" }}>&amp;</p>
+        <h1 className="font-serif text-2xl font-light italic leading-tight mb-5" style={{ color: "#F5ECD7" }}>{P2(d, t)}</h1>
+        <div className="w-8 h-px mb-4" style={{ background: "#C9A96E", opacity: 0.4 }} />
+        <p className="text-[9px] tracking-[0.2em] uppercase font-sans font-light mb-1" style={{ color: "rgba(201,169,110,0.6)" }}>{DATE(d, t)}</p>
+        {d.time && <p className="text-[9px] tracking-wider font-sans font-light mb-1" style={{ color: "rgba(255,255,255,0.35)" }}>{d.time}</p>}
+        <p className="font-serif italic text-sm mb-0.5" style={{ color: "#C8B99A" }}>{VENUE(d, t)}</p>
+        <p className="text-[9px] tracking-wider font-sans font-light mb-3" style={{ color: "rgba(255,255,255,0.35)" }}>{LOC(d, t)}</p>
+        {d.message && <p className="font-serif italic text-[9px] leading-relaxed mb-3" style={{ color: "rgba(255,255,255,0.4)" }}>&ldquo;{d.message}&rdquo;</p>}
+        {d.rsvp_email && <p className="text-[7px] tracking-[0.3em] uppercase font-sans" style={{ color: "rgba(201,169,110,0.5)" }}>RSVP · {d.rsvp_email}</p>}
+      </div>
+    </div>
+  );
+}
+
 // ── Registry ────────────────────────────────────────────────────────────────
 export const TEMPLATE_REGISTRY = [
+  // ── Animated ─────────────────────────────────────────────────────────────────
+  { id: "petals",   name: "Petals",   tag: "Animated · Falling Petals", component: Petals,   orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: true, image: "https://images.unsplash.com/photo-1490750967868-88df5691cc5f?w=600&q=80&fit=crop" },
+  { id: "firefly",  name: "Firefly",  tag: "Animated · Glowing Lights", component: Firefly,  orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: true, image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80&fit=crop" },
+  { id: "shimmer",  name: "Shimmer",  tag: "Animated · Gold Dust",      component: Shimmer,  orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: true, image: "https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&q=80&fit=crop" },
+  { id: "ripple",   name: "Ripple",   tag: "Animated · Water",          component: Ripple,   orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: true, image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80&fit=crop" },
+  // ── Video ────────────────────────────────────────────────────────────────────
+  { id: "velvet",   name: "Velvet",   tag: "Video · Full Bleed",        component: Velvet,   orientation: "vertical",   supportsImage: false, supportsVideo: true,  animated: false, image: "https://images.unsplash.com/photo-1516417756840-8fb66e00f5a4?w=600&q=80&fit=crop" },
+  { id: "frame",    name: "Frame",    tag: "Video · Split Screen",      component: Frame,    orientation: "horizontal", supportsImage: false, supportsVideo: true,  animated: false, image: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600&q=80&fit=crop" },
   // ── Vertical (3:4) ──────────────────────────────────────────────────────────
-  { id: "elegant-minimal", name: "Élégant",    tag: "Minimalist · Timeless",      component: Elegant,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80&fit=crop" },
-  { id: "jardin",          name: "Jardin",     tag: "Botanical · Romantic",       component: Jardin,     orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&q=80&fit=crop" },
-  { id: "lumiere",         name: "Lumière",    tag: "Art Deco · Geometric",       component: Lumiere,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80&fit=crop" },
-  { id: "nocturne",        name: "Nocturne",   tag: "Dark · Dramatic",            component: Nocturne,   orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80&fit=crop" },
-  { id: "bloom",           name: "Bloom",      tag: "Floral · Dreamy",            component: Bloom,      orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=600&q=80&fit=crop" },
-  { id: "gatsby",          name: "Gatsby",     tag: "Art Deco · 1920s",           component: Gatsby,     orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80&fit=crop" },
-  { id: "nordic",          name: "Nordic",     tag: "Scandinavian · Clean",       component: Nordic,     orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=600&q=80&fit=crop" },
-  { id: "sakura",          name: "Sakura",     tag: "Blossom · Delicate",         component: Sakura,     orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=600&q=80&fit=crop" },
-  { id: "riviera",         name: "Riviera",    tag: "Mediterranean · Arch",       component: Riviera,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80&fit=crop" },
-  { id: "versailles",      name: "Versailles", tag: "Baroque · Ornate",           component: Versailles, orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1551009175-8a68da93d5f9?w=600&q=80&fit=crop" },
-  { id: "celestial",       name: "Celestial",  tag: "Stars · Mystical",           component: Celestial,  orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80&fit=crop" },
-  { id: "tuscany",         name: "Tuscany",    tag: "Italian · Rustic",           component: Tuscany,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=600&q=80&fit=crop" },
-  { id: "noir",            name: "Noir",       tag: "Bold · Typography",          component: Noir,       orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=600&q=80&fit=crop" },
-  { id: "moderne",         name: "Moderne",    tag: "Swiss · Grid",               component: Moderne,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80&fit=crop" },
-  { id: "parchment",       name: "Parchment",  tag: "Vintage · Nostalgic",        component: Parchment,  orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1516562309708-05f3b220653f?w=600&q=80&fit=crop" },
-  { id: "eden",            name: "Eden",       tag: "Lush · Tropical",            component: Eden,       orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80&fit=crop" },
-  { id: "venezia",         name: "Venezia",    tag: "Gothic · Venetian",          component: Venezia,    orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80&fit=crop" },
-  { id: "cote",            name: "Côte",       tag: "French · Coastal",           component: Cote,       orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80&fit=crop" },
-  { id: "aurora",          name: "Aurora",     tag: "Northern Lights · Modern",   component: Aurora,     orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80&fit=crop" },
-  { id: "monogram",        name: "Monogram",   tag: "Classic · Initials",         component: Monogram,   orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&q=80&fit=crop" },
+  { id: "elegant-minimal", name: "Élégant",    tag: "Minimalist · Timeless",      component: Elegant,    orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80&fit=crop" },
+  { id: "jardin",          name: "Jardin",     tag: "Botanical · Romantic",       component: Jardin,     orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&q=80&fit=crop" },
+  { id: "lumiere",         name: "Lumière",    tag: "Art Deco · Geometric",       component: Lumiere,    orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80&fit=crop" },
+  { id: "nocturne",        name: "Nocturne",   tag: "Dark · Dramatic",            component: Nocturne,   orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80&fit=crop" },
+  { id: "bloom",           name: "Bloom",      tag: "Floral · Dreamy",            component: Bloom,      orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=600&q=80&fit=crop" },
+  { id: "gatsby",          name: "Gatsby",     tag: "Art Deco · 1920s",           component: Gatsby,     orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80&fit=crop" },
+  { id: "nordic",          name: "Nordic",     tag: "Scandinavian · Clean",       component: Nordic,     orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=600&q=80&fit=crop" },
+  { id: "sakura",          name: "Sakura",     tag: "Blossom · Delicate",         component: Sakura,     orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=600&q=80&fit=crop" },
+  { id: "riviera",         name: "Riviera",    tag: "Mediterranean · Arch",       component: Riviera,    orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80&fit=crop" },
+  { id: "versailles",      name: "Versailles", tag: "Baroque · Ornate",           component: Versailles, orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1551009175-8a68da93d5f9?w=600&q=80&fit=crop" },
+  { id: "celestial",       name: "Celestial",  tag: "Stars · Mystical",           component: Celestial,  orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80&fit=crop" },
+  { id: "tuscany",         name: "Tuscany",    tag: "Italian · Rustic",           component: Tuscany,    orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=600&q=80&fit=crop" },
+  { id: "noir",            name: "Noir",       tag: "Bold · Typography",          component: Noir,       orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=600&q=80&fit=crop" },
+  { id: "moderne",         name: "Moderne",    tag: "Swiss · Grid",               component: Moderne,    orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80&fit=crop" },
+  { id: "parchment",       name: "Parchment",  tag: "Vintage · Nostalgic",        component: Parchment,  orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1516562309708-05f3b220653f?w=600&q=80&fit=crop" },
+  { id: "eden",            name: "Eden",       tag: "Lush · Tropical",            component: Eden,       orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80&fit=crop" },
+  { id: "venezia",         name: "Venezia",    tag: "Gothic · Venetian",          component: Venezia,    orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80&fit=crop" },
+  { id: "cote",            name: "Côte",       tag: "French · Coastal",           component: Cote,       orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80&fit=crop" },
+  { id: "aurora",          name: "Aurora",     tag: "Northern Lights · Modern",   component: Aurora,     orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80&fit=crop" },
+  { id: "monogram",        name: "Monogram",   tag: "Classic · Initials",         component: Monogram,   orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&q=80&fit=crop" },
   // ── New Vertical (with photo) ────────────────────────────────────────────────
-  { id: "portrait",        name: "Portrait",   tag: "Photo · Cinematic",          component: Portrait,   orientation: "vertical",   supportsImage: true,  image: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80&fit=crop" },
-  { id: "manuscript",      name: "Manuscript", tag: "Letter · Handwritten",       component: Manuscript, orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600&q=80&fit=crop" },
-  { id: "cathedral",       name: "Cathedral",  tag: "Gothic · Dark Magic",        component: Cathedral,  orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&q=80&fit=crop" },
-  { id: "wildflower",      name: "Wildflower", tag: "Meadow · Watercolor",        component: Wildflower, orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1490750967868-88df5691cc5f?w=600&q=80&fit=crop" },
-  { id: "prism",           name: "Prism",      tag: "Geometric · Bold",           component: Prism,      orientation: "vertical",   supportsImage: false, image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&fit=crop" },
+  { id: "portrait",        name: "Portrait",   tag: "Photo · Cinematic",          component: Portrait,   orientation: "vertical",   supportsImage: true,  supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80&fit=crop" },
+  { id: "manuscript",      name: "Manuscript", tag: "Letter · Handwritten",       component: Manuscript, orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600&q=80&fit=crop" },
+  { id: "cathedral",       name: "Cathedral",  tag: "Gothic · Dark Magic",        component: Cathedral,  orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&q=80&fit=crop" },
+  { id: "wildflower",      name: "Wildflower", tag: "Meadow · Watercolor",        component: Wildflower, orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1490750967868-88df5691cc5f?w=600&q=80&fit=crop" },
+  { id: "prism",           name: "Prism",      tag: "Geometric · Bold",           component: Prism,      orientation: "vertical",   supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&fit=crop" },
   // ── Horizontal (4:3) ────────────────────────────────────────────────────────
-  { id: "cinema",          name: "Cinéma",     tag: "Letterbox · Photo",          component: Cinema,     orientation: "horizontal", supportsImage: true,  image: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600&q=80&fit=crop" },
-  { id: "diptych",         name: "Diptych",    tag: "Split · Photo + Text",       component: Diptych,    orientation: "horizontal", supportsImage: true,  image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80&fit=crop" },
-  { id: "pavilion",        name: "Pavilion",   tag: "Arch · Mediterranean",       component: Pavilion,   orientation: "horizontal", supportsImage: false, image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80&fit=crop" },
-  { id: "blueprint",       name: "Blueprint",  tag: "Technical · Modern",         component: Blueprint,  orientation: "horizontal", supportsImage: false, image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80&fit=crop" },
-  { id: "solstice",        name: "Solstice",   tag: "Terracotta · Warm",          component: Solstice,   orientation: "horizontal", supportsImage: false, image: "https://images.unsplash.com/photo-1533854775446-95c4609da544?w=600&q=80&fit=crop" },
+  { id: "cinema",          name: "Cinéma",     tag: "Letterbox · Photo",          component: Cinema,     orientation: "horizontal", supportsImage: true,  supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600&q=80&fit=crop" },
+  { id: "diptych",         name: "Diptych",    tag: "Split · Photo + Text",       component: Diptych,    orientation: "horizontal", supportsImage: true,  supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80&fit=crop" },
+  { id: "pavilion",        name: "Pavilion",   tag: "Arch · Mediterranean",       component: Pavilion,   orientation: "horizontal", supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80&fit=crop" },
+  { id: "blueprint",       name: "Blueprint",  tag: "Technical · Modern",         component: Blueprint,  orientation: "horizontal", supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80&fit=crop" },
+  { id: "solstice",        name: "Solstice",   tag: "Terracotta · Warm",          component: Solstice,   orientation: "horizontal", supportsImage: false, supportsVideo: false, animated: false, image: "https://images.unsplash.com/photo-1533854775446-95c4609da544?w=600&q=80&fit=crop" },
 ];
 
 export function getTemplateComponent(id: string) {

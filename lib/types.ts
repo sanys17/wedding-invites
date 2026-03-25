@@ -11,6 +11,7 @@ export interface InviteData {
   template: string;    // e.g. "elegant-minimal"
   language?: string;   // e.g. "en", "cs", "sk"
   image_url?: string;  // custom couple photo URL
+  video_url?: string;  // custom background video URL
 }
 
 export interface InviteRecord extends InviteData {

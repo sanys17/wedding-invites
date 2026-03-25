@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
       template: meta.template,
       language: meta.language ?? "en",
       image_url: meta.image_url ?? null,
+      video_url: meta.video_url ?? null,
       customer_email: session.customer_email,
       paid: true,
       stripe_session_id: session.id,

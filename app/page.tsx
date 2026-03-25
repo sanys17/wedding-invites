@@ -11,10 +11,12 @@ import type { InviteData } from "@/lib/types";
 export default function Home() {
   const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
-  type FilterKey = "all" | "vertical" | "horizontal" | "photo";
+  type FilterKey = "all" | "vertical" | "horizontal" | "photo" | "animated" | "video";
   const [filter, setFilter] = useState<FilterKey>("all");
   const FILTERS: { key: FilterKey; label: string }[] = [
     { key: "all",        label: "All" },
+    { key: "animated",   label: "✦ Animated" },
+    { key: "video",      label: "▶ Video" },
     { key: "vertical",   label: "Vertical" },
     { key: "horizontal", label: "Horizontal" },
     { key: "photo",      label: "With Photo" },
@@ -269,6 +271,8 @@ export default function Home() {
               if (filter === "vertical")   return tmpl.orientation === "vertical";
               if (filter === "horizontal") return tmpl.orientation === "horizontal";
               if (filter === "photo")      return tmpl.supportsImage;
+              if (filter === "animated")   return (tmpl as any).animated;
+              if (filter === "video")      return (tmpl as any).supportsVideo;
               return true;
             });
 

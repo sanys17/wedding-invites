@@ -30,7 +30,9 @@ function CustomizeContent() {
     language: lang,
   };
 
-  const PRICE = 15;
+  function priceDisplay(language?: string) {
+    return language === "cs" ? "350 Kč" : "€14";
+  }
 
   type FilterKey = "all" | "vertical" | "horizontal" | "photo" | "animated" | "video";
   const FILTERS: { key: FilterKey; label: string }[] = [
@@ -562,7 +564,7 @@ function CustomizeContent() {
                       {t.total}
                     </span>
                     <span className="font-serif text-xl text-gold">
-                      ${PRICE} USD
+                      {priceDisplay(form.language)}
                     </span>
                   </div>
                 </div>
@@ -578,7 +580,7 @@ function CustomizeContent() {
                   disabled={loading}
                   className="w-full bg-gold text-white py-4 text-sm tracking-widest uppercase hover:bg-gold-dark transition-all duration-300 disabled:opacity-50"
                 >
-                  {loading ? t.redirecting : t.payAndGetLink(PRICE)}
+                  {loading ? t.redirecting : t.payAndGetLink(priceDisplay(form.language))}
                 </button>
 
                 <button

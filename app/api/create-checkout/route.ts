@@ -2,13 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import type { InviteData } from "@/lib/types";
 
-const PRICE_CENTS = 1500; // $15.00 — change when you decide on pricing
+function getPricing(language?: string) {
+  if (language === "cs") return { currency: "czk", unit_amount: 35000 }; // 350 Kč
+  return { currency: "eur", unit_amount: 1400 }; // €14
+}
 
 export async function POST(req: NextRequest) {
   try {
     const { invite }: { invite: InviteData } = await req.json();
 
     const origin = req.headers.get("origin") ?? process.env.NEXT_PUBLIC_SITE_URL;
+    const { currency, unit_amount } = getPricing(invite.language);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -17,8 +21,8 @@ export async function POST(req: NextRequest) {
         {
           quantity: 1,
           price_data: {
-            currency: "usd",
-            unit_amount: PRICE_CENTS,
+            currency,
+            unit_amount,
             product_data: {
               name: "Digital Wedding Invitation — Élégant",
               description: `${invite.partner1} & ${invite.partner2} · ${invite.date}`,

@@ -78,7 +78,7 @@ export const translations = {
     couple: "Couple",
     total: "Total",
     redirecting: "Redirecting to payment…",
-    payAndGetLink: (price: number) => `Pay $${price} & Get My Link`,
+    payAndGetLink: (price: string) => `Pay ${price} & Get My Link`,
     goBackEdit: "← Go Back & Edit",
     securePayment:
       "Secure payment via Stripe. Your link is permanent — share it forever.",
@@ -247,7 +247,7 @@ export const translations = {
     couple: "Pár",
     total: "Celkem",
     redirecting: "Přesměrování na platbu…",
-    payAndGetLink: (price: number) => `Zaplatit $${price} a získat odkaz`,
+    payAndGetLink: (price: string) => `Zaplatit ${price} a získat odkaz`,
     goBackEdit: "← Zpět a upravit",
     securePayment:
       "Bezpečná platba přes Stripe. Váš odkaz je trvalý — sdílejte ho navždy.",
@@ -416,7 +416,7 @@ export const translations = {
     couple: "Pár",
     total: "Celkom",
     redirecting: "Presmerovanie na platbu…",
-    payAndGetLink: (price: number) => `Zaplatiť $${price} a získať odkaz`,
+    payAndGetLink: (price: string) => `Zaplatiť ${price} a získať odkaz`,
     goBackEdit: "← Späť a upraviť",
     securePayment:
       "Bezpečná platba cez Stripe. Váš odkaz je trvalý — zdieľajte ho navždy.",

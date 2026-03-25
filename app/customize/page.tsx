@@ -27,6 +27,7 @@ function CustomizeContent() {
     message: "",
     rsvp_email: "",
     template: initialTemplate,
+    language: lang,
   };
 
   const PRICE = 15;
@@ -116,7 +117,7 @@ function CustomizeContent() {
       const res = await fetch("/api/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ invite: { ...form, language: lang } }),
+        body: JSON.stringify({ invite: form }),
       });
       const data = await res.json();
       if (data.url) {
@@ -485,6 +486,32 @@ function CustomizeContent() {
                         </p>
                       )}
                     </label>
+                  </fieldset>
+
+                  {/* Invitation language */}
+                  <fieldset className="border border-gold-light px-4 pt-2 pb-4">
+                    <legend className="px-2 text-xs tracking-ultra-wide uppercase text-gold font-light font-sans">
+                      Invitation Language
+                    </legend>
+                    <p className="text-xs uppercase tracking-widest text-muted font-sans font-light mt-2 mb-3">
+                      Language your guests will see
+                    </p>
+                    <div className="flex gap-3">
+                      {(["en", "cs", "sk"] as const).map((l) => (
+                        <button
+                          key={l}
+                          type="button"
+                          onClick={() => update("language", l)}
+                          className={`flex-1 py-2 text-xs tracking-widest uppercase font-sans border transition-all ${
+                            (form.language ?? lang) === l
+                              ? "border-gold bg-gold/10 text-gold"
+                              : "border-gold-light text-muted hover:border-gold hover:text-gold"
+                          }`}
+                        >
+                          {l === "en" ? "English" : l === "cs" ? "Česky" : "Slovensky"}
+                        </button>
+                      ))}
+                    </div>
                   </fieldset>
                 </div>
 

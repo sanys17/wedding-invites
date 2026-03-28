@@ -43,12 +43,12 @@ function CustomizeContent() {
 
   type FilterKey = "all" | "vertical" | "horizontal" | "photo" | "animated" | "video";
   const FILTERS: { key: FilterKey; label: string }[] = [
-    { key: "all",        label: "All" },
-    { key: "animated",   label: "✦ Animated" },
-    { key: "video",      label: "▶ Video" },
-    { key: "vertical",   label: "Vertical" },
-    { key: "horizontal", label: "Horizontal" },
-    { key: "photo",      label: "With Photo" },
+    { key: "all",        label: t.filterAll },
+    { key: "animated",   label: t.filterAnimated },
+    { key: "video",      label: t.filterVideo },
+    { key: "vertical",   label: t.filterVertical },
+    { key: "horizontal", label: t.filterHorizontal },
+    { key: "photo",      label: t.filterPhoto },
   ];
 
   type PlanKey = "basic" | "standard" | "pro";
@@ -217,7 +217,7 @@ function CustomizeContent() {
             {/* Template switcher */}
             {step === "edit" && (
               <div className="mb-8">
-                <p className="text-xs tracking-ultra-wide uppercase text-muted font-light mb-3">Choose a Design</p>
+                <p className="text-xs tracking-ultra-wide uppercase text-muted font-light mb-3">{t.chooseDesignLabel}</p>
 
                 {/* Filter pills */}
                 <div className="flex gap-2 mb-3 flex-wrap">
@@ -291,7 +291,7 @@ function CustomizeContent() {
                       <div className="max-h-72 overflow-y-auto pr-1 space-y-4">
                         {verticals.length > 0 && (
                           <div>
-                            <p className="text-[9px] tracking-ultra-wide uppercase text-muted/50 font-light mb-2">Vertical</p>
+                            <p className="text-[9px] tracking-ultra-wide uppercase text-muted/50 font-light mb-2">{t.orientationVertical}</p>
                             <div className="grid grid-cols-5 gap-2">
                               {verticals.map((tmpl) => <TemplateBtn key={tmpl.id} tmpl={tmpl} ratio="3/4" />)}
                             </div>
@@ -299,7 +299,7 @@ function CustomizeContent() {
                         )}
                         {horizontals.length > 0 && (
                           <div>
-                            <p className="text-[9px] tracking-ultra-wide uppercase text-muted/50 font-light mb-2">Horizontal</p>
+                            <p className="text-[9px] tracking-ultra-wide uppercase text-muted/50 font-light mb-2">{t.orientationHorizontal}</p>
                             <div className="grid grid-cols-3 gap-2">
                               {horizontals.map((tmpl) => <TemplateBtn key={tmpl.id} tmpl={tmpl} ratio="4/3" />)}
                             </div>
@@ -323,10 +323,10 @@ function CustomizeContent() {
                 })()}
 
                 <p className="text-[10px] text-muted font-light mt-2">
-                  Selected: <span className="text-gold font-normal">{TEMPLATE_REGISTRY.find(r => r.id === form.template)?.name}</span>
+                  {t.selectedLabel}: <span className="text-gold font-normal">{TEMPLATE_REGISTRY.find(r => r.id === form.template)?.name}</span>
                   {" — "}{TEMPLATE_REGISTRY.find(r => r.id === form.template)?.tag}
                   {TEMPLATE_REGISTRY.find(r => r.id === form.template)?.supportsImage && (
-                    <span className="ml-2 text-gold/60">· supports photo</span>
+                    <span className="ml-2 text-gold/60">· {t.supportsPhotoLabel}</span>
                   )}
                 </p>
               </div>

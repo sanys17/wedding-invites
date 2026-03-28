@@ -180,6 +180,19 @@ export const translations = {
     trustSecure: "Secure payment",
 
     // Form placeholders
+    // Design picker
+    chooseDesignLabel: "Choose a Design",
+    filterAll: "All",
+    filterAnimated: "✦ Animated",
+    filterVideo: "▶ Video",
+    filterVertical: "Vertical",
+    filterHorizontal: "Horizontal",
+    filterPhoto: "With Photo",
+    orientationVertical: "Vertical",
+    orientationHorizontal: "Horizontal",
+    selectedLabel: "Selected",
+    supportsPhotoLabel: "supports photo",
+
     egPartner1: "e.g. Emma",
     egPartner2: "e.g. James",
     egDate: "e.g. September 14, 2025",
@@ -371,6 +384,19 @@ export const translations = {
     trustSecure: "Bezpečná platba",
 
     // Form placeholders
+    // Design picker
+    chooseDesignLabel: "Vyberte vzor",
+    filterAll: "Vše",
+    filterAnimated: "✦ Animované",
+    filterVideo: "▶ Video",
+    filterVertical: "Svislé",
+    filterHorizontal: "Vodorovné",
+    filterPhoto: "S fotografií",
+    orientationVertical: "Svislé",
+    orientationHorizontal: "Vodorovné",
+    selectedLabel: "Vybráno",
+    supportsPhotoLabel: "podporuje fotografii",
+
     egPartner1: "např. Jana",
     egPartner2: "např. Tomáš",
     egDate: "např. 14. září 2025",
@@ -562,6 +588,19 @@ export const translations = {
     trustSecure: "Bezpečná platba",
 
     // Form placeholders
+    // Design picker
+    chooseDesignLabel: "Vyberte vzor",
+    filterAll: "Všetko",
+    filterAnimated: "✦ Animované",
+    filterVideo: "▶ Video",
+    filterVertical: "Zvislé",
+    filterHorizontal: "Vodorovné",
+    filterPhoto: "S fotografiou",
+    orientationVertical: "Zvislé",
+    orientationHorizontal: "Vodorovné",
+    selectedLabel: "Vybrané",
+    supportsPhotoLabel: "podporuje fotografiu",
+
     egPartner1: "napr. Zuzana",
     egPartner2: "napr. Martin",
     egDate: "napr. 14. septembra 2025",

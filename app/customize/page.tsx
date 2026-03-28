@@ -261,7 +261,7 @@ function CustomizeContent() {
                       <button
                         key={tmpl.id}
                         onClick={() => {
-                          if (locked) setSelectedPlan(required);
+                          if (locked) return;
                           update("template", tmpl.id);
                         }}
                         className={`relative border transition-all cursor-pointer ${form.template === tmpl.id ? "border-gold shadow-sm" : "border-gold-light hover:border-gold"}`}

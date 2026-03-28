@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { QRCodeSVG } from "qrcode.react";
 
 function SuccessContent() {
   const { t } = useLanguage();
@@ -12,6 +13,7 @@ function SuccessContent() {
   const sessionId = searchParams.get("session_id");
   const [inviteUrl, setInviteUrl] = useState<string | null>(null);
   const [dashboardUrl, setDashboardUrl] = useState<string | null>(null);
+  const [plan, setPlan] = useState<string>("standard");
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [canNativeShare, setCanNativeShare] = useState(false);
@@ -36,6 +38,7 @@ function SuccessContent() {
         if (data.inviteUrl) {
           setInviteUrl(data.inviteUrl);
           setDashboardUrl(data.inviteUrl.replace("/invite/", "/dashboard/"));
+          setPlan(data.plan ?? "standard");
           setLoading(false);
         } else if (attempts < maxAttempts) {
           attempts++;
@@ -204,14 +207,25 @@ function SuccessContent() {
               )}
             </div>
 
+            {/* QR code — Standard and Pro only */}
+            {plan !== "basic" && (
+              <div className="border border-gold-light p-6 text-center">
+                <p className="text-[10px] tracking-ultra-wide uppercase text-gold font-light mb-4">QR Code</p>
+                <div className="flex justify-center">
+                  <QRCodeSVG value={inviteUrl} size={148} fgColor="#1C1917" bgColor="#FAF8F4" level="M" />
+                </div>
+                <p className="text-xs text-muted font-light mt-3">Guests can scan this to open your invitation</p>
+              </div>
+            )}
+
             {/* Preview */}
             <a href={inviteUrl} target="_blank" rel="noopener noreferrer"
               className="block w-full border border-gold-light text-charcoal py-3 text-xs tracking-widest uppercase hover:border-gold transition-all duration-300">
               {t.previewInvitation}
             </a>
 
-            {/* Dashboard */}
-            {dashboardUrl && (
+            {/* Dashboard — Standard and Pro only */}
+            {dashboardUrl && plan !== "basic" && (
               <a href={dashboardUrl} target="_blank" rel="noopener noreferrer"
                 className="block w-full border border-gold text-gold py-3 text-xs tracking-widest uppercase hover:bg-gold hover:text-white transition-all duration-300 text-center">
                 View RSVP Dashboard →

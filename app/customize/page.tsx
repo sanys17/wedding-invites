@@ -63,6 +63,18 @@ function CustomizeContent() {
   const [videoUploading, setVideoUploading] = useState(false);
   const [videoError, setVideoError] = useState("");
 
+  const PLAN_ORDER: Record<PlanKey, number> = { basic: 0, standard: 1, pro: 2 };
+
+  function requiredPlanForTemplate(tmpl: typeof TEMPLATE_REGISTRY[0]): PlanKey {
+    if ((tmpl as any).supportsVideo) return "pro";
+    if ((tmpl as any).animated) return "standard";
+    return "basic";
+  }
+
+  function isTemplateLocked(tmpl: typeof TEMPLATE_REGISTRY[0]): boolean {
+    return PLAN_ORDER[requiredPlanForTemplate(tmpl)] > PLAN_ORDER[selectedPlan];
+  }
+
   function update(field: keyof InviteData, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
@@ -239,31 +251,49 @@ function CustomizeContent() {
                   const hasVertical   = filtered.some(t => t.orientation === "vertical");
                   const mixed = hasHorizontal && hasVertical;
 
+                  const previewData: InviteData = { partner1: "Emma", partner2: "James", date: "Sept 14, 2025", time: "4:00 PM", venue: "Grand Estate", location: "Florence", message: "", rsvp_email: "", template: "" };
+
+                  function TemplateBtn({ tmpl, ratio }: { tmpl: typeof TEMPLATE_REGISTRY[0]; ratio: string }) {
+                    const TC = tmpl.component;
+                    const locked = isTemplateLocked(tmpl);
+                    const required = requiredPlanForTemplate(tmpl);
+                    return (
+                      <button
+                        key={tmpl.id}
+                        onClick={() => {
+                          if (locked) setSelectedPlan(required);
+                          update("template", tmpl.id);
+                        }}
+                        className={`relative border transition-all cursor-pointer ${form.template === tmpl.id ? "border-gold shadow-sm" : "border-gold-light hover:border-gold"}`}
+                        style={{ aspectRatio: ratio }}
+                        title={locked ? `Requires ${PLAN_PRICES[required].tier} plan` : `${tmpl.name} — ${tmpl.tag}`}
+                      >
+                        <div className="absolute inset-0 overflow-hidden" style={{ transform: "scale(0.155)", transformOrigin: "top left", width: "645%", height: "645%" }}>
+                          <TC data={{ ...previewData, template: tmpl.id }} />
+                        </div>
+                        {locked && (
+                          <div className="absolute inset-0 bg-cream/80 flex flex-col items-center justify-center gap-0.5 pointer-events-none">
+                            <svg className="w-3 h-3 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                            </svg>
+                            <span className="text-[7px] tracking-widest uppercase text-gold font-light">{PLAN_PRICES[required].tier}</span>
+                          </div>
+                        )}
+                        {form.template === tmpl.id && !locked && <div className="absolute inset-0 border-2 border-gold pointer-events-none" />}
+                      </button>
+                    );
+                  }
+
                   if (mixed) {
-                    // Group by orientation when showing "all"
                     const verticals   = filtered.filter(t => t.orientation === "vertical");
                     const horizontals = filtered.filter(t => t.orientation === "horizontal");
-                    const previewData: InviteData = { partner1: "Emma", partner2: "James", date: "Sept 14, 2025", time: "4:00 PM", venue: "Grand Estate", location: "Florence", message: "", rsvp_email: "", template: "" };
-
                     return (
                       <div className="max-h-72 overflow-y-auto pr-1 space-y-4">
                         {verticals.length > 0 && (
                           <div>
                             <p className="text-[9px] tracking-ultra-wide uppercase text-muted/50 font-light mb-2">Vertical</p>
                             <div className="grid grid-cols-5 gap-2">
-                              {verticals.map((tmpl) => {
-                                const TC = tmpl.component;
-                                return (
-                                  <button key={tmpl.id} onClick={() => update("template", tmpl.id)}
-                                    className={`relative border transition-all cursor-pointer ${form.template === tmpl.id ? "border-gold shadow-sm" : "border-gold-light hover:border-gold"}`}
-                                    style={{ aspectRatio: "3/4" }} title={`${tmpl.name} — ${tmpl.tag}`}>
-                                    <div className="absolute inset-0 overflow-hidden" style={{ transform: "scale(0.155)", transformOrigin: "top left", width: "645%", height: "645%" }}>
-                                      <TC data={{ ...previewData, template: tmpl.id }} />
-                                    </div>
-                                    {form.template === tmpl.id && <div className="absolute inset-0 border-2 border-gold pointer-events-none" />}
-                                  </button>
-                                );
-                              })}
+                              {verticals.map((tmpl) => <TemplateBtn key={tmpl.id} tmpl={tmpl} ratio="3/4" />)}
                             </div>
                           </div>
                         )}
@@ -271,19 +301,7 @@ function CustomizeContent() {
                           <div>
                             <p className="text-[9px] tracking-ultra-wide uppercase text-muted/50 font-light mb-2">Horizontal</p>
                             <div className="grid grid-cols-3 gap-2">
-                              {horizontals.map((tmpl) => {
-                                const TC = tmpl.component;
-                                return (
-                                  <button key={tmpl.id} onClick={() => update("template", tmpl.id)}
-                                    className={`relative border transition-all cursor-pointer ${form.template === tmpl.id ? "border-gold shadow-sm" : "border-gold-light hover:border-gold"}`}
-                                    style={{ aspectRatio: "4/3" }} title={`${tmpl.name} — ${tmpl.tag}`}>
-                                    <div className="absolute inset-0 overflow-hidden" style={{ transform: "scale(0.155)", transformOrigin: "top left", width: "645%", height: "645%" }}>
-                                      <TC data={{ ...previewData, template: tmpl.id }} />
-                                    </div>
-                                    {form.template === tmpl.id && <div className="absolute inset-0 border-2 border-gold pointer-events-none" />}
-                                  </button>
-                                );
-                              })}
+                              {horizontals.map((tmpl) => <TemplateBtn key={tmpl.id} tmpl={tmpl} ratio="4/3" />)}
                             </div>
                           </div>
                         )}
@@ -293,20 +311,11 @@ function CustomizeContent() {
 
                   // Single orientation view
                   const isHoriz = hasHorizontal;
-                  const previewData: InviteData = { partner1: "Emma", partner2: "James", date: "Sept 14, 2025", time: "4:00 PM", venue: "Grand Estate", location: "Florence", message: "", rsvp_email: "", template: "" };
                   return (
                     <div className={`grid gap-2 max-h-72 overflow-y-auto pr-1 ${isHoriz ? "grid-cols-3" : "grid-cols-5"}`}>
                       {filtered.map((tmpl) => {
-                        const TC = tmpl.component;
                         return (
-                          <button key={tmpl.id} onClick={() => update("template", tmpl.id)}
-                            className={`relative border transition-all cursor-pointer ${form.template === tmpl.id ? "border-gold shadow-sm" : "border-gold-light hover:border-gold"}`}
-                            style={{ aspectRatio: isHoriz ? "4/3" : "3/4" }} title={`${tmpl.name} — ${tmpl.tag}`}>
-                            <div className="absolute inset-0 overflow-hidden" style={{ transform: "scale(0.155)", transformOrigin: "top left", width: "645%", height: "645%" }}>
-                              <TC data={{ ...previewData, template: tmpl.id }} />
-                            </div>
-                            {form.template === tmpl.id && <div className="absolute inset-0 border-2 border-gold pointer-events-none" />}
-                          </button>
+                          <TemplateBtn key={tmpl.id} tmpl={tmpl} ratio={isHoriz ? "4/3" : "3/4"} />
                         );
                       })}
                     </div>

@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   const db = supabaseAdmin();
   const { data, error } = await db
     .from("invites")
-    .select("id")
+    .select("id, plan")
     .eq("stripe_session_id", sessionId)
     .eq("paid", true)
     .single();
@@ -23,5 +23,8 @@ export async function GET(req: NextRequest) {
   const origin =
     process.env.NEXT_PUBLIC_SITE_URL ?? req.headers.get("origin") ?? "";
 
-  return NextResponse.json({ inviteUrl: `${origin}/invite/${data.id}` });
+  return NextResponse.json({
+    inviteUrl: `${origin}/invite/${data.id}`,
+    plan: data.plan ?? "standard",
+  });
 }

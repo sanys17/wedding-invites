@@ -9,6 +9,7 @@ export interface InviteData {
   message: string;     // personal note from the couple
   rsvp_email: string;  // where guests send RSVP
   template: string;    // e.g. "elegant-minimal"
+  plan?: string;       // e.g. "basic", "standard", "pro"
   language?: string;   // e.g. "en", "cs", "sk"
   image_url?: string;  // custom couple photo URL
   video_url?: string;  // custom background video URL

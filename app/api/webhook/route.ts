@@ -72,6 +72,7 @@ export async function POST(req: NextRequest) {
       message: meta.message,
       rsvp_email: meta.rsvp_email,
       template: meta.template,
+      plan: meta.plan ?? "standard",
       language: meta.language ?? "en",
       image_url: meta.image_url ?? null,
       video_url: meta.video_url ?? null,

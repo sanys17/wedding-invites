@@ -11,6 +11,7 @@ create table if not exists invites (
   message           text,
   rsvp_email        text not null,
   template          text not null default 'elegant-minimal',
+  plan              text not null default 'standard',
   customer_email    text,
   paid              boolean not null default false,
   stripe_session_id text,
@@ -20,6 +21,9 @@ create table if not exists invites (
 -- Only the service role (your API) can read/write.
 -- Public users can read paid invites (needed to show the invite page).
 alter table invites enable row level security;
+
+-- Migration for existing databases:
+-- ALTER TABLE invites ADD COLUMN IF NOT EXISTS plan text NOT NULL DEFAULT 'standard';
 
 create policy "Public can read paid invites"
   on invites for select

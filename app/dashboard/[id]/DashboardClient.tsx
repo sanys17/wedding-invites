@@ -26,6 +26,7 @@ interface Invite {
   venue: string;
   location: string;
   language?: string;
+  plan?: string;
 }
 
 function getDashboardStrings(lang?: string) {
@@ -85,8 +86,45 @@ function getDashboardStrings(lang?: string) {
   };
 }
 
+function BasicUpgradeBlock({ invite }: { invite: Invite }) {
+  const lang = invite.language ?? "en";
+  const heading = lang === "cs" ? "Přehled RSVP není součástí vašeho balíčku"
+    : lang === "sk" ? "Prehľad RSVP nie je súčasťou vášho balíka"
+    : "RSVP Dashboard not included in your plan";
+  const desc = lang === "cs"
+    ? "Váš balíček Basic zahrnuje základní sledování RSVP e-mailem. Upgradujte na Standard nebo Pro pro přístup k živému přehledu odpovědí."
+    : lang === "sk"
+    ? "Váš balík Basic zahŕňa základné sledovanie RSVP e-mailom. Upgradujte na Standard alebo Pro pre prístup k živému prehľadu odpovedí."
+    : "Your Basic plan includes RSVP responses to your email. Upgrade to Standard or Pro to access the live response dashboard.";
+  const btnLabel = lang === "cs" ? "Upgradovat plán" : lang === "sk" ? "Upgradovať balík" : "Upgrade Your Plan";
+
+  return (
+    <main className="min-h-screen bg-cream flex items-center justify-center px-6">
+      <div className="max-w-md w-full text-center">
+        <div className="flex items-center justify-center gap-4 mb-8">
+          <div className="h-px w-12 bg-gold-light" />
+          <span className="text-gold text-lg">✦</span>
+          <div className="h-px w-12 bg-gold-light" />
+        </div>
+        <div className="w-14 h-14 rounded-full border border-gold-light flex items-center justify-center mx-auto mb-6 text-gold">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+          </svg>
+        </div>
+        <h1 className="font-serif text-3xl font-light text-charcoal mb-4">{heading}</h1>
+        <p className="text-muted font-light text-sm leading-relaxed mb-8">{desc}</p>
+        <a href="/" className="inline-block bg-charcoal text-cream px-8 py-4 text-xs tracking-widest uppercase hover:bg-gold transition-all duration-300">
+          {btnLabel}
+        </a>
+      </div>
+    </main>
+  );
+}
+
 export default function DashboardClient({ invite, inviteId }: { invite: Invite; inviteId: string }) {
   const s = getDashboardStrings(invite.language);
+
+  if (invite.plan === "basic") return <BasicUpgradeBlock invite={invite} />;
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [stats, setStats] = useState<Stats>({ total: 0, attending: 0, declined: 0, total_guests: 0 });
   const [loading, setLoading] = useState(true);

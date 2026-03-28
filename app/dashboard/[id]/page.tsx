@@ -11,7 +11,7 @@ export default async function DashboardPage({ params }: { params: { id: string }
 
   const { data: invite, error } = await db
     .from("invites")
-    .select("id, partner1, partner2, date, venue, location, language, paid")
+    .select("id, partner1, partner2, date, venue, location, language, plan, paid")
     .eq("id", params.id)
     .eq("paid", true)
     .single();

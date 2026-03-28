@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase";
 import UpgradeClient from "./UpgradeClient";
 
@@ -16,10 +16,7 @@ export default async function UpgradePage({ params }: { params: { id: string } }
 
   if (error || !invite) notFound();
   if (invite.plan !== "basic") {
-    // Already on a higher plan — redirect to dashboard
-    return (
-      <meta httpEquiv="refresh" content={`0;url=/dashboard/${params.id}`} />
-    );
+    redirect(`/dashboard/${params.id}`);
   }
 
   return <UpgradeClient invite={invite} />;

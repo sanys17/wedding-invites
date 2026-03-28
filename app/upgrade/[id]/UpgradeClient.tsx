@@ -81,6 +81,7 @@ export default function UpgradeClient({ invite }: { invite: Invite }) {
   const isCzk = lang === "cs";
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [errorPlan, setErrorPlan] = useState<string | null>(null);
 
   async function handleUpgrade(newPlan: string) {
     setLoading(newPlan);
@@ -96,10 +97,12 @@ export default function UpgradeClient({ invite }: { invite: Invite }) {
         window.location.href = data.url;
       } else {
         setError(data.error ?? "Something went wrong.");
+        setErrorPlan(newPlan);
         setLoading(null);
       }
     } catch {
       setError("Network error. Please try again.");
+      setErrorPlan(newPlan);
       setLoading(null);
     }
   }
@@ -165,7 +168,7 @@ export default function UpgradeClient({ invite }: { invite: Invite }) {
                     ))}
                   </ul>
 
-                  {error && loading === tier.key && (
+                  {error && errorPlan === tier.key && (
                     <p className="text-red-400 text-xs mb-3 text-center">{error}</p>
                   )}
 

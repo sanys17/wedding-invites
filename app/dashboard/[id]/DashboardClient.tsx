@@ -113,7 +113,7 @@ function BasicUpgradeBlock({ invite }: { invite: Invite }) {
         </div>
         <h1 className="font-serif text-3xl font-light text-charcoal mb-4">{heading}</h1>
         <p className="text-muted font-light text-sm leading-relaxed mb-8">{desc}</p>
-        <a href="/" className="inline-block bg-charcoal text-cream px-8 py-4 text-xs tracking-widest uppercase hover:bg-gold transition-all duration-300">
+        <a href={`/upgrade/${invite.id}`} className="inline-block bg-charcoal text-cream px-8 py-4 text-xs tracking-widest uppercase hover:bg-gold transition-all duration-300">
           {btnLabel}
         </a>
       </div>

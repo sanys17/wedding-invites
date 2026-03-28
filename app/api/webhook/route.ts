@@ -58,6 +58,24 @@ export async function POST(req: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session;
     const meta = session.metadata!;
 
+    // ── UPGRADE FLOW ──────────────────────────────────────────────────────────
+    if (meta.type === "upgrade") {
+      const db = supabaseAdmin();
+      const { error } = await db
+        .from("invites")
+        .update({ plan: meta.new_plan })
+        .eq("id", meta.invite_id);
+
+      if (error) {
+        console.error("[webhook] Upgrade update error", error);
+        return NextResponse.json({ error: "DB error" }, { status: 500 });
+      }
+      console.log(`[webhook] Upgraded invite ${meta.invite_id} to ${meta.new_plan}`);
+      return NextResponse.json({ received: true });
+    }
+
+    // ── NEW INVITE FLOW ───────────────────────────────────────────────────────
+
     const id = nanoid(10); // short unique ID for the shareable URL
 
     const db = supabaseAdmin();

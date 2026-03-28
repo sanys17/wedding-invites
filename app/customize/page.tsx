@@ -30,8 +30,15 @@ function CustomizeContent() {
     language: lang,
   };
 
-  function priceDisplay(language?: string) {
-    return language === "cs" ? "350 Kč" : "€14";
+  const PLAN_PRICES: Record<PlanKey, { eur: string; czk: string; tier: string; name: string }> = {
+    basic:    { eur: "€29",  czk: "699 Kč",    tier: t.pricingTier1Tier, name: t.pricingTier1Name },
+    standard: { eur: "€49",  czk: "1 190 Kč",  tier: t.pricingTier2Tier, name: t.pricingTier2Name },
+    pro:      { eur: "€89",  czk: "2 190 Kč",  tier: t.pricingTier3Tier, name: t.pricingTier3Name },
+  };
+
+  function priceDisplay() {
+    const isCzk = (form.language ?? lang) === "cs";
+    return isCzk ? PLAN_PRICES[selectedPlan].czk : PLAN_PRICES[selectedPlan].eur;
   }
 
   type FilterKey = "all" | "vertical" | "horizontal" | "photo" | "animated" | "video";
@@ -44,6 +51,8 @@ function CustomizeContent() {
     { key: "photo",      label: "With Photo" },
   ];
 
+  type PlanKey = "basic" | "standard" | "pro";
+  const [selectedPlan, setSelectedPlan] = useState<PlanKey>("standard");
   const [form, setForm] = useState<InviteData>(INITIAL);
   const [step, setStep] = useState<"edit" | "review">("edit");
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -119,7 +128,7 @@ function CustomizeContent() {
       const res = await fetch("/api/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ invite: form }),
+        body: JSON.stringify({ invite: form, plan: selectedPlan }),
       });
       const data = await res.json();
       if (data.url) {
@@ -165,6 +174,34 @@ function CustomizeContent() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* ── LEFT: FORM ── */}
           <div>
+            {/* Plan picker */}
+            {step === "edit" && (
+              <div className="mb-8">
+                <p className="text-xs tracking-ultra-wide uppercase text-muted font-light mb-3">{t.choosePlan}</p>
+                <div className="grid grid-cols-3 gap-2">
+                  {(["basic", "standard", "pro"] as PlanKey[]).map((key) => {
+                    const p = PLAN_PRICES[key];
+                    const isCzk = (form.language ?? lang) === "cs";
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => setSelectedPlan(key)}
+                        className={`border p-3 text-left transition-all ${
+                          selectedPlan === key
+                            ? "border-gold bg-gold/5"
+                            : "border-gold-light hover:border-gold"
+                        }`}
+                      >
+                        <p className="text-[9px] tracking-ultra-wide uppercase text-gold font-light">{p.tier}</p>
+                        <p className="font-serif text-sm text-charcoal">{p.name}</p>
+                        <p className="text-xs text-muted font-light mt-1">{isCzk ? p.czk : p.eur}</p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* Template switcher */}
             {step === "edit" && (
               <div className="mb-8">
@@ -541,8 +578,12 @@ function CustomizeContent() {
 
                 <div className="border border-gold-light p-6 mb-8 space-y-3">
                   <div className="flex justify-between text-sm">
+                    <span className="text-muted font-light">{t.planLabel}</span>
+                    <span className="font-serif">{PLAN_PRICES[selectedPlan].tier} — {PLAN_PRICES[selectedPlan].name}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
                     <span className="text-muted font-light">{t.design}</span>
-                    <span className="font-serif">Élégant — Minimalist</span>
+                    <span className="font-serif">{TEMPLATE_REGISTRY.find(r => r.id === form.template)?.name ?? form.template}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted font-light">{t.couple}</span>
@@ -564,7 +605,7 @@ function CustomizeContent() {
                       {t.total}
                     </span>
                     <span className="font-serif text-xl text-gold">
-                      {priceDisplay(form.language)}
+                      {priceDisplay()}
                     </span>
                   </div>
                 </div>
@@ -580,7 +621,7 @@ function CustomizeContent() {
                   disabled={loading}
                   className="w-full bg-gold text-white py-4 text-sm tracking-widest uppercase hover:bg-gold-dark transition-all duration-300 disabled:opacity-50"
                 >
-                  {loading ? t.redirecting : t.payAndGetLink(priceDisplay(form.language))}
+                  {loading ? t.redirecting : t.payAndGetLink(priceDisplay())}
                 </button>
 
                 <button

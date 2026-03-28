@@ -2,17 +2,31 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import type { InviteData } from "@/lib/types";
 
-function getPricing(language?: string) {
-  if (language === "cs") return { currency: "czk", unit_amount: 35000 }; // 350 Kč
-  return { currency: "eur", unit_amount: 1400 }; // €14
+const PLAN_PRICING = {
+  basic:    { eur: 2900,  czk: 69900  }, // €29 / 699 Kč
+  standard: { eur: 4900,  czk: 119000 }, // €49 / 1 190 Kč
+  pro:      { eur: 8900,  czk: 219000 }, // €89 / 2 190 Kč
+} as const;
+
+const PLAN_LABELS = {
+  basic:    "Basic — Digital",
+  standard: "Standard — Premium",
+  pro:      "Pro — Luxury",
+} as const;
+
+function getPricing(plan: string = "standard", language?: string) {
+  const tier = PLAN_PRICING[plan as keyof typeof PLAN_PRICING] ?? PLAN_PRICING.standard;
+  if (language === "cs") return { currency: "czk", unit_amount: tier.czk };
+  return { currency: "eur", unit_amount: tier.eur };
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const { invite }: { invite: InviteData } = await req.json();
+    const { invite, plan }: { invite: InviteData; plan?: string } = await req.json();
 
     const origin = req.headers.get("origin") ?? process.env.NEXT_PUBLIC_SITE_URL;
-    const { currency, unit_amount } = getPricing(invite.language);
+    const { currency, unit_amount } = getPricing(plan, invite.language);
+    const productName = `Digital Wedding Invitation — ${PLAN_LABELS[plan as keyof typeof PLAN_LABELS] ?? PLAN_LABELS.standard}`;
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -24,7 +38,7 @@ export async function POST(req: NextRequest) {
             currency,
             unit_amount,
             product_data: {
-              name: "Digital Wedding Invitation — Élégant",
+              name: productName,
               description: `${invite.partner1} & ${invite.partner2} · ${invite.date}`,
             },
           },
@@ -42,6 +56,7 @@ export async function POST(req: NextRequest) {
         rsvp_email: invite.rsvp_email,
         template: invite.template,
         language: invite.language ?? "en",
+        plan: plan ?? "standard",
         image_url: invite.image_url ?? "",
         video_url: invite.video_url ?? "",
       },

@@ -21,9 +21,9 @@ export const translations = {
     howItWorksLabel: "How It Works",
     step1Title: "Choose a Design",
     step1Desc: "Browse our curated collection of elegant invitation templates.",
-    step2Title: "Personalize It",
+    step2Title: "Choose a Plan & Personalize",
     step2Desc:
-      "Add your names, date, venue and a personal message — and watch a live preview update in real time.",
+      "Pick the package that suits you, add your names, date, venue and message — watch a live preview update in real time.",
     step3Title: "Checkout",
     step3Desc: "Pay once. No subscriptions, no hidden fees.",
     step4Title: "Share Your Link",
@@ -170,6 +170,10 @@ export const translations = {
     pricingTier3Feature5: "WhatsApp / SMS delivery",
     pricingTier3Feature6: "Priority support",
 
+    // Plan picker
+    choosePlan: "Choose Your Plan",
+    planLabel: "Plan",
+
     // Trust strip
     trustOneTime: "From €29",
     trustInstant: "Instant link",
@@ -208,9 +212,9 @@ export const translations = {
     howItWorksLabel: "Jak to funguje",
     step1Title: "Vyberte vzor",
     step1Desc: "Prohlédněte si naši kolekci elegantních šablon oznámení.",
-    step2Title: "Přizpůsobte si",
+    step2Title: "Vyberte balíček a přizpůsobte",
     step2Desc:
-      "Přidejte jména, datum, místo a osobní vzkaz — a sledujte živý náhled v reálném čase.",
+      "Zvolte balíček, doplňte jména, datum, místo a vzkaz — sledujte živý náhled v reálném čase.",
     step3Title: "Zaplaťte",
     step3Desc: "Zaplaťte jednou. Žádné předplatné, žádné skryté poplatky.",
     step4Title: "Sdílejte odkaz",
@@ -357,6 +361,10 @@ export const translations = {
     pricingTier3Feature5: "WhatsApp / SMS doručení",
     pricingTier3Feature6: "Prioritní podpora",
 
+    // Plan picker
+    choosePlan: "Vyberte balíček",
+    planLabel: "Balíček",
+
     // Trust strip
     trustOneTime: "Od 699 Kč",
     trustInstant: "Okamžitý odkaz",
@@ -395,9 +403,9 @@ export const translations = {
     howItWorksLabel: "Ako to funguje",
     step1Title: "Vyberte vzor",
     step1Desc: "Prezrite si našu kolekciu elegantných šablón oznámení.",
-    step2Title: "Prispôsobte si",
+    step2Title: "Vyberte balík a prispôsobte",
     step2Desc:
-      "Pridajte mená, dátum, miesto a osobný odkaz — a sledujte živý náhľad v reálnom čase.",
+      "Zvoľte balík, doplňte mená, dátum, miesto a odkaz — sledujte živý náhľad v reálnom čase.",
     step3Title: "Zaplaťte",
     step3Desc: "Zaplaťte raz. Žiadne predplatné, žiadne skryté poplatky.",
     step4Title: "Zdieľajte odkaz",
@@ -543,6 +551,10 @@ export const translations = {
     pricingTier3Feature4: "Vlastný doménový odkaz",
     pricingTier3Feature5: "WhatsApp / SMS doručenie",
     pricingTier3Feature6: "Prioritná podpora",
+
+    // Plan picker
+    choosePlan: "Vyberte balík",
+    planLabel: "Balík",
 
     // Trust strip
     trustOneTime: "Od €29",

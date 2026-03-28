@@ -25,9 +25,68 @@ interface Invite {
   date: string;
   venue: string;
   location: string;
+  language?: string;
+}
+
+function getDashboardStrings(lang?: string) {
+  if (lang === "cs") return {
+    label: "RSVP Přehled",
+    refresh: "Obnovit",
+    updated: "Aktualizováno",
+    attending: "Přijde",
+    declined: "Odmítlo",
+    totalRsvps: "Celkem RSVP",
+    totalGuests: (n: number) => `${n} hostů celkem`,
+    withRegrets: "s omluvou",
+    responsesReceived: "přijatých odpovědí",
+    noRsvpsTitle: "Zatím žádné odpovědi",
+    noRsvpsDesc: "Sdílejte odkaz na oznámení a odpovědi se zobrazí zde.",
+    guestResponses: "Odpovědi hostů",
+    attendingLabel: "Přijde ✓",
+    declinedLabel: "Odmítl(a)",
+    autoRefresh: "Tato stránka se automaticky obnovuje každých 30 sekund.",
+    dateLocale: "cs-CZ",
+  };
+  if (lang === "sk") return {
+    label: "RSVP Prehľad",
+    refresh: "Obnoviť",
+    updated: "Aktualizované",
+    attending: "Príde",
+    declined: "Odmietlo",
+    totalRsvps: "Celkom RSVP",
+    totalGuests: (n: number) => `${n} hostí celkom`,
+    withRegrets: "s ospravedlnením",
+    responsesReceived: "prijatých odpovedí",
+    noRsvpsTitle: "Zatiaľ žiadne odpovede",
+    noRsvpsDesc: "Zdieľajte odkaz na oznámenie a odpovede sa zobrazia tu.",
+    guestResponses: "Odpovede hostí",
+    attendingLabel: "Príde ✓",
+    declinedLabel: "Odmietol/a",
+    autoRefresh: "Táto stránka sa automaticky obnovuje každých 30 sekúnd.",
+    dateLocale: "sk-SK",
+  };
+  return {
+    label: "RSVP Dashboard",
+    refresh: "Refresh",
+    updated: "Updated",
+    attending: "Attending",
+    declined: "Declined",
+    totalRsvps: "Total RSVPs",
+    totalGuests: (n: number) => `${n} total guests`,
+    withRegrets: "with regrets",
+    responsesReceived: "responses received",
+    noRsvpsTitle: "No RSVPs yet",
+    noRsvpsDesc: "Share your invitation link and responses will appear here.",
+    guestResponses: "Guest Responses",
+    attendingLabel: "Attending ✓",
+    declinedLabel: "Declined",
+    autoRefresh: "This page refreshes automatically every 30 seconds.",
+    dateLocale: "en-GB",
+  };
 }
 
 export default function DashboardClient({ invite, inviteId }: { invite: Invite; inviteId: string }) {
+  const s = getDashboardStrings(invite.language);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [stats, setStats] = useState<Stats>({ total: 0, attending: 0, declined: 0, total_guests: 0 });
   const [loading, setLoading] = useState(true);
@@ -54,7 +113,7 @@ export default function DashboardClient({ invite, inviteId }: { invite: Invite; 
   }, [fetchData]);
 
   function formatDate(iso: string) {
-    return new Date(iso).toLocaleDateString("en-GB", {
+    return new Date(iso).toLocaleDateString(s.dateLocale, {
       day: "numeric", month: "short", year: "numeric",
       hour: "2-digit", minute: "2-digit",
     });
@@ -68,7 +127,7 @@ export default function DashboardClient({ invite, inviteId }: { invite: Invite; 
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-4 mb-6">
             <div className="h-px w-16 bg-gold-light" />
-            <span className="text-xs tracking-ultra-wide uppercase text-gold font-sans font-light">RSVP Dashboard</span>
+            <span className="text-xs tracking-ultra-wide uppercase text-gold font-sans font-light">{s.label}</span>
             <div className="h-px w-16 bg-gold-light" />
           </div>
           <h1 className="font-serif text-4xl font-light text-charcoal mb-1">
@@ -82,11 +141,11 @@ export default function DashboardClient({ invite, inviteId }: { invite: Invite; 
               onClick={fetchData}
               className="text-[10px] tracking-widest uppercase text-gold font-sans border border-gold-light px-4 py-1.5 hover:border-gold transition-all"
             >
-              Refresh
+              {s.refresh}
             </button>
             {lastUpdated && (
               <span className="text-[10px] text-muted font-sans">
-                Updated {lastUpdated.toLocaleTimeString()}
+                {s.updated} {lastUpdated.toLocaleTimeString(s.dateLocale)}
               </span>
             )}
           </div>
@@ -95,9 +154,9 @@ export default function DashboardClient({ invite, inviteId }: { invite: Invite; 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-10">
           {[
-            { label: "Attending", value: stats.attending, sub: `${stats.total_guests} total guests` },
-            { label: "Declined", value: stats.declined, sub: "with regrets" },
-            { label: "Total RSVPs", value: stats.total, sub: "responses received" },
+            { label: s.attending, value: stats.attending, sub: s.totalGuests(stats.total_guests) },
+            { label: s.declined, value: stats.declined, sub: s.withRegrets },
+            { label: s.totalRsvps, value: stats.total, sub: s.responsesReceived },
           ].map(({ label, value, sub }) => (
             <div key={label} className="bg-white border border-gold-light text-center py-6 px-4">
               <p className="font-serif text-4xl font-light text-charcoal mb-1">{value}</p>
@@ -118,13 +177,13 @@ export default function DashboardClient({ invite, inviteId }: { invite: Invite; 
           </div>
         ) : rsvps.length === 0 ? (
           <div className="bg-white border border-gold-light py-16 text-center">
-            <p className="font-serif text-xl font-light text-charcoal mb-2">No RSVPs yet</p>
-            <p className="text-sm font-sans font-light text-muted">Share your invitation link and responses will appear here.</p>
+            <p className="font-serif text-xl font-light text-charcoal mb-2">{s.noRsvpsTitle}</p>
+            <p className="text-sm font-sans font-light text-muted">{s.noRsvpsDesc}</p>
           </div>
         ) : (
           <div className="bg-white border border-gold-light overflow-hidden">
             <div className="border-b border-gold-light px-6 py-4">
-              <p className="text-[10px] tracking-ultra-wide uppercase text-gold font-sans font-light">Guest Responses</p>
+              <p className="text-[10px] tracking-ultra-wide uppercase text-gold font-sans font-light">{s.guestResponses}</p>
             </div>
             <div className="divide-y divide-gold-light/40">
               {rsvps.map((rsvp) => (
@@ -139,7 +198,7 @@ export default function DashboardClient({ invite, inviteId }: { invite: Invite; 
                         </span>
                       )}
                       <span className={`text-[9px] tracking-widest uppercase font-sans ml-auto ${rsvp.attending ? "text-gold" : "text-muted"}`}>
-                        {rsvp.attending ? "Attending ✓" : "Declined"}
+                        {rsvp.attending ? s.attendingLabel : s.declinedLabel}
                       </span>
                     </div>
                     {rsvp.message && (
@@ -156,7 +215,7 @@ export default function DashboardClient({ invite, inviteId }: { invite: Invite; 
         )}
 
         <p className="text-center text-xs text-muted/50 font-sans font-light mt-8 tracking-wider">
-          This page refreshes automatically every 30 seconds.
+          {s.autoRefresh}
         </p>
       </div>
     </main>

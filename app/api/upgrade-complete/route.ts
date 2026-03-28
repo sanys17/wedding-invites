@@ -80,15 +80,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: `Invite not found: ${fetchError?.message}` }, { status: 404 });
     }
 
-    // Update plan (always — idempotent)
-    const { error: updateError } = await db
+    // Update plan and select back to confirm the actual saved value
+    const { data: updated, error: updateError } = await db
       .from("invites")
       .update({ plan: newPlan })
-      .eq("id", inviteId);
+      .eq("id", inviteId)
+      .select("plan")
+      .single();
 
     if (updateError) {
       console.error("[upgrade-complete] DB update error", updateError);
       return NextResponse.json({ error: `DB update failed: ${updateError.message}` }, { status: 500 });
+    }
+
+    if (!updated) {
+      return NextResponse.json({ error: `Update matched 0 rows — inviteId "${inviteId}" not found` }, { status: 500 });
+    }
+
+    if (updated.plan !== newPlan) {
+      return NextResponse.json({ error: `Plan not saved — expected "${newPlan}", DB has "${updated.plan}"` }, { status: 500 });
     }
 
     // Send email (always — don't skip if webhook already ran)

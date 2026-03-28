@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         invite_id: inviteId,
         new_plan: newPlan,
       },
-      success_url: `${origin}/api/upgrade-complete?session_id={CHECKOUT_SESSION_ID}&invite_id=${inviteId}`,
+      success_url: `${origin}/upgrade/${inviteId}/confirmed?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/upgrade/${inviteId}`,
     });
 

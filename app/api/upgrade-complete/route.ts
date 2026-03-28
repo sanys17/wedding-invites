@@ -46,28 +46,24 @@ function getEmailStrings(lang: string, planName: string) {
   };
 }
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const sessionId = searchParams.get("session_id");
-  const inviteId = searchParams.get("invite_id");
-
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://wedding-inv-nine.vercel.app";
-
-  if (!sessionId || !inviteId) {
-    return NextResponse.redirect(`${baseUrl}/`);
-  }
-
+export async function POST(req: NextRequest) {
   try {
+    const { sessionId, inviteId } = await req.json();
+
+    if (!sessionId || !inviteId) {
+      return NextResponse.json({ error: "Missing params" }, { status: 400 });
+    }
+
     // Verify payment with Stripe
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     if (session.payment_status !== "paid") {
-      return NextResponse.redirect(`${baseUrl}/upgrade/${inviteId}`);
+      return NextResponse.json({ error: `Payment not complete: ${session.payment_status}` }, { status: 400 });
     }
 
     const meta = session.metadata;
     if (!meta || meta.type !== "upgrade" || meta.invite_id !== inviteId) {
-      return NextResponse.redirect(`${baseUrl}/upgrade/${inviteId}`);
+      return NextResponse.json({ error: "Session metadata mismatch" }, { status: 400 });
     }
 
     const newPlan = meta.new_plan;
@@ -81,7 +77,7 @@ export async function GET(req: NextRequest) {
       .single();
 
     if (fetchError || !invite) {
-      return NextResponse.redirect(`${baseUrl}/upgrade/${inviteId}`);
+      return NextResponse.json({ error: `Invite not found: ${fetchError?.message}` }, { status: 404 });
     }
 
     // Update plan (always — idempotent)
@@ -92,16 +88,17 @@ export async function GET(req: NextRequest) {
 
     if (updateError) {
       console.error("[upgrade-complete] DB update error", updateError);
+      return NextResponse.json({ error: `DB update failed: ${updateError.message}` }, { status: 500 });
     }
 
-    // Send email only if plan was just changed (avoid duplicate if webhook already sent one)
-    const wasBasic = invite.plan === "basic";
-    if (wasBasic && invite.customer_email) {
+    // Send email (always — don't skip if webhook already ran)
+    if (invite.customer_email) {
       const lang = invite.language ?? "en";
       const planNames = PLAN_NAMES[newPlan] ?? { en: newPlan, cs: newPlan, sk: newPlan };
       const planName = planNames[lang as keyof typeof planNames] ?? planNames.en;
       const s = getEmailStrings(lang, planName);
 
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://wedding-inv-nine.vercel.app";
       const inviteUrl = `${baseUrl}/invite/${inviteId}`;
       const dashboardUrl = `${baseUrl}/dashboard/${inviteId}`;
 
@@ -151,10 +148,9 @@ export async function GET(req: NextRequest) {
       }).catch((err) => console.error("[upgrade-complete] Email error", err));
     }
 
-    // Redirect to confirmation page
-    return NextResponse.redirect(`${baseUrl}/upgrade/${inviteId}/confirmed`);
+    return NextResponse.json({ success: true, plan: newPlan });
   } catch (err) {
-    console.error("[upgrade-complete] Error", err);
-    return NextResponse.redirect(`${baseUrl}/upgrade/${inviteId}`);
+    console.error("[upgrade-complete] Unexpected error", err);
+    return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

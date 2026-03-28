@@ -437,7 +437,7 @@ export default function Home() {
           <h2 className="font-serif text-4xl text-center text-charcoal mb-3 font-light">{t.pricingHeading}</h2>
           <p className="text-center text-muted text-xs font-light mb-12 tracking-wider">{t.pricingOneTime}</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             {TIERS.map((tier) => (
               <div
                 key={tier.tier}

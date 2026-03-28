@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         invite_id: inviteId,
         new_plan: newPlan,
       },
-      success_url: `${origin}/dashboard/${inviteId}?upgraded=1`,
+      success_url: `${origin}/upgrade/${inviteId}/success`,
       cancel_url: `${origin}/upgrade/${inviteId}`,
     });
 

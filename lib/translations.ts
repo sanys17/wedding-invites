@@ -171,7 +171,7 @@ export const translations = {
     pricingTier3Feature6: "Priority support",
 
     // Trust strip
-    trustOneTime: "From €19",
+    trustOneTime: "From €29",
     trustInstant: "Instant link",
     trustSecure: "Secure payment",
 
@@ -358,7 +358,7 @@ export const translations = {
     pricingTier3Feature6: "Prioritní podpora",
 
     // Trust strip
-    trustOneTime: "Od 499 Kč",
+    trustOneTime: "Od 699 Kč",
     trustInstant: "Okamžitý odkaz",
     trustSecure: "Bezpečná platba",
 
@@ -545,7 +545,7 @@ export const translations = {
     pricingTier3Feature6: "Prioritná podpora",
 
     // Trust strip
-    trustOneTime: "Od €19",
+    trustOneTime: "Od €29",
     trustInstant: "Okamžitý odkaz",
     trustSecure: "Bezpečná platba",
 

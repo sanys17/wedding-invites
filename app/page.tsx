@@ -15,21 +15,21 @@ export default function Home() {
     {
       tier: t.pricingTier1Tier,
       name: t.pricingTier1Name,
-      price: isCzk ? "499 Kč" : "€19",
+      price: isCzk ? "699 Kč" : "€29",
       features: [t.pricingTier1Feature1, t.pricingTier1Feature2, t.pricingTier1Feature3, t.pricingTier1Feature4],
       popular: false,
     },
     {
       tier: t.pricingTier2Tier,
       name: t.pricingTier2Name,
-      price: isCzk ? "999 Kč" : "€39",
+      price: isCzk ? "1 190 Kč" : "€49",
       features: [t.pricingTier2Feature1, t.pricingTier2Feature2, t.pricingTier2Feature3, t.pricingTier2Feature4, t.pricingTier2Feature5],
       popular: true,
     },
     {
       tier: t.pricingTier3Tier,
       name: t.pricingTier3Name,
-      price: isCzk ? "1 790 Kč" : "€69",
+      price: isCzk ? "2 190 Kč" : "€89",
       features: [t.pricingTier3Feature1, t.pricingTier3Feature2, t.pricingTier3Feature3, t.pricingTier3Feature4, t.pricingTier3Feature5, t.pricingTier3Feature6],
       popular: false,
     },
@@ -324,7 +324,7 @@ export default function Home() {
                   <div className="p-3 bg-cream border-t border-gold-light">
                     <div className="flex items-baseline justify-between">
                       <p className="font-serif text-base text-charcoal">{tmpl.name}</p>
-                      <span className="text-[10px] text-gold font-light tracking-widest">{isCzk ? "od 499 Kč" : "from €19"}</span>
+                      <span className="text-[10px] text-gold font-light tracking-widest">{isCzk ? "od 699 Kč" : "from €29"}</span>
                     </div>
                     <p className="text-[10px] text-muted tracking-wide mt-0.5 leading-tight">{tmpl.tag}</p>
                   </div>

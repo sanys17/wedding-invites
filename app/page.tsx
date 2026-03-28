@@ -10,7 +10,30 @@ import type { InviteData } from "@/lib/types";
 
 export default function Home() {
   const { t, lang } = useLanguage();
-  const price = lang === "cs" ? "350 Kč" : "€14";
+  const isCzk = lang === "cs";
+  const TIERS = [
+    {
+      tier: t.pricingTier1Tier,
+      name: t.pricingTier1Name,
+      price: isCzk ? "499 Kč" : "€19",
+      features: [t.pricingTier1Feature1, t.pricingTier1Feature2, t.pricingTier1Feature3, t.pricingTier1Feature4],
+      popular: false,
+    },
+    {
+      tier: t.pricingTier2Tier,
+      name: t.pricingTier2Name,
+      price: isCzk ? "999 Kč" : "€39",
+      features: [t.pricingTier2Feature1, t.pricingTier2Feature2, t.pricingTier2Feature3, t.pricingTier2Feature4, t.pricingTier2Feature5],
+      popular: true,
+    },
+    {
+      tier: t.pricingTier3Tier,
+      name: t.pricingTier3Name,
+      price: isCzk ? "1 790 Kč" : "€69",
+      features: [t.pricingTier3Feature1, t.pricingTier3Feature2, t.pricingTier3Feature3, t.pricingTier3Feature4, t.pricingTier3Feature5, t.pricingTier3Feature6],
+      popular: false,
+    },
+  ];
   const [scrolled, setScrolled] = useState(false);
   type FilterKey = "all" | "vertical" | "horizontal" | "photo" | "animated" | "video";
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -72,8 +95,6 @@ export default function Home() {
       desc: t.whyDigital3Desc,
     },
   ];
-
-  const PRICING_INCLUDES = [t.pricingItem1, t.pricingItem2, t.pricingItem3, t.pricingItem4, t.pricingItem5];
 
   return (
     <main className="min-h-screen bg-cream overflow-x-hidden">
@@ -303,7 +324,7 @@ export default function Home() {
                   <div className="p-3 bg-cream border-t border-gold-light">
                     <div className="flex items-baseline justify-between">
                       <p className="font-serif text-base text-charcoal">{tmpl.name}</p>
-                      <span className="text-[10px] text-gold font-light tracking-widest">{price}</span>
+                      <span className="text-[10px] text-gold font-light tracking-widest">{isCzk ? "od 499 Kč" : "from €19"}</span>
                     </div>
                     <p className="text-[10px] text-muted tracking-wide mt-0.5 leading-tight">{tmpl.tag}</p>
                   </div>
@@ -407,34 +428,69 @@ export default function Home() {
 
       {/* ── PRICING ── */}
       <section className="py-24 px-6">
-        <div className="max-w-sm mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-4 mb-4 justify-center">
             <div className="h-px w-12 bg-gold-light" />
             <span className="text-xs tracking-ultra-wide uppercase text-gold font-light">{t.pricingLabel}</span>
             <div className="h-px w-12 bg-gold-light" />
           </div>
-          <h2 className="font-serif text-4xl text-center text-charcoal mb-10 font-light">{t.pricingHeading}</h2>
-          <div className="border border-gold-light p-10 bg-white relative">
-            <div className="absolute top-3 left-3 w-5 h-5 border-t border-l border-gold-light" />
-            <div className="absolute top-3 right-3 w-5 h-5 border-t border-r border-gold-light" />
-            <div className="absolute bottom-3 left-3 w-5 h-5 border-b border-l border-gold-light" />
-            <div className="absolute bottom-3 right-3 w-5 h-5 border-b border-r border-gold-light" />
-            <p className="text-xs tracking-ultra-wide uppercase text-gold font-light mb-3 text-center">{t.pricingBadge}</p>
-            <div className="font-serif text-7xl text-charcoal font-light text-center mb-1">{price}</div>
-            <p className="text-muted text-xs font-light text-center tracking-wider mb-8">{t.pricingPer}</p>
-            <div className="space-y-3 mb-8">
-              {PRICING_INCLUDES.map((item) => (
-                <div key={item} className="flex items-center gap-3 text-sm text-muted font-light">
-                  <svg className="w-4 h-4 text-gold flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                  {item}
+          <h2 className="font-serif text-4xl text-center text-charcoal mb-3 font-light">{t.pricingHeading}</h2>
+          <p className="text-center text-muted text-xs font-light mb-12 tracking-wider">{t.pricingOneTime}</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+            {TIERS.map((tier) => (
+              <div
+                key={tier.tier}
+                className={`relative border bg-white flex flex-col ${
+                  tier.popular
+                    ? "border-gold shadow-[0_4px_32px_rgba(184,150,12,0.18)]"
+                    : "border-gold-light"
+                }`}
+              >
+                {/* Corner accents */}
+                <div className="absolute top-3 left-3 w-4 h-4 border-t border-l border-gold-light pointer-events-none" />
+                <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-gold-light pointer-events-none" />
+                <div className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-gold-light pointer-events-none" />
+                <div className="absolute bottom-3 right-3 w-4 h-4 border-b border-r border-gold-light pointer-events-none" />
+
+                {/* Popular badge */}
+                {tier.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-white text-[9px] tracking-ultra-wide uppercase px-3 py-1 whitespace-nowrap">
+                    {t.pricingMostPopular}
+                  </div>
+                )}
+
+                <div className="p-8 pb-6 border-b border-gold-light/50">
+                  <p className="text-[10px] tracking-ultra-wide uppercase text-gold font-light mb-1">{tier.tier}</p>
+                  <p className="font-serif text-2xl text-charcoal mb-5">{tier.name}</p>
+                  <div className="font-serif text-5xl text-charcoal font-light">{tier.price}</div>
+                  <p className="text-muted text-[10px] font-light tracking-wider mt-1">{t.pricingPerInvite}</p>
                 </div>
-              ))}
-            </div>
-            <Link href="/customize" className="block bg-charcoal text-cream px-8 py-4 text-xs tracking-widest uppercase hover:bg-gold transition-all duration-300 cursor-pointer text-center">
-              {t.startDesigning}
-            </Link>
+
+                <div className="p-8 pt-6 flex flex-col flex-1">
+                  <ul className="space-y-3 mb-8 flex-1">
+                    {tier.features.map((feat) => (
+                      <li key={feat} className="flex items-center gap-3 text-sm text-muted font-light">
+                        <svg className="w-4 h-4 text-gold flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        {feat}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/customize"
+                    className={`block px-6 py-3 text-xs tracking-widest uppercase text-center transition-all duration-300 cursor-pointer ${
+                      tier.popular
+                        ? "bg-charcoal text-cream hover:bg-gold"
+                        : "border border-charcoal text-charcoal hover:border-gold hover:text-gold"
+                    }`}
+                  >
+                    {t.pricingCta}
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

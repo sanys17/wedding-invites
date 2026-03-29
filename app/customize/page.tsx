@@ -216,11 +216,11 @@ function CustomizeContent() {
                         <p className="font-serif text-sm text-charcoal">{p.name}</p>
                         <p className="text-xs text-muted font-light mt-1 mb-3">{isCzk ? p.czk : p.eur}</p>
                         <div className="h-px bg-gold-light/50 mb-2" />
-                        <ul className="space-y-1 flex-1">
+                        <ul className="space-y-1.5 flex-1">
                           {features.map((f, i) => (
-                            <li key={i} className="flex items-start gap-1">
-                              <span className="text-gold text-[9px] mt-px leading-tight">✦</span>
-                              <span className="text-[9px] text-muted font-light leading-tight">{f}</span>
+                            <li key={i} className="flex items-start gap-1.5">
+                              <span className="text-gold text-[10px] mt-px leading-tight">✦</span>
+                              <span className="text-xs text-muted font-light leading-tight">{f}</span>
                             </li>
                           ))}
                         </ul>

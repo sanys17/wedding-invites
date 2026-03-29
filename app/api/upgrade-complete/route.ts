@@ -101,6 +101,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: `Plan not saved — expected "${newPlan}", DB has "${updated.plan}"` }, { status: 500 });
     }
 
+    // Second independent read — separate query to confirm persistence
+    const { data: recheck } = await db
+      .from("invites")
+      .select("plan")
+      .eq("id", inviteId)
+      .single();
+
+    if (recheck?.plan !== newPlan) {
+      return NextResponse.json({
+        error: `Update appeared to succeed but re-read shows "${recheck?.plan}" — possible RLS or wrong DB`,
+      }, { status: 500 });
+    }
+
     // Send email (always — don't skip if webhook already ran)
     if (invite.customer_email) {
       const lang = invite.language ?? "en";

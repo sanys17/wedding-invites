@@ -6,6 +6,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import type { Lang } from "@/lib/translations";
+import InviteIntro from "@/components/InviteIntro";
 
 function InviteContent({ inv }: { inv: InviteRecord }) {
   const { t } = useLanguage();
@@ -299,6 +300,20 @@ function InviteContent({ inv }: { inv: InviteRecord }) {
   );
 }
 
+function InviteWithIntro({ inv, initialLang }: { inv: InviteRecord; initialLang: Lang }) {
+  const [introPlayed, setIntroPlayed] = useState(false);
+
+  if (!introPlayed && (inv.plan === "standard" || inv.plan === "pro")) {
+    return <InviteIntro plan={inv.plan} onComplete={() => setIntroPlayed(true)} />;
+  }
+
+  return (
+    <LanguageProvider initialLang={initialLang}>
+      <InviteContent inv={inv} />
+    </LanguageProvider>
+  );
+}
+
 export default function InvitePageClient({
   inv,
   initialLang = "en",
@@ -306,9 +321,5 @@ export default function InvitePageClient({
   inv: InviteRecord;
   initialLang?: Lang;
 }) {
-  return (
-    <LanguageProvider initialLang={initialLang}>
-      <InviteContent inv={inv} />
-    </LanguageProvider>
-  );
+  return <InviteWithIntro inv={inv} initialLang={initialLang} />;
 }

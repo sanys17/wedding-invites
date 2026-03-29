@@ -36,6 +36,12 @@ function CustomizeContent() {
     pro:      { eur: "€89",  czk: "2 190 Kč",  tier: t.pricingTier3Tier, name: t.pricingTier3Name },
   };
 
+  const PLAN_FEATURES: Record<PlanKey, string[]> = {
+    basic:    [t.pricingTier1Feature1, t.pricingTier1Feature2, t.pricingTier1Feature3, t.pricingTier1Feature4],
+    standard: [t.pricingTier2Feature1, t.pricingTier2Feature2, t.pricingTier2Feature3, t.pricingTier2Feature4, t.pricingTier2Feature5],
+    pro:      [t.pricingTier3Feature1, t.pricingTier3Feature2, t.pricingTier3Feature3, t.pricingTier3Feature4, t.pricingTier3Feature5, t.pricingTier3Feature6],
+  };
+
   function priceDisplay() {
     const isCzk = (form.language ?? lang) === "cs";
     return isCzk ? PLAN_PRICES[selectedPlan].czk : PLAN_PRICES[selectedPlan].eur;
@@ -190,23 +196,34 @@ function CustomizeContent() {
             {step === "edit" && (
               <div className="mb-8">
                 <p className="text-xs tracking-ultra-wide uppercase text-muted font-light mb-3">{t.choosePlan}</p>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-2 items-stretch">
                   {(["basic", "standard", "pro"] as PlanKey[]).map((key) => {
                     const p = PLAN_PRICES[key];
+                    const features = PLAN_FEATURES[key];
                     const isCzk = (form.language ?? lang) === "cs";
+                    const isSelected = selectedPlan === key;
                     return (
                       <button
                         key={key}
                         onClick={() => setSelectedPlan(key)}
-                        className={`border p-3 text-left transition-all ${
-                          selectedPlan === key
+                        className={`border p-3 text-left transition-all flex flex-col ${
+                          isSelected
                             ? "border-gold bg-gold/5"
                             : "border-gold-light hover:border-gold"
                         }`}
                       >
                         <p className="text-[9px] tracking-ultra-wide uppercase text-gold font-light">{p.tier}</p>
                         <p className="font-serif text-sm text-charcoal">{p.name}</p>
-                        <p className="text-xs text-muted font-light mt-1">{isCzk ? p.czk : p.eur}</p>
+                        <p className="text-xs text-muted font-light mt-1 mb-3">{isCzk ? p.czk : p.eur}</p>
+                        <div className="h-px bg-gold-light/50 mb-2" />
+                        <ul className="space-y-1 flex-1">
+                          {features.map((f, i) => (
+                            <li key={i} className="flex items-start gap-1">
+                              <span className="text-gold text-[9px] mt-px leading-tight">✦</span>
+                              <span className="text-[9px] text-muted font-light leading-tight">{f}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </button>
                     );
                   })}

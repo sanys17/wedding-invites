@@ -19,21 +19,21 @@ function SkipHint() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ENVELOPE INTRO  (Standard)
+// ENVELOPE INTRO  (Standard) — full-screen bi-fold that opens from center
 // ─────────────────────────────────────────────────────────────────────────────
 export function EnvelopeIntro({ onComplete }: { onComplete: () => void }) {
   const [phase, setPhase] = useState(0);
-  // 0 = closed envelope
-  // 1 = flap opening
-  // 2 = card rising
+  // 0 = closed, seal visible
+  // 1 = seal shakes
+  // 2 = seal cracks, panels fold open
   // 3 = fade out
 
   useEffect(() => {
     const ts = [
-      setTimeout(() => setPhase(1), 700),
-      setTimeout(() => setPhase(2), 1500),
-      setTimeout(() => setPhase(3), 2700),
-      setTimeout(onComplete, 3300),
+      setTimeout(() => setPhase(1), 900),
+      setTimeout(() => setPhase(2), 1600),
+      setTimeout(() => setPhase(3), 3100),
+      setTimeout(onComplete, 3800),
     ];
     return () => ts.forEach(clearTimeout);
   }, [onComplete]);
@@ -43,9 +43,87 @@ export function EnvelopeIntro({ onComplete }: { onComplete: () => void }) {
     setTimeout(onComplete, 500);
   }
 
-  const W = 260;
-  const bodyH = 160;
-  const flapH = 90;
+  const open = phase >= 2;
+
+  // Shared panel decoration
+  function PanelInner({ side }: { side: "left" | "right" }) {
+    return (
+      <>
+        {/* outer gold border */}
+        <div style={{
+          position: "absolute", inset: 14,
+          border: "1px solid rgba(201,169,110,0.5)",
+          pointerEvents: "none",
+        }} />
+        {/* inner gold border */}
+        <div style={{
+          position: "absolute", inset: 22,
+          border: "1px solid rgba(201,169,110,0.22)",
+          pointerEvents: "none",
+        }} />
+        {/* corner ✦ ornaments */}
+        {[{ top: 20, [side === "left" ? "left" : "right"]: 20 },
+          { bottom: 20, [side === "left" ? "left" : "right"]: 20 }].map((pos, i) => (
+          <div key={i} style={{
+            position: "absolute", ...pos,
+            color: "#C9A96E", fontSize: 9, opacity: 0.55,
+            fontFamily: "serif",
+          }}>✦</div>
+        ))}
+        {/* horizontal center crease line (runs to the seam) */}
+        <div style={{
+          position: "absolute",
+          top: "50%",
+          [side === "left" ? "left" : "right"]: 28,
+          [side === "left" ? "right" : "left"]: 0,
+          height: 1,
+          background: "linear-gradient(to " + (side === "left" ? "right" : "left") + ", transparent, rgba(201,169,110,0.35))",
+          transform: "translateY(-0.5px)",
+        }} />
+        {/* vertical edge shadow (seam side) */}
+        <div style={{
+          position: "absolute",
+          top: 0, bottom: 0,
+          [side === "left" ? "right" : "left"]: 0,
+          width: 18,
+          background: side === "left"
+            ? "linear-gradient(to right, transparent, rgba(0,0,0,0.06))"
+            : "linear-gradient(to left, transparent, rgba(0,0,0,0.06))",
+        }} />
+        {/* "Forevermore" watermark — only visible on the left panel */}
+        {side === "left" && (
+          <div style={{
+            position: "absolute",
+            bottom: 36,
+            left: 0, right: 0,
+            textAlign: "center",
+            fontFamily: "Cormorant Garamond, serif",
+            fontSize: 11,
+            letterSpacing: "0.32em",
+            textTransform: "uppercase",
+            fontStyle: "italic",
+            color: "#C9A96E",
+            opacity: 0.45,
+          }}>Forevermore</div>
+        )}
+        {/* "Wedding Invitation" — only on right panel */}
+        {side === "right" && (
+          <div style={{
+            position: "absolute",
+            top: 36,
+            left: 0, right: 0,
+            textAlign: "center",
+            fontFamily: "Cormorant Garamond, serif",
+            fontSize: 10,
+            letterSpacing: "0.28em",
+            textTransform: "uppercase",
+            color: "#8B7355",
+            opacity: 0.5,
+          }}>Wedding Invitation</div>
+        )}
+      </>
+    );
+  }
 
   return (
     <div
@@ -53,124 +131,104 @@ export function EnvelopeIntro({ onComplete }: { onComplete: () => void }) {
       style={{
         position: "fixed", inset: 0, zIndex: 50,
         background: "#FAF8F4",
-        display: "flex", flexDirection: "column",
-        alignItems: "center", justifyContent: "center",
+        overflow: "hidden",
         opacity: phase === 3 ? 0 : 1,
-        transition: "opacity 0.7s ease",
+        transition: "opacity 0.85s ease",
         pointerEvents: phase === 3 ? "none" : "auto",
         cursor: "pointer",
         userSelect: "none",
       }}
     >
-      {/* ── ornament above envelope ── */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
-        <div style={{ height: 1, width: 28, background: "#C9A96E", opacity: 0.4 }} />
-        <span style={{ color: "#C9A96E", fontSize: 14, opacity: 0.8 }}>✦</span>
-        <div style={{ height: 1, width: 28, background: "#C9A96E", opacity: 0.4 }} />
-      </div>
+      {/* ── perspective wrapper ── */}
+      <div style={{
+        position: "absolute", inset: 0,
+        perspective: "1400px",
+        perspectiveOrigin: "50% 50%",
+      }}>
 
-      {/* ── envelope assembly ── */}
-      <div style={{ position: "relative", width: W, height: bodyH + flapH * 0.6 }}>
-
-        {/* invitation card — rises from inside */}
+        {/* LEFT PANEL — hinges at its right edge (screen center) */}
         <div style={{
           position: "absolute",
-          left: "50%",
-          bottom: 16,
-          transform: `translateX(-50%) translateY(${phase >= 2 ? "-155px" : "8px"})`,
-          transition: phase >= 2
-            ? "transform 1.1s cubic-bezier(0.34, 1.45, 0.64, 1)"
-            : "none",
-          width: W - 50,
-          background: "white",
-          boxShadow: "0 12px 40px rgba(0,0,0,0.14)",
-          padding: "20px 24px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 5,
-          opacity: phase >= 1 ? 1 : 0,
-          transitionProperty: "transform, opacity",
-          transitionDuration: phase >= 2 ? "1.1s" : "0.4s",
-          zIndex: 1,
+          top: 0, left: 0,
+          width: "50%", height: "100%",
+          transformOrigin: "100% 50%",
+          transform: `rotateY(${open ? "-165deg" : "0deg"})`,
+          transition: open ? "transform 1.4s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
+          backfaceVisibility: "hidden",
+          background: "linear-gradient(160deg, #F8EDD6 0%, #F0E0BA 50%, #F5E8CC 100%)",
+          boxShadow: open ? "none" : "4px 0 24px rgba(0,0,0,0.08)",
         }}>
-          <div style={{ height: 1, width: "72%", background: "#C9A96E", opacity: 0.6 }} />
-          <p style={{ margin: 0, fontFamily: "Cormorant Garamond, serif", fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "#C9A96E" }}>
-            Wedding Invitation
-          </p>
-          <p style={{ margin: 0, fontFamily: "Cormorant Garamond, serif", fontSize: 22, fontStyle: "italic", fontWeight: 300, color: "#1C1917" }}>
-            Emma &amp; James
-          </p>
-          <p style={{ margin: 0, fontFamily: "Jost, sans-serif", fontSize: 9, letterSpacing: "0.18em", color: "#6B6359", fontWeight: 300, textTransform: "uppercase" }}>
-            September 14, 2025
-          </p>
-          <div style={{ height: 1, width: "72%", background: "#C9A96E", opacity: 0.6 }} />
+          <PanelInner side="left" />
         </div>
 
-        {/* envelope body */}
+        {/* RIGHT PANEL — hinges at its left edge (screen center) */}
         <div style={{
           position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: bodyH,
-          background: "#F0DAAA",
-          border: "1px solid rgba(201,169,110,0.45)",
-          zIndex: 2,
-          overflow: "hidden",
+          top: 0, right: 0,
+          width: "50%", height: "100%",
+          transformOrigin: "0% 50%",
+          transform: `rotateY(${open ? "165deg" : "0deg"})`,
+          transition: open ? "transform 1.4s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
+          backfaceVisibility: "hidden",
+          background: "linear-gradient(200deg, #F5E8CC 0%, #F0E0BA 50%, #F8EDD6 100%)",
+          boxShadow: open ? "none" : "-4px 0 24px rgba(0,0,0,0.08)",
         }}>
-          {/* left inner flap triangle */}
-          <div style={{
-            position: "absolute", bottom: 0, left: 0,
-            width: 0, height: 0,
-            borderStyle: "solid",
-            borderWidth: `0 0 ${bodyH * 0.52}px ${W / 2}px`,
-            borderColor: `transparent transparent #E8CE90 transparent`,
-          }} />
-          {/* right inner flap triangle */}
-          <div style={{
-            position: "absolute", bottom: 0, right: 0,
-            width: 0, height: 0,
-            borderStyle: "solid",
-            borderWidth: `0 ${W / 2}px ${bodyH * 0.52}px 0`,
-            borderColor: `transparent #E8CE90 transparent transparent`,
-          }} />
-        </div>
-
-        {/* envelope flap — slides up + fades when opening */}
-        <div style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: W,
-          height: flapH,
-          transformOrigin: "bottom center",
-          transform: `perspective(500px) rotateX(${phase >= 1 ? "-170deg" : "0deg"})`,
-          transition: "transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)",
-          zIndex: phase >= 1 ? 0 : 4,
-          overflow: "visible",
-        }}>
-          <div style={{
-            width: "100%",
-            height: "100%",
-            background: "#EDD090",
-            clipPath: "polygon(0 0, 100% 0, 50% 100%)",
-            border: "1px solid rgba(201,169,110,0.3)",
-          }} />
+          <PanelInner side="right" />
         </div>
 
       </div>
 
-      {/* ── Forevermore label ── */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 36 }}>
-        <div style={{ height: 1, width: 24, background: "#C9A96E", opacity: 0.35 }} />
-        <p style={{ margin: 0, fontFamily: "Cormorant Garamond, serif", fontSize: 13, letterSpacing: "0.3em", textTransform: "uppercase", color: "#C9A96E", fontStyle: "italic", opacity: 0.85 }}>
-          Forevermore
-        </p>
-        <div style={{ height: 1, width: 24, background: "#C9A96E", opacity: 0.35 }} />
+      {/* ── center seam line ── */}
+      <div style={{
+        position: "absolute",
+        left: "50%", top: "8%", bottom: "8%",
+        width: 1,
+        background: "rgba(201,169,110,0.3)",
+        transform: "translateX(-0.5px)",
+        zIndex: 3,
+        opacity: open ? 0 : 1,
+        transition: "opacity 0.25s ease",
+      }} />
+
+      {/* ── wax seal ── */}
+      <div style={{
+        position: "absolute",
+        top: "50%", left: "50%",
+        transform: `translate(-50%, -50%) scale(${open ? 0 : 1}) rotate(${open ? 40 : 0}deg)`,
+        transition: open
+          ? "transform 0.38s cubic-bezier(0.4, 0, 0.8, 1)"
+          : "none",
+        animation: phase === 1 ? "sealShake 0.12s ease-in-out 5" : "none",
+        zIndex: 5,
+        width: 80, height: 80,
+        borderRadius: "50%",
+        background: "radial-gradient(circle at 36% 30%, #922020, #500E0E)",
+        border: "2px solid rgba(201,169,110,0.85)",
+        boxShadow: "0 6px 28px rgba(0,0,0,0.28), inset 0 1px 4px rgba(255,255,255,0.12)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        <span style={{ color: "rgba(201,169,110,0.95)", fontSize: 26, lineHeight: 1 }}>✦</span>
       </div>
 
-      <SkipHint />
+      {/* ── "tap to open" hint ── */}
+      <div style={{
+        position: "absolute",
+        bottom: 36, left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 5,
+        opacity: open ? 0 : 0.65,
+        transition: "opacity 0.3s ease",
+        whiteSpace: "nowrap",
+      }}>
+        <p style={{
+          margin: 0,
+          fontFamily: "Jost, sans-serif",
+          fontSize: 10,
+          letterSpacing: "0.2em",
+          color: "#9B9490",
+          textTransform: "uppercase",
+        }}>tap to open</p>
+      </div>
     </div>
   );
 }

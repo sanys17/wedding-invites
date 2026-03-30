@@ -52,7 +52,7 @@ export function EnvelopeIntro({
         userSelect: "none",
       }}
     >
-      {/* LEFT PANEL — full X fold: top-left + bottom-left flap zones */}
+      {/* LEFT PANEL */}
       <div style={{
         position: "absolute",
         top: 0, left: 0,
@@ -62,18 +62,44 @@ export function EnvelopeIntro({
         overflow: "hidden",
       }}>
         <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} preserveAspectRatio="none">
-          {/* top-left flap zone */}
-          <polygon points="0,0 100%,0 100%,50%" fill="rgba(255,255,255,0.04)" />
-          {/* bottom-left flap zone */}
-          <polygon points="0,100% 100%,100% 100%,50%" fill="rgba(255,255,255,0.025)" />
-          {/* fold lines */}
-          <line x1="0" y1="0"   x2="100%" y2="50%" stroke="rgba(255,255,255,0.09)" strokeWidth="0.8" />
-          <line x1="0" y1="100%" x2="100%" y2="50%" stroke="rgba(255,255,255,0.09)" strokeWidth="0.8" />
+          <defs>
+            {/* paper grain texture */}
+            <filter id="grain-l" x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
+              <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" result="noise"/>
+              <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+              <feBlend in="SourceGraphic" in2="gray" mode="overlay" result="blend"/>
+              <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+            </filter>
+            {/* flap gradient definitions */}
+            <linearGradient id="topL" x1="0%" y1="0%" x2="100%" y2="50%">
+              <stop offset="0%" stopColor="rgba(255,255,255,0.09)"/>
+              <stop offset="100%" stopColor="rgba(255,255,255,0)"/>
+            </linearGradient>
+            <linearGradient id="botL" x1="0%" y1="100%" x2="100%" y2="50%">
+              <stop offset="0%" stopColor="rgba(0,0,0,0.1)"/>
+              <stop offset="100%" stopColor="rgba(0,0,0,0)"/>
+            </linearGradient>
+          </defs>
+          {/* top flap — catches light, lighter */}
+          <polygon points="0,0 100%,0 100%,50%" fill="url(#topL)" />
+          {/* bottom flap — in shadow, darker */}
+          <polygon points="0,100% 100%,100% 100%,50%" fill="url(#botL)" />
+          {/* top crease: shadow side (below the fold) */}
+          <line x1="0" y1="0.8%" x2="100%" y2="50.4%" stroke="rgba(0,0,0,0.35)" strokeWidth="1.2"/>
+          {/* top crease: highlight side (the ridge) */}
+          <line x1="0" y1="0"   x2="100%" y2="50%"   stroke="rgba(255,255,255,0.18)" strokeWidth="0.8"/>
+          {/* bottom crease: shadow side */}
+          <line x1="0" y1="99.2%" x2="100%" y2="49.6%" stroke="rgba(0,0,0,0.35)" strokeWidth="1.2"/>
+          {/* bottom crease: highlight */}
+          <line x1="0" y1="100%" x2="100%" y2="50%"   stroke="rgba(255,255,255,0.14)" strokeWidth="0.8"/>
+          {/* grain overlay */}
+          <rect width="100%" height="100%" filter="url(#grain-l)" opacity="0.18" fill="rgba(255,255,255,0.5)"/>
         </svg>
-        <div style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: 40, background: "linear-gradient(to right, transparent, rgba(0,0,0,0.18))" }} />
+        {/* seam shadow */}
+        <div style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: 36, background: "linear-gradient(to right, transparent, rgba(0,0,0,0.22))" }} />
       </div>
 
-      {/* RIGHT PANEL — full X fold: top-right + bottom-right flap zones */}
+      {/* RIGHT PANEL */}
       <div style={{
         position: "absolute",
         top: 0, right: 0,
@@ -83,15 +109,35 @@ export function EnvelopeIntro({
         overflow: "hidden",
       }}>
         <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} preserveAspectRatio="none">
-          {/* top-right flap zone */}
-          <polygon points="100%,0 0,0 0,50%" fill="rgba(255,255,255,0.04)" />
-          {/* bottom-right flap zone */}
-          <polygon points="100%,100% 0,100% 0,50%" fill="rgba(255,255,255,0.025)" />
-          {/* fold lines */}
-          <line x1="100%" y1="0"   x2="0" y2="50%" stroke="rgba(255,255,255,0.09)" strokeWidth="0.8" />
-          <line x1="100%" y1="100%" x2="0" y2="50%" stroke="rgba(255,255,255,0.09)" strokeWidth="0.8" />
+          <defs>
+            <filter id="grain-r" x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
+              <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" result="noise"/>
+              <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+              <feBlend in="SourceGraphic" in2="gray" mode="overlay" result="blend"/>
+              <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+            </filter>
+            <linearGradient id="topR" x1="100%" y1="0%" x2="0%" y2="50%">
+              <stop offset="0%" stopColor="rgba(255,255,255,0.09)"/>
+              <stop offset="100%" stopColor="rgba(255,255,255,0)"/>
+            </linearGradient>
+            <linearGradient id="botR" x1="100%" y1="100%" x2="0%" y2="50%">
+              <stop offset="0%" stopColor="rgba(0,0,0,0.1)"/>
+              <stop offset="100%" stopColor="rgba(0,0,0,0)"/>
+            </linearGradient>
+          </defs>
+          <polygon points="100%,0 0,0 0,50%" fill="url(#topR)" />
+          <polygon points="100%,100% 0,100% 0,50%" fill="url(#botR)" />
+          {/* top crease shadow */}
+          <line x1="100%" y1="0.8%" x2="0" y2="50.4%" stroke="rgba(0,0,0,0.35)" strokeWidth="1.2"/>
+          {/* top crease highlight */}
+          <line x1="100%" y1="0"   x2="0" y2="50%"   stroke="rgba(255,255,255,0.18)" strokeWidth="0.8"/>
+          {/* bottom crease shadow */}
+          <line x1="100%" y1="99.2%" x2="0" y2="49.6%" stroke="rgba(0,0,0,0.35)" strokeWidth="1.2"/>
+          {/* bottom crease highlight */}
+          <line x1="100%" y1="100%" x2="0" y2="50%"   stroke="rgba(255,255,255,0.14)" strokeWidth="0.8"/>
+          <rect width="100%" height="100%" filter="url(#grain-r)" opacity="0.18" fill="rgba(255,255,255,0.5)"/>
         </svg>
-        <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: 40, background: "linear-gradient(to left, transparent, rgba(0,0,0,0.18))" }} />
+        <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: 36, background: "linear-gradient(to left, transparent, rgba(0,0,0,0.22))" }} />
       </div>
 
       {/* center seam */}
@@ -99,7 +145,7 @@ export function EnvelopeIntro({
         position: "absolute",
         left: "50%", top: 0, bottom: 0,
         width: 1,
-        background: "rgba(255,255,255,0.06)",
+        background: "rgba(255,255,255,0.07)",
         transform: "translateX(-0.5px)",
         zIndex: 3,
         opacity: open ? 0 : 1,

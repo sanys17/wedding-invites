@@ -53,7 +53,7 @@ export function EnvelopeIntro({
         userSelect: "none",
       }}
     >
-      {/* LEFT PANEL */}
+      {/* LEFT PANEL — one fold line: top-left corner → screen center */}
       <div style={{
         position: "absolute",
         top: 0, left: 0,
@@ -61,25 +61,17 @@ export function EnvelopeIntro({
         background: bg,
         transform: `translateX(${open ? "-100%" : "0"})`,
         transition: open ? "transform 1.1s cubic-bezier(0.76, 0, 0.24, 1)" : "none",
-        boxShadow: open ? "none" : "3px 0 16px rgba(0,0,0,0.06)",
+        boxShadow: open ? "none" : "3px 0 20px rgba(0,0,0,0.07)",
         overflow: "hidden",
       }}>
-        {/* envelope fold lines: top-left → center-right, bottom-left → center-right */}
-        <svg
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-          preserveAspectRatio="none"
-        >
-          <line x1="0" y1="0" x2="100%" y2="50%" stroke="rgba(155,135,110,0.32)" strokeWidth="0.8" />
-          <line x1="0" y1="100%" x2="100%" y2="50%" stroke="rgba(155,135,110,0.32)" strokeWidth="0.8" />
+        <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} preserveAspectRatio="none">
+          {/* single diagonal: outer top-left → inner center (screen midpoint) */}
+          <line x1="0" y1="0" x2="100%" y2="50%" stroke="rgba(150,130,105,0.28)" strokeWidth="0.7" />
         </svg>
-        {/* seam-edge shadow */}
-        <div style={{
-          position: "absolute", top: 0, bottom: 0, right: 0, width: 32,
-          background: "linear-gradient(to right, transparent, rgba(0,0,0,0.04))",
-        }} />
+        <div style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: 28, background: "linear-gradient(to right, transparent, rgba(0,0,0,0.04))" }} />
       </div>
 
-      {/* RIGHT PANEL */}
+      {/* RIGHT PANEL — one fold line: top-right corner → screen center */}
       <div style={{
         position: "absolute",
         top: 0, right: 0,
@@ -87,22 +79,14 @@ export function EnvelopeIntro({
         background: bg,
         transform: `translateX(${open ? "100%" : "0"})`,
         transition: open ? "transform 1.1s cubic-bezier(0.76, 0, 0.24, 1)" : "none",
-        boxShadow: open ? "none" : "-3px 0 16px rgba(0,0,0,0.06)",
+        boxShadow: open ? "none" : "-3px 0 20px rgba(0,0,0,0.07)",
         overflow: "hidden",
       }}>
-        {/* envelope fold lines: center-left → top-right, center-left → bottom-right */}
-        <svg
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-          preserveAspectRatio="none"
-        >
-          <line x1="0" y1="50%" x2="100%" y2="0" stroke="rgba(155,135,110,0.32)" strokeWidth="0.8" />
-          <line x1="0" y1="50%" x2="100%" y2="100%" stroke="rgba(155,135,110,0.32)" strokeWidth="0.8" />
+        <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} preserveAspectRatio="none">
+          {/* single diagonal: outer top-right → inner center (screen midpoint) */}
+          <line x1="100%" y1="0" x2="0" y2="50%" stroke="rgba(150,130,105,0.28)" strokeWidth="0.7" />
         </svg>
-        {/* seam-edge shadow */}
-        <div style={{
-          position: "absolute", top: 0, bottom: 0, left: 0, width: 32,
-          background: "linear-gradient(to left, transparent, rgba(0,0,0,0.04))",
-        }} />
+        <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: 28, background: "linear-gradient(to left, transparent, rgba(0,0,0,0.04))" }} />
       </div>
 
       {/* center seam */}
@@ -110,14 +94,14 @@ export function EnvelopeIntro({
         position: "absolute",
         left: "50%", top: 0, bottom: 0,
         width: 1,
-        background: "rgba(155,135,110,0.22)",
+        background: "rgba(150,130,105,0.2)",
         transform: "translateX(-0.5px)",
         zIndex: 3,
         opacity: open ? 0 : 1,
         transition: "opacity 0.2s ease",
       }} />
 
-      {/* ── gold oval wax seal ── */}
+      {/* ── realistic gold wax seal ── */}
       <div style={{
         position: "absolute",
         top: "50%", left: "50%",
@@ -125,35 +109,59 @@ export function EnvelopeIntro({
         transition: open ? "transform 0.4s cubic-bezier(0.4, 0, 0.8, 1)" : "none",
         animation: phase === 1 ? "sealShake 0.12s ease-in-out 5" : "none",
         zIndex: 5,
-        width: 88,
-        height: 108,
-        borderRadius: 32,
-        background: "radial-gradient(ellipse at 38% 28%, #D9B86A, #B8912A, #8B6A14)",
-        boxShadow: "0 8px 36px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.12), inset 0 2px 5px rgba(255,230,140,0.3)",
+        width: 92,
+        height: 114,
+        /* organic wax shape — slightly uneven corners like real wax */
+        borderRadius: "44% 40% 42% 46% / 36% 44% 40% 38%",
+        background: [
+          "radial-gradient(ellipse at 38% 22%, rgba(255,240,170,0.9) 0%, transparent 40%)",
+          "radial-gradient(ellipse at 65% 70%, rgba(100,65,0,0.5) 0%, transparent 50%)",
+          "linear-gradient(145deg, #E8C84A 0%, #C9A020 30%, #9A7210 60%, #7A5408 85%, #5C3E06 100%)",
+        ].join(", "),
+        boxShadow: [
+          "0 12px 40px rgba(0,0,0,0.38)",
+          "0 4px 14px rgba(0,0,0,0.22)",
+          "0 1px 4px rgba(0,0,0,0.15)",
+          "inset 0 3px 8px rgba(255,240,160,0.25)",
+          "inset 0 -4px 10px rgba(0,0,0,0.3)",
+        ].join(", "),
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}>
-        {/* concentric inner borders */}
+        {/* outer impressed ring */}
         <div style={{
-          position: "absolute", inset: 6,
-          borderRadius: 26,
-          border: "1.5px solid rgba(90,60,5,0.4)",
+          position: "absolute", inset: 7,
+          borderRadius: "inherit",
+          border: "1.5px solid rgba(70,45,2,0.5)",
+          boxShadow: "inset 0 1px 2px rgba(255,220,80,0.2), 0 1px 2px rgba(0,0,0,0.15)",
         }} />
+        {/* inner impressed ring */}
         <div style={{
-          position: "absolute", inset: 11,
-          borderRadius: 21,
-          border: "1px solid rgba(90,60,5,0.25)",
+          position: "absolute", inset: 13,
+          borderRadius: "inherit",
+          border: "1px solid rgba(70,45,2,0.35)",
         }} />
-        {/* initials */}
+        {/* specular highlight — top-left glint */}
+        <div style={{
+          position: "absolute",
+          top: 10, left: 14,
+          width: 22, height: 10,
+          borderRadius: "50%",
+          background: "rgba(255,248,200,0.45)",
+          transform: "rotate(-20deg)",
+          filter: "blur(3px)",
+        }} />
+        {/* initials — engraved look */}
         <span style={{
           position: "relative", zIndex: 1,
           fontFamily: "Cormorant Garamond, serif",
           fontSize: 28,
-          fontWeight: 500,
-          color: "rgba(60,38,4,0.85)",
-          letterSpacing: "-0.03em",
+          fontWeight: 600,
+          color: "rgba(55,32,2,0.9)",
+          letterSpacing: "-0.02em",
           lineHeight: 1,
+          textShadow: "0 1px 2px rgba(220,170,40,0.35), 0 -1px 1px rgba(0,0,0,0.4)",
         }}>{initials}</span>
       </div>
 

@@ -304,7 +304,7 @@ function InviteWithIntro({ inv, initialLang }: { inv: InviteRecord; initialLang:
   const [introPlayed, setIntroPlayed] = useState(false);
 
   if (!introPlayed && (inv.plan === "standard" || inv.plan === "pro")) {
-    return <InviteIntro plan={inv.plan} onComplete={() => setIntroPlayed(true)} />;
+    return <InviteIntro plan={inv.plan} onComplete={() => setIntroPlayed(true)} partner1={inv.partner1} partner2={inv.partner2} />;
   }
 
   return (

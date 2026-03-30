@@ -2,38 +2,30 @@
 
 import { useEffect, useState } from "react";
 
-// ─── shared skip hint ────────────────────────────────────────────────────────
-function SkipHint() {
-  return (
-    <p style={{
-      fontFamily: "Jost, sans-serif",
-      fontSize: 10,
-      letterSpacing: "0.18em",
-      color: "#9B9490",
-      marginTop: 28,
-      textTransform: "uppercase",
-    }}>
-      tap to skip
-    </p>
-  );
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
-// ENVELOPE INTRO  (Standard) — full-screen bi-fold that opens from center
+// ENVELOPE INTRO  (Standard) — full-screen bi-fold, slides apart from center
 // ─────────────────────────────────────────────────────────────────────────────
-export function EnvelopeIntro({ onComplete }: { onComplete: () => void }) {
+export function EnvelopeIntro({
+  onComplete,
+  partner1,
+  partner2,
+}: {
+  onComplete: () => void;
+  partner1: string;
+  partner2: string;
+}) {
   const [phase, setPhase] = useState(0);
   // 0 = closed, seal visible
   // 1 = seal shakes
-  // 2 = seal cracks, panels fold open
+  // 2 = panels slide apart
   // 3 = fade out
 
   useEffect(() => {
     const ts = [
       setTimeout(() => setPhase(1), 900),
       setTimeout(() => setPhase(2), 1600),
-      setTimeout(() => setPhase(3), 3100),
-      setTimeout(onComplete, 3800),
+      setTimeout(() => setPhase(3), 3000),
+      setTimeout(onComplete, 3700),
     ];
     return () => ts.forEach(clearTimeout);
   }, [onComplete]);
@@ -44,93 +36,15 @@ export function EnvelopeIntro({ onComplete }: { onComplete: () => void }) {
   }
 
   const open = phase >= 2;
-
-  // Shared panel decoration
-  function PanelInner({ side }: { side: "left" | "right" }) {
-    return (
-      <>
-        {/* outer gold border */}
-        <div style={{
-          position: "absolute", inset: 14,
-          border: "1px solid rgba(201,169,110,0.5)",
-          pointerEvents: "none",
-        }} />
-        {/* inner gold border */}
-        <div style={{
-          position: "absolute", inset: 22,
-          border: "1px solid rgba(201,169,110,0.22)",
-          pointerEvents: "none",
-        }} />
-        {/* corner ✦ ornaments */}
-        {[{ top: 20, [side === "left" ? "left" : "right"]: 20 },
-          { bottom: 20, [side === "left" ? "left" : "right"]: 20 }].map((pos, i) => (
-          <div key={i} style={{
-            position: "absolute", ...pos,
-            color: "#C9A96E", fontSize: 9, opacity: 0.55,
-            fontFamily: "serif",
-          }}>✦</div>
-        ))}
-        {/* horizontal center crease line (runs to the seam) */}
-        <div style={{
-          position: "absolute",
-          top: "50%",
-          [side === "left" ? "left" : "right"]: 28,
-          [side === "left" ? "right" : "left"]: 0,
-          height: 1,
-          background: "linear-gradient(to " + (side === "left" ? "right" : "left") + ", transparent, rgba(201,169,110,0.35))",
-          transform: "translateY(-0.5px)",
-        }} />
-        {/* vertical edge shadow (seam side) */}
-        <div style={{
-          position: "absolute",
-          top: 0, bottom: 0,
-          [side === "left" ? "right" : "left"]: 0,
-          width: 18,
-          background: side === "left"
-            ? "linear-gradient(to right, transparent, rgba(0,0,0,0.06))"
-            : "linear-gradient(to left, transparent, rgba(0,0,0,0.06))",
-        }} />
-        {/* "Forevermore" watermark — only visible on the left panel */}
-        {side === "left" && (
-          <div style={{
-            position: "absolute",
-            bottom: 36,
-            left: 0, right: 0,
-            textAlign: "center",
-            fontFamily: "Cormorant Garamond, serif",
-            fontSize: 11,
-            letterSpacing: "0.32em",
-            textTransform: "uppercase",
-            fontStyle: "italic",
-            color: "#C9A96E",
-            opacity: 0.45,
-          }}>Forevermore</div>
-        )}
-        {/* "Wedding Invitation" — only on right panel */}
-        {side === "right" && (
-          <div style={{
-            position: "absolute",
-            top: 36,
-            left: 0, right: 0,
-            textAlign: "center",
-            fontFamily: "Cormorant Garamond, serif",
-            fontSize: 10,
-            letterSpacing: "0.28em",
-            textTransform: "uppercase",
-            color: "#8B7355",
-            opacity: 0.5,
-          }}>Wedding Invitation</div>
-        )}
-      </>
-    );
-  }
+  const initials = `${partner1.charAt(0).toUpperCase()}${partner2.charAt(0).toUpperCase()}`;
+  const bg = "#F4F0EB";
 
   return (
     <div
       onClick={skip}
       style={{
         position: "fixed", inset: 0, zIndex: 50,
-        background: "#FAF8F4",
+        background: bg,
         overflow: "hidden",
         opacity: phase === 3 ? 0 : 1,
         transition: "opacity 0.85s ease",
@@ -139,71 +53,117 @@ export function EnvelopeIntro({ onComplete }: { onComplete: () => void }) {
         userSelect: "none",
       }}
     >
-      {/* LEFT PANEL — slides off to the left */}
+      {/* LEFT PANEL */}
       <div style={{
         position: "absolute",
         top: 0, left: 0,
         width: "50%", height: "100%",
+        background: bg,
         transform: `translateX(${open ? "-100%" : "0"})`,
         transition: open ? "transform 1.1s cubic-bezier(0.76, 0, 0.24, 1)" : "none",
-        background: "linear-gradient(160deg, #F8EDD6 0%, #F0E0BA 50%, #F5E8CC 100%)",
-        boxShadow: open ? "none" : "4px 0 20px rgba(0,0,0,0.07)",
+        boxShadow: open ? "none" : "3px 0 16px rgba(0,0,0,0.06)",
+        overflow: "hidden",
       }}>
-        <PanelInner side="left" />
+        {/* envelope fold lines: top-left → center-right, bottom-left → center-right */}
+        <svg
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+          preserveAspectRatio="none"
+        >
+          <line x1="0" y1="0" x2="100%" y2="50%" stroke="rgba(155,135,110,0.32)" strokeWidth="0.8" />
+          <line x1="0" y1="100%" x2="100%" y2="50%" stroke="rgba(155,135,110,0.32)" strokeWidth="0.8" />
+        </svg>
+        {/* seam-edge shadow */}
+        <div style={{
+          position: "absolute", top: 0, bottom: 0, right: 0, width: 32,
+          background: "linear-gradient(to right, transparent, rgba(0,0,0,0.04))",
+        }} />
       </div>
 
-      {/* RIGHT PANEL — slides off to the right */}
+      {/* RIGHT PANEL */}
       <div style={{
         position: "absolute",
         top: 0, right: 0,
         width: "50%", height: "100%",
+        background: bg,
         transform: `translateX(${open ? "100%" : "0"})`,
         transition: open ? "transform 1.1s cubic-bezier(0.76, 0, 0.24, 1)" : "none",
-        background: "linear-gradient(200deg, #F5E8CC 0%, #F0E0BA 50%, #F8EDD6 100%)",
-        boxShadow: open ? "none" : "-4px 0 20px rgba(0,0,0,0.07)",
+        boxShadow: open ? "none" : "-3px 0 16px rgba(0,0,0,0.06)",
+        overflow: "hidden",
       }}>
-        <PanelInner side="right" />
+        {/* envelope fold lines: center-left → top-right, center-left → bottom-right */}
+        <svg
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+          preserveAspectRatio="none"
+        >
+          <line x1="0" y1="50%" x2="100%" y2="0" stroke="rgba(155,135,110,0.32)" strokeWidth="0.8" />
+          <line x1="0" y1="50%" x2="100%" y2="100%" stroke="rgba(155,135,110,0.32)" strokeWidth="0.8" />
+        </svg>
+        {/* seam-edge shadow */}
+        <div style={{
+          position: "absolute", top: 0, bottom: 0, left: 0, width: 32,
+          background: "linear-gradient(to left, transparent, rgba(0,0,0,0.04))",
+        }} />
       </div>
 
-      {/* ── center seam line ── */}
+      {/* center seam */}
       <div style={{
         position: "absolute",
-        left: "50%", top: "8%", bottom: "8%",
+        left: "50%", top: 0, bottom: 0,
         width: 1,
-        background: "rgba(201,169,110,0.3)",
+        background: "rgba(155,135,110,0.22)",
         transform: "translateX(-0.5px)",
         zIndex: 3,
         opacity: open ? 0 : 1,
-        transition: "opacity 0.25s ease",
+        transition: "opacity 0.2s ease",
       }} />
 
-      {/* ── wax seal ── */}
+      {/* ── gold oval wax seal ── */}
       <div style={{
         position: "absolute",
         top: "50%", left: "50%",
-        transform: `translate(-50%, -50%) scale(${open ? 0 : 1}) rotate(${open ? 40 : 0}deg)`,
-        transition: open
-          ? "transform 0.38s cubic-bezier(0.4, 0, 0.8, 1)"
-          : "none",
+        transform: `translate(-50%, -50%) scale(${open ? 0 : 1}) rotate(${open ? 25 : 0}deg)`,
+        transition: open ? "transform 0.4s cubic-bezier(0.4, 0, 0.8, 1)" : "none",
         animation: phase === 1 ? "sealShake 0.12s ease-in-out 5" : "none",
         zIndex: 5,
-        width: 80, height: 80,
-        borderRadius: "50%",
-        background: "radial-gradient(circle at 36% 30%, #922020, #500E0E)",
-        border: "2px solid rgba(201,169,110,0.85)",
-        boxShadow: "0 6px 28px rgba(0,0,0,0.28), inset 0 1px 4px rgba(255,255,255,0.12)",
-        display: "flex", alignItems: "center", justifyContent: "center",
+        width: 88,
+        height: 108,
+        borderRadius: 32,
+        background: "radial-gradient(ellipse at 38% 28%, #D9B86A, #B8912A, #8B6A14)",
+        boxShadow: "0 8px 36px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.12), inset 0 2px 5px rgba(255,230,140,0.3)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}>
-        <span style={{ color: "rgba(201,169,110,0.95)", fontSize: 26, lineHeight: 1 }}>✦</span>
+        {/* concentric inner borders */}
+        <div style={{
+          position: "absolute", inset: 6,
+          borderRadius: 26,
+          border: "1.5px solid rgba(90,60,5,0.4)",
+        }} />
+        <div style={{
+          position: "absolute", inset: 11,
+          borderRadius: 21,
+          border: "1px solid rgba(90,60,5,0.25)",
+        }} />
+        {/* initials */}
+        <span style={{
+          position: "relative", zIndex: 1,
+          fontFamily: "Cormorant Garamond, serif",
+          fontSize: 28,
+          fontWeight: 500,
+          color: "rgba(60,38,4,0.85)",
+          letterSpacing: "-0.03em",
+          lineHeight: 1,
+        }}>{initials}</span>
       </div>
 
-      {/* ── "tap to open" hint ── */}
+      {/* tap hint */}
       <div style={{
         position: "absolute",
         bottom: 36, left: "50%",
         transform: "translateX(-50%)",
         zIndex: 5,
-        opacity: open ? 0 : 0.65,
+        opacity: open ? 0 : 0.45,
         transition: "opacity 0.3s ease",
         whiteSpace: "nowrap",
       }}>
@@ -211,8 +171,8 @@ export function EnvelopeIntro({ onComplete }: { onComplete: () => void }) {
           margin: 0,
           fontFamily: "Jost, sans-serif",
           fontSize: 10,
-          letterSpacing: "0.2em",
-          color: "#9B9490",
+          letterSpacing: "0.22em",
+          color: "#8B7D6B",
           textTransform: "uppercase",
         }}>tap to open</p>
       </div>
@@ -348,7 +308,7 @@ export function ScrollIntro({ onComplete }: { onComplete: () => void }) {
           transition: "opacity 0.4s ease, transform 0.4s ease",
         }} />
 
-        {/* wax seal — overlaid on scroll center */}
+        {/* wax seal */}
         <div style={{
           position: "absolute",
           top: "50%",
@@ -381,7 +341,9 @@ export function ScrollIntro({ onComplete }: { onComplete: () => void }) {
         <div style={{ height: 1, width: 24, background: "#C9A96E", opacity: 0.25 }} />
       </div>
 
-      <SkipHint />
+      <p style={{ margin: "28px 0 0", fontFamily: "Jost, sans-serif", fontSize: 10, letterSpacing: "0.18em", color: "#9B9490", textTransform: "uppercase" }}>
+        tap to skip
+      </p>
     </div>
   );
 }
@@ -390,11 +352,15 @@ export function ScrollIntro({ onComplete }: { onComplete: () => void }) {
 export default function InviteIntro({
   plan,
   onComplete,
+  partner1,
+  partner2,
 }: {
   plan: string;
   onComplete: () => void;
+  partner1: string;
+  partner2: string;
 }) {
-  if (plan === "standard") return <EnvelopeIntro onComplete={onComplete} />;
+  if (plan === "standard") return <EnvelopeIntro onComplete={onComplete} partner1={partner1} partner2={partner2} />;
   if (plan === "pro") return <ScrollIntro onComplete={onComplete} />;
   return null;
 }

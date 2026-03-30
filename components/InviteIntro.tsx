@@ -139,43 +139,30 @@ export function EnvelopeIntro({ onComplete }: { onComplete: () => void }) {
         userSelect: "none",
       }}
     >
-      {/* ── perspective wrapper ── */}
+      {/* LEFT PANEL — slides off to the left */}
       <div style={{
-        position: "absolute", inset: 0,
-        perspective: "1400px",
-        perspectiveOrigin: "50% 50%",
+        position: "absolute",
+        top: 0, left: 0,
+        width: "50%", height: "100%",
+        transform: `translateX(${open ? "-100%" : "0"})`,
+        transition: open ? "transform 1.1s cubic-bezier(0.76, 0, 0.24, 1)" : "none",
+        background: "linear-gradient(160deg, #F8EDD6 0%, #F0E0BA 50%, #F5E8CC 100%)",
+        boxShadow: open ? "none" : "4px 0 20px rgba(0,0,0,0.07)",
       }}>
+        <PanelInner side="left" />
+      </div>
 
-        {/* LEFT PANEL — hinges at its right edge (screen center) */}
-        <div style={{
-          position: "absolute",
-          top: 0, left: 0,
-          width: "50%", height: "100%",
-          transformOrigin: "100% 50%",
-          transform: `rotateY(${open ? "-165deg" : "0deg"})`,
-          transition: open ? "transform 1.4s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
-          backfaceVisibility: "hidden",
-          background: "linear-gradient(160deg, #F8EDD6 0%, #F0E0BA 50%, #F5E8CC 100%)",
-          boxShadow: open ? "none" : "4px 0 24px rgba(0,0,0,0.08)",
-        }}>
-          <PanelInner side="left" />
-        </div>
-
-        {/* RIGHT PANEL — hinges at its left edge (screen center) */}
-        <div style={{
-          position: "absolute",
-          top: 0, right: 0,
-          width: "50%", height: "100%",
-          transformOrigin: "0% 50%",
-          transform: `rotateY(${open ? "165deg" : "0deg"})`,
-          transition: open ? "transform 1.4s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
-          backfaceVisibility: "hidden",
-          background: "linear-gradient(200deg, #F5E8CC 0%, #F0E0BA 50%, #F8EDD6 100%)",
-          boxShadow: open ? "none" : "-4px 0 24px rgba(0,0,0,0.08)",
-        }}>
-          <PanelInner side="right" />
-        </div>
-
+      {/* RIGHT PANEL — slides off to the right */}
+      <div style={{
+        position: "absolute",
+        top: 0, right: 0,
+        width: "50%", height: "100%",
+        transform: `translateX(${open ? "100%" : "0"})`,
+        transition: open ? "transform 1.1s cubic-bezier(0.76, 0, 0.24, 1)" : "none",
+        background: "linear-gradient(200deg, #F5E8CC 0%, #F0E0BA 50%, #F8EDD6 100%)",
+        boxShadow: open ? "none" : "-4px 0 20px rgba(0,0,0,0.07)",
+      }}>
+        <PanelInner side="right" />
       </div>
 
       {/* ── center seam line ── */}

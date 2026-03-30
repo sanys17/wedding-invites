@@ -36,8 +36,7 @@ export function EnvelopeIntro({
   }
 
   const open = phase >= 2;
-  const initials = `${partner1.charAt(0).toUpperCase()}${partner2.charAt(0).toUpperCase()}`;
-  const bg = "#F4F0EB";
+  const bg = "#19160F";
 
   return (
     <div
@@ -53,40 +52,46 @@ export function EnvelopeIntro({
         userSelect: "none",
       }}
     >
-      {/* LEFT PANEL — one fold line: top-left corner → screen center */}
+      {/* LEFT PANEL — full X fold: top-left + bottom-left flap zones */}
       <div style={{
         position: "absolute",
         top: 0, left: 0,
         width: "50%", height: "100%",
-        background: bg,
         transform: `translateX(${open ? "-100%" : "0"})`,
         transition: open ? "transform 1.1s cubic-bezier(0.76, 0, 0.24, 1)" : "none",
-        boxShadow: open ? "none" : "3px 0 20px rgba(0,0,0,0.07)",
         overflow: "hidden",
       }}>
         <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} preserveAspectRatio="none">
-          {/* single diagonal: outer top-left → inner center (screen midpoint) */}
-          <line x1="0" y1="0" x2="100%" y2="50%" stroke="rgba(150,130,105,0.28)" strokeWidth="0.7" />
+          {/* top-left flap zone */}
+          <polygon points="0,0 100%,0 100%,50%" fill="rgba(255,255,255,0.04)" />
+          {/* bottom-left flap zone */}
+          <polygon points="0,100% 100%,100% 100%,50%" fill="rgba(255,255,255,0.025)" />
+          {/* fold lines */}
+          <line x1="0" y1="0"   x2="100%" y2="50%" stroke="rgba(255,255,255,0.09)" strokeWidth="0.8" />
+          <line x1="0" y1="100%" x2="100%" y2="50%" stroke="rgba(255,255,255,0.09)" strokeWidth="0.8" />
         </svg>
-        <div style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: 28, background: "linear-gradient(to right, transparent, rgba(0,0,0,0.04))" }} />
+        <div style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: 40, background: "linear-gradient(to right, transparent, rgba(0,0,0,0.18))" }} />
       </div>
 
-      {/* RIGHT PANEL — one fold line: top-right corner → screen center */}
+      {/* RIGHT PANEL — full X fold: top-right + bottom-right flap zones */}
       <div style={{
         position: "absolute",
         top: 0, right: 0,
         width: "50%", height: "100%",
-        background: bg,
         transform: `translateX(${open ? "100%" : "0"})`,
         transition: open ? "transform 1.1s cubic-bezier(0.76, 0, 0.24, 1)" : "none",
-        boxShadow: open ? "none" : "-3px 0 20px rgba(0,0,0,0.07)",
         overflow: "hidden",
       }}>
         <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} preserveAspectRatio="none">
-          {/* single diagonal: outer top-right → inner center (screen midpoint) */}
-          <line x1="100%" y1="0" x2="0" y2="50%" stroke="rgba(150,130,105,0.28)" strokeWidth="0.7" />
+          {/* top-right flap zone */}
+          <polygon points="100%,0 0,0 0,50%" fill="rgba(255,255,255,0.04)" />
+          {/* bottom-right flap zone */}
+          <polygon points="100%,100% 0,100% 0,50%" fill="rgba(255,255,255,0.025)" />
+          {/* fold lines */}
+          <line x1="100%" y1="0"   x2="0" y2="50%" stroke="rgba(255,255,255,0.09)" strokeWidth="0.8" />
+          <line x1="100%" y1="100%" x2="0" y2="50%" stroke="rgba(255,255,255,0.09)" strokeWidth="0.8" />
         </svg>
-        <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: 28, background: "linear-gradient(to left, transparent, rgba(0,0,0,0.04))" }} />
+        <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: 40, background: "linear-gradient(to left, transparent, rgba(0,0,0,0.18))" }} />
       </div>
 
       {/* center seam */}
@@ -94,14 +99,14 @@ export function EnvelopeIntro({
         position: "absolute",
         left: "50%", top: 0, bottom: 0,
         width: 1,
-        background: "rgba(150,130,105,0.2)",
+        background: "rgba(255,255,255,0.06)",
         transform: "translateX(-0.5px)",
         zIndex: 3,
         opacity: open ? 0 : 1,
         transition: "opacity 0.2s ease",
       }} />
 
-      {/* ── realistic gold wax seal ── */}
+      {/* ── gold wax seal — round, organic ── */}
       <div style={{
         position: "absolute",
         top: "50%", left: "50%",
@@ -109,69 +114,86 @@ export function EnvelopeIntro({
         transition: open ? "transform 0.4s cubic-bezier(0.4, 0, 0.8, 1)" : "none",
         animation: phase === 1 ? "sealShake 0.12s ease-in-out 5" : "none",
         zIndex: 5,
-        width: 92,
-        height: 114,
-        /* organic wax shape — slightly uneven corners like real wax */
-        borderRadius: "44% 40% 42% 46% / 36% 44% 40% 38%",
+        width: 118,
+        height: 118,
+        /* organic blob — slightly uneven like real melted wax */
+        borderRadius: "50% 46% 52% 48% / 48% 52% 46% 52%",
         background: [
-          "radial-gradient(ellipse at 38% 22%, rgba(255,240,170,0.9) 0%, transparent 40%)",
-          "radial-gradient(ellipse at 65% 70%, rgba(100,65,0,0.5) 0%, transparent 50%)",
-          "linear-gradient(145deg, #E8C84A 0%, #C9A020 30%, #9A7210 60%, #7A5408 85%, #5C3E06 100%)",
+          "radial-gradient(circle at 36% 26%, rgba(255,248,190,0.75) 0%, transparent 38%)",
+          "radial-gradient(circle at 68% 72%, rgba(90,55,5,0.55) 0%, transparent 42%)",
+          "linear-gradient(140deg, #D8AC3C 0%, #C09828 20%, #A87E18 45%, #8A6210 70%, #6A4A08 100%)",
         ].join(", "),
         boxShadow: [
-          "0 12px 40px rgba(0,0,0,0.38)",
-          "0 4px 14px rgba(0,0,0,0.22)",
-          "0 1px 4px rgba(0,0,0,0.15)",
-          "inset 0 3px 8px rgba(255,240,160,0.25)",
-          "inset 0 -4px 10px rgba(0,0,0,0.3)",
+          "0 18px 56px rgba(0,0,0,0.75)",
+          "0 6px 20px rgba(0,0,0,0.55)",
+          "inset 0 4px 12px rgba(255,238,140,0.22)",
+          "inset 0 -6px 14px rgba(0,0,0,0.45)",
         ].join(", "),
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}>
-        {/* outer impressed ring */}
+        {/* impressed outer ring */}
         <div style={{
-          position: "absolute", inset: 7,
-          borderRadius: "inherit",
-          border: "1.5px solid rgba(70,45,2,0.5)",
-          boxShadow: "inset 0 1px 2px rgba(255,220,80,0.2), 0 1px 2px rgba(0,0,0,0.15)",
+          position: "absolute", inset: 8,
+          borderRadius: "50%",
+          border: "1.5px solid rgba(60,38,2,0.55)",
+          boxShadow: "inset 0 1px 3px rgba(255,215,60,0.18), 0 1px 2px rgba(0,0,0,0.2)",
         }} />
-        {/* inner impressed ring */}
-        <div style={{
-          position: "absolute", inset: 13,
-          borderRadius: "inherit",
-          border: "1px solid rgba(70,45,2,0.35)",
-        }} />
-        {/* specular highlight — top-left glint */}
+        {/* specular highlight */}
         <div style={{
           position: "absolute",
-          top: 10, left: 14,
-          width: 22, height: 10,
+          top: 12, left: 18,
+          width: 28, height: 12,
           borderRadius: "50%",
-          background: "rgba(255,248,200,0.45)",
-          transform: "rotate(-20deg)",
-          filter: "blur(3px)",
+          background: "rgba(255,252,210,0.5)",
+          transform: "rotate(-25deg)",
+          filter: "blur(4px)",
         }} />
-        {/* initials — engraved look */}
-        <span style={{
-          position: "relative", zIndex: 1,
-          fontFamily: "Cormorant Garamond, serif",
-          fontSize: 28,
-          fontWeight: 600,
-          color: "rgba(55,32,2,0.9)",
-          letterSpacing: "-0.02em",
-          lineHeight: 1,
-          textShadow: "0 1px 2px rgba(220,170,40,0.35), 0 -1px 1px rgba(0,0,0,0.4)",
-        }}>{initials}</span>
+        {/* wedding rings SVG — engraved */}
+        <svg
+          viewBox="0 0 64 52"
+          width="62"
+          height="50"
+          style={{ position: "relative", zIndex: 1 }}
+        >
+          {/* diamond on top */}
+          <polygon
+            points="26,2 20,10 26,14 32,10"
+            fill="none"
+            stroke="rgba(55,32,2,0.75)"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <line x1="20" y1="10" x2="32" y2="10" stroke="rgba(55,32,2,0.75)" strokeWidth="1.5" />
+          {/* left ring */}
+          <circle cx="24" cy="34" r="14" fill="none" stroke="rgba(55,32,2,0.75)" strokeWidth="3.2" />
+          {/* right ring — overlapping */}
+          <circle cx="40" cy="34" r="14" fill="none" stroke="rgba(55,32,2,0.75)" strokeWidth="3.2" />
+          {/* mask the left side of the right ring where it's behind the left ring */}
+          <path
+            d="M 40,20 A 14,14 0 0,0 40,48"
+            fill="none"
+            stroke={`rgba(${parseInt("A8",16)},${parseInt("7E",16)},${parseInt("18",16)},1)`}
+            strokeWidth="4.5"
+          />
+          {/* redraw left ring front arc */}
+          <path
+            d="M 24,20 A 14,14 0 0,1 24,48"
+            fill="none"
+            stroke="rgba(55,32,2,0.75)"
+            strokeWidth="3.2"
+          />
+        </svg>
       </div>
 
       {/* tap hint */}
       <div style={{
         position: "absolute",
-        bottom: 36, left: "50%",
+        bottom: 40, left: "50%",
         transform: "translateX(-50%)",
         zIndex: 5,
-        opacity: open ? 0 : 0.45,
+        opacity: open ? 0 : 0.4,
         transition: "opacity 0.3s ease",
         whiteSpace: "nowrap",
       }}>
@@ -180,7 +202,7 @@ export function EnvelopeIntro({
           fontFamily: "Jost, sans-serif",
           fontSize: 10,
           letterSpacing: "0.22em",
-          color: "#8B7D6B",
+          color: "rgba(255,255,255,0.5)",
           textTransform: "uppercase",
         }}>tap to open</p>
       </div>

@@ -7,6 +7,7 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import type { Lang } from "@/lib/translations";
 import InviteIntro from "@/components/InviteIntro";
+import InvitePreview from "@/components/InvitePreview";
 
 function InviteContent({ inv }: { inv: InviteRecord }) {
   const { t } = useLanguage();
@@ -79,82 +80,9 @@ function InviteContent({ inv }: { inv: InviteRecord }) {
         <LanguageSwitcher />
       </div>
 
-      {/* Invitation card */}
-      <div className="relative bg-white w-full max-w-lg shadow-2xl fade-in">
-        {/* Gold top bar */}
-        <div className="h-1 bg-gold w-full" />
-
-        <div className="flex flex-col items-center text-center px-12 py-16 font-serif">
-          {/* Header line */}
-          <div className="flex items-center gap-3 w-full mb-10">
-            <div className="flex-1 h-px bg-gold-light" />
-            <span className="text-xs tracking-ultra-wide uppercase text-gold font-sans font-light whitespace-nowrap">
-              {t.weddingInvitation}
-            </span>
-            <div className="flex-1 h-px bg-gold-light" />
-          </div>
-
-          {/* Together */}
-          <p className="text-xs tracking-ultra-wide uppercase text-muted font-sans font-light mb-6 fade-in-delay-1">
-            {t.togetherForever}
-          </p>
-
-          {/* Names */}
-          <h1 className="text-5xl md:text-6xl font-light italic text-charcoal leading-tight fade-in-delay-1">
-            {inv.partner1}
-          </h1>
-          <p className="text-2xl text-gold font-light tracking-widest my-3 fade-in-delay-1">
-            &amp;
-          </p>
-          <h1 className="text-5xl md:text-6xl font-light italic text-charcoal leading-tight mb-12 fade-in-delay-1">
-            {inv.partner2}
-          </h1>
-
-          {/* Ornament */}
-          <div className="flex items-center gap-4 w-full mb-10 fade-in-delay-2">
-            <div className="flex-1 h-px bg-gold-light" />
-            <span className="text-gold">✦</span>
-            <div className="flex-1 h-px bg-gold-light" />
-          </div>
-
-          {/* Request */}
-          <p className="text-sm font-sans font-light text-muted tracking-widest uppercase mb-8 fade-in-delay-2">
-            {t.requestPresence}
-          </p>
-
-          {/* Date */}
-          <p className="text-lg tracking-widest uppercase text-charcoal font-sans font-light mb-1 fade-in-delay-2">
-            {inv.date}
-          </p>
-          {inv.time && (
-            <p className="text-base tracking-widest text-muted font-sans font-light mb-8 fade-in-delay-2">
-              {inv.time}
-            </p>
-          )}
-
-          {/* Venue */}
-          <p className="text-2xl italic text-charcoal mb-1 fade-in-delay-2">
-            {inv.venue}
-          </p>
-          <p className="text-sm tracking-wider text-muted font-sans font-light mb-10 fade-in-delay-2">
-            {inv.location}
-          </p>
-
-          {/* Message */}
-          {inv.message && (
-            <>
-              <div className="flex items-center gap-4 w-full mb-8 fade-in-delay-3">
-                <div className="flex-1 h-px bg-gold-light" />
-              </div>
-              <p className="text-base italic text-muted leading-relaxed font-light max-w-sm fade-in-delay-3">
-                &ldquo;{inv.message}&rdquo;
-              </p>
-            </>
-          )}
-        </div>
-
-        {/* Gold bottom bar */}
-        <div className="h-1 bg-gold w-full" />
+      {/* Invitation card — renders the template the couple chose */}
+      <div className="w-full max-w-lg fade-in">
+        <InvitePreview data={inv} animate />
       </div>
 
       {/* ── RSVP Section ─────────────────────────────────────────────── */}
